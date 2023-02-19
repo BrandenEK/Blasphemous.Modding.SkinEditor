@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31605.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlasphemousSkinEditor", "BlasphemousSkinEditor\BlasphemousSkinEditor.csproj", "{734FCB80-84A6-4243-9600-E723935A0D03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{734FCB80-84A6-4243-9600-E723935A0D03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734FCB80-84A6-4243-9600-E723935A0D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734FCB80-84A6-4243-9600-E723935A0D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734FCB80-84A6-4243-9600-E723935A0D03}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6961DDB1-DA3C-4A38-95E3-20F8B80C9B46}
+	EndGlobalSection
+EndGlobal
