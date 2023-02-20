@@ -33,8 +33,10 @@ namespace BlasphemousSkinEditor
             this.colorPanel = new System.Windows.Forms.Panel();
             this.importBtn = new System.Windows.Forms.Button();
             this.exportBtn = new System.Windows.Forms.Button();
+            this.cutPrev = new System.Windows.Forms.PictureBox();
             this.chargePrev = new System.Windows.Forms.PictureBox();
             this.idlePrev = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.cutPrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).BeginInit();
             this.SuspendLayout();
@@ -73,6 +75,17 @@ namespace BlasphemousSkinEditor
             this.exportBtn.UseVisualStyleBackColor = true;
             this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
             // 
+            // cutPrev
+            // 
+            this.cutPrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.cutPrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
+            this.cutPrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.cutPrev.Location = new System.Drawing.Point(835, 183);
+            this.cutPrev.Name = "cutPrev";
+            this.cutPrev.Size = new System.Drawing.Size(370, 347);
+            this.cutPrev.TabIndex = 5;
+            this.cutPrev.TabStop = false;
+            // 
             // chargePrev
             // 
             this.chargePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -101,6 +114,7 @@ namespace BlasphemousSkinEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1287, 753);
+            this.Controls.Add(this.cutPrev);
             this.Controls.Add(this.chargePrev);
             this.Controls.Add(this.exportBtn);
             this.Controls.Add(this.colorPanel);
@@ -110,6 +124,7 @@ namespace BlasphemousSkinEditor
             this.Name = "SkinForm";
             this.Text = "Blasphemous Skin Editor";
             this.Load += new System.EventHandler(this.SkinForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.cutPrev)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).EndInit();
             this.ResumeLayout(false);
@@ -124,6 +139,7 @@ namespace BlasphemousSkinEditor
         private System.Windows.Forms.Button exportBtn;
         private System.Windows.Forms.Button importBtn;
         private System.Windows.Forms.PictureBox chargePrev;
+        private System.Windows.Forms.PictureBox cutPrev;
     }
 }
 

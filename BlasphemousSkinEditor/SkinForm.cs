@@ -18,7 +18,7 @@ namespace BlasphemousSkinEditor
 
         Button[] buttons;
         PictureBox[] previewImages;
-        byte[] scaleFactors = new byte[] { 4, 2 };
+        byte[] scaleFactors;
 
         public SkinForm()
         {
@@ -28,20 +28,24 @@ namespace BlasphemousSkinEditor
         // Load base images, create default texture & previews, set form size, and create color buttons
         private void SkinForm_Load(object sender, EventArgs e)
         {
-            basePreviews = new Bitmap[2];
             baseTexture = Properties.Resources._base;
+            basePreviews = new Bitmap[3];
             basePreviews[0] = Properties.Resources.idle;
             basePreviews[1] = Properties.Resources.charged;
+            basePreviews[2] = Properties.Resources.cut;
 
             realTexture = new Bitmap(baseTexture);
-            realPreviews = new Bitmap[2];
+            realPreviews = new Bitmap[3];
             realPreviews[0] = new Bitmap(basePreviews[0]);
             realPreviews[1] = new Bitmap(basePreviews[1]);
+            realPreviews[2] = new Bitmap(basePreviews[2]);
 
             foreach (Bitmap preview in basePreviews)
                 indexPreview(baseTexture, preview);
 
-            previewImages = new PictureBox[] { idlePrev, chargePrev };
+            previewImages = new PictureBox[] { idlePrev, chargePrev, cutPrev };
+            scaleFactors = new byte[] { 4, 2, 2 };
+
             for (int i = 0; i < previewImages.Length; i++)
                 setPreviewImage(i, realPreviews[i]);
             createColorButtons();
@@ -140,6 +144,16 @@ namespace BlasphemousSkinEditor
         // Exports the current texture to the output folder
         private void exportBtn_Click(object sender, EventArgs e)
         {
+            // Temp
+            foreach (Button btn in buttons)
+            {
+                int pixelIdx = int.Parse(btn.Name);
+                if (foundPixels.Contains(pixelIdx))
+                    btn.BackColor = Color.Magenta;
+            }
+            MessageBox.Show(foundPixels.Count + "/91 pixels found", "Pixel finder");
+            return;
+
             string path = Environment.CurrentDirectory + "\\output\\";
             Directory.CreateDirectory(path);
             exportTexture(path);
@@ -235,10 +249,18 @@ namespace BlasphemousSkinEditor
                         if (pixelColor == texture.GetPixel(i, 0))
                         {
                             preview.SetPixel(x, y, Color.FromArgb(i, i, i));
+                            foundPixel(i);
                         }
                     }
                 }
             }
+        }
+
+        private List<int> foundPixels = new List<int>();
+        private void foundPixel(int pixel)
+        {
+            if (!foundPixels.Contains(pixel))
+                foundPixels.Add(pixel);
         }
 
         byte[] validPixels = new byte[]
