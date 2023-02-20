@@ -52,7 +52,7 @@ namespace BlasphemousSkinEditor
             this.colorPanel.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.colorPanel.Location = new System.Drawing.Point(0, 0);
             this.colorPanel.Name = "colorPanel";
-            this.colorPanel.Size = new System.Drawing.Size(1800, 160);
+            this.colorPanel.Size = new System.Drawing.Size(1800, 210);
             this.colorPanel.TabIndex = 2;
             // 
             // importBtn
@@ -80,7 +80,7 @@ namespace BlasphemousSkinEditor
             this.cutPrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.cutPrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.cutPrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.cutPrev.Location = new System.Drawing.Point(835, 183);
+            this.cutPrev.Location = new System.Drawing.Point(961, 314);
             this.cutPrev.Name = "cutPrev";
             this.cutPrev.Size = new System.Drawing.Size(370, 347);
             this.cutPrev.TabIndex = 5;
@@ -91,7 +91,7 @@ namespace BlasphemousSkinEditor
             this.chargePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.chargePrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.chargePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.chargePrev.Location = new System.Drawing.Point(424, 183);
+            this.chargePrev.Location = new System.Drawing.Point(407, 298);
             this.chargePrev.Name = "chargePrev";
             this.chargePrev.Size = new System.Drawing.Size(370, 347);
             this.chargePrev.TabIndex = 4;
@@ -102,7 +102,7 @@ namespace BlasphemousSkinEditor
             this.idlePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.idlePrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.idlePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.idlePrev.Location = new System.Drawing.Point(12, 183);
+            this.idlePrev.Location = new System.Drawing.Point(0, 314);
             this.idlePrev.Name = "idlePrev";
             this.idlePrev.Size = new System.Drawing.Size(370, 347);
             this.idlePrev.TabIndex = 0;

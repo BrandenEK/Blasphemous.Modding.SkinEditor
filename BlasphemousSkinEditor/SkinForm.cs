@@ -64,6 +64,50 @@ namespace BlasphemousSkinEditor
         // Create and register all 91 color buttons
         private void createColorButtons()
         {
+            Point start = new Point(10, 30);
+            int btnSize = 30, currBtn = 0;
+
+            buttons = new Button[91];
+            for (int group = 0; group < pixelGroups.Length; group++)
+            {
+                PixelGroup pixelGroup = pixelGroups[group];
+                // Create group label
+                Label newLabel = new Label();
+                newLabel.Name = pixelGroup.name;
+                newLabel.Text = pixelGroup.name;
+                newLabel.Size = new Size(pixelGroup.boxSize.Width * (btnSize + 5) + 15, 18);
+                newLabel.TextAlign = ContentAlignment.TopCenter;
+                newLabel.Location = new Point(start.X - 10, start.Y - 20);
+                newLabel.BackColor = SystemColors.ControlDarkDark;
+                Controls.Add(newLabel);
+
+                // Create group buttons
+                int currPixel = 0;
+                for (int row = 0; row < pixelGroup.boxSize.Height && currPixel < pixelGroup.pixels.Length; row++)
+                {
+                    for (int col = 0; col < pixelGroup.boxSize.Width && currPixel < pixelGroup.pixels.Length; col++)
+                    {
+                        Button button = new Button();
+                        int pixelIdx = pixelGroup.pixels[currPixel];
+
+                        button.Name = pixelIdx.ToString();
+                        button.Location = new Point(start.X + (btnSize + 5) * col, start.Y + (btnSize + 5) * row);
+                        button.Size = new Size(btnSize, btnSize);
+                        button.BackColor = realTexture.GetPixel(pixelIdx, 0);
+                        button.Click += new EventHandler(colorButtonClicked);
+
+                        buttons[currBtn] = button;
+                        Controls.Add(button);
+                        currPixel++;
+                        currBtn++;
+                    }
+                }
+                start = new Point(start.X + 20 + (btnSize + 5) * pixelGroup.boxSize.Width, start.Y);
+            }
+        }
+
+        private void oldButtons()
+        {
             Point start = new Point(10, 10);
             int buttonsPerRow = 32, currIdx = 0;
 
@@ -272,5 +316,26 @@ namespace BlasphemousSkinEditor
             140, 141, 142, 145, 151, 160, 163, 171, 175, 179, 183, 186, 187,
             188, 189, 199, 208, 217, 230, 233, 234, 238, 251, 255
         };
+
+        PixelGroup[] pixelGroups = new PixelGroup[]
+        {
+            new PixelGroup("Leather", new Size(2, 4), new byte[] { 16, 34, 43, 44, 62, 63, 83, 87, }),
+            new PixelGroup("Belt", new Size(1, 2), new byte[] { 11, 46 }),
+            new PixelGroup("Sword", new Size(1, 4), new byte[] { 48, 141, 175, 189, })
+        };
+    }
+
+    class PixelGroup
+    {
+        public string name;
+        public Size boxSize;
+        public byte[] pixels;
+
+        public PixelGroup(string name, Size boxSize, byte[] pixels)
+        {
+            this.name = name;
+            this.boxSize = boxSize;
+            this.pixels = pixels;
+        }
     }
 }
