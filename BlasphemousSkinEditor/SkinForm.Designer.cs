@@ -29,7 +29,6 @@ namespace BlasphemousSkinEditor
         /// </summary>
         private void InitializeComponent()
         {
-            this.debug = new System.Windows.Forms.Label();
             this.TextureColor = new System.Windows.Forms.ColorDialog();
             this.colorPanel = new System.Windows.Forms.Panel();
             this.importBtn = new System.Windows.Forms.Button();
@@ -39,16 +38,6 @@ namespace BlasphemousSkinEditor
             ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).BeginInit();
             this.SuspendLayout();
-            // 
-            // debug
-            // 
-            this.debug.AutoSize = true;
-            this.debug.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.debug.Location = new System.Drawing.Point(12, 688);
-            this.debug.Name = "debug";
-            this.debug.Size = new System.Drawing.Size(87, 29);
-            this.debug.TabIndex = 1;
-            this.debug.Text = "Debug";
             // 
             // TextureColor
             // 
@@ -116,7 +105,6 @@ namespace BlasphemousSkinEditor
             this.Controls.Add(this.exportBtn);
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.importBtn);
-            this.Controls.Add(this.debug);
             this.Controls.Add(this.idlePrev);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SkinForm";
@@ -125,14 +113,12 @@ namespace BlasphemousSkinEditor
             ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox idlePrev;
-        private System.Windows.Forms.Label debug;
         private System.Windows.Forms.ColorDialog TextureColor;
         private System.Windows.Forms.Panel colorPanel;
         private System.Windows.Forms.Button exportBtn;
