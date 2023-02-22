@@ -345,25 +345,24 @@ namespace BlasphemousSkinEditor
             new PixelGroup("Helmet", new Size(1, 4), new byte[] { 48, 78, 118, 163 }),
             new PixelGroup("Misc. Armor", new Size(2, 3), new byte[] { 23, 40, 76, 86, 217 }),
             new PixelGroup("Leather", new Size(2, 4), new byte[] { 16, 34, 43, 44, 62, 63, 83, 87, }),
-            new PixelGroup("Cloth", new Size(1, 3), new byte[] { 60, 139, 188 }),
-            new PixelGroup("Belt", new Size(1, 2), new byte[] { 46, 11 }),
+            new PixelGroup("Cloth", new Size(2, 3), new byte[] { 46, 11, 60, 139, 188 }),
             new PixelGroup("Sword", new Size(1, 4), new byte[] { 141, 140, 175, 189 }),
-            new PixelGroup("Blood", new Size(1, 3), new byte[] { 41, 26, 25 }),
+            new PixelGroup("Blood", new Size(2, 3), new byte[] { 41, 26, 53, 49, 25, 24 }),
             new PixelGroup("Rocks", new Size(2, 3), new byte[] { 32, 51, 80, 94, 97 }),
-            //new PixelGroup("Dust", new Size(1, 1), new byte[] {  }),
-            new PixelGroup("Effects", new Size(2, 3), new byte[] { 142, 39, 1, 2, 179, 255 }),
+            new PixelGroup("Effects", new Size(2, 4), new byte[] { 99, 142, 39, 1, 2, 179, 255 }),
             new PixelGroup("Charged", new Size(2, 3), new byte[] { 89, 138, 160, 183, 208 }),
             new PixelGroup("Parry", new Size(1, 2), new byte[] { 187, 230 }),
+            new PixelGroup("Healing", new Size(1, 4), new byte[] { 64, 98, 133, 233 }),
             new PixelGroup("White", new Size(1, 1), new byte[] { 251 }),
 
-            new PixelGroup("Unknown", new Size(10, 4), new byte[]
+            new PixelGroup("Unknown", new Size(8, 4), new byte[]
             {
-                0, 21, 22, 24, 29, 31, 33, 35,
-                42, 45, 47, 49, 50, 52, 53, 55,
-                56, 57, 58, 59, 61, 64, 65, 71, 75,
-                88, 98, 99, 127, 132, 133,
+                0, 21, 22, 29, 31, 33, 35,
+                42, 45, 47, 50, 52, 55,
+                56, 57, 58, 59, 61, 65, 71, 75,
+                88, 127, 132,
                 145, 151, 171,
-                199, 233, 234, 238
+                199, 234, 238
             })
         };
     }
