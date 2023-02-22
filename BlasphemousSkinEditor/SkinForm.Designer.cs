@@ -33,11 +33,11 @@ namespace BlasphemousSkinEditor
             this.colorPanel = new System.Windows.Forms.Panel();
             this.importBtn = new System.Windows.Forms.Button();
             this.exportBtn = new System.Windows.Forms.Button();
+            this.nameText = new System.Windows.Forms.TextBox();
+            this.nameLabel = new System.Windows.Forms.Label();
             this.cutPrev = new System.Windows.Forms.PictureBox();
             this.chargePrev = new System.Windows.Forms.PictureBox();
             this.idlePrev = new System.Windows.Forms.PictureBox();
-            this.nameText = new System.Windows.Forms.TextBox();
-            this.nameLabel = new System.Windows.Forms.Label();
             this.colorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cutPrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).BeginInit();
@@ -56,15 +56,17 @@ namespace BlasphemousSkinEditor
             this.colorPanel.Controls.Add(this.importBtn);
             this.colorPanel.Controls.Add(this.exportBtn);
             this.colorPanel.Location = new System.Drawing.Point(0, 0);
+            this.colorPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.colorPanel.Name = "colorPanel";
-            this.colorPanel.Size = new System.Drawing.Size(1800, 210);
+            this.colorPanel.Size = new System.Drawing.Size(1350, 171);
             this.colorPanel.TabIndex = 2;
             // 
             // importBtn
             // 
-            this.importBtn.Location = new System.Drawing.Point(984, 157);
+            this.importBtn.Location = new System.Drawing.Point(738, 128);
+            this.importBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.importBtn.Name = "importBtn";
-            this.importBtn.Size = new System.Drawing.Size(110, 35);
+            this.importBtn.Size = new System.Drawing.Size(82, 28);
             this.importBtn.TabIndex = 3;
             this.importBtn.Text = "Import";
             this.importBtn.UseVisualStyleBackColor = true;
@@ -72,22 +74,43 @@ namespace BlasphemousSkinEditor
             // 
             // exportBtn
             // 
-            this.exportBtn.Location = new System.Drawing.Point(1109, 157);
+            this.exportBtn.Location = new System.Drawing.Point(832, 128);
+            this.exportBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.exportBtn.Name = "exportBtn";
-            this.exportBtn.Size = new System.Drawing.Size(110, 35);
+            this.exportBtn.Size = new System.Drawing.Size(82, 28);
             this.exportBtn.TabIndex = 3;
             this.exportBtn.Text = "Export";
             this.exportBtn.UseVisualStyleBackColor = true;
             this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
+            // 
+            // nameText
+            // 
+            this.nameText.Location = new System.Drawing.Point(776, 223);
+            this.nameText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nameText.MaxLength = 20;
+            this.nameText.Name = "nameText";
+            this.nameText.Size = new System.Drawing.Size(99, 20);
+            this.nameText.TabIndex = 6;
+            // 
+            // nameLabel
+            // 
+            this.nameLabel.AutoSize = true;
+            this.nameLabel.Location = new System.Drawing.Point(796, 207);
+            this.nameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.nameLabel.Name = "nameLabel";
+            this.nameLabel.Size = new System.Drawing.Size(57, 13);
+            this.nameLabel.TabIndex = 7;
+            this.nameLabel.Text = "Skin name";
             // 
             // cutPrev
             // 
             this.cutPrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.cutPrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.cutPrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.cutPrev.Location = new System.Drawing.Point(961, 314);
+            this.cutPrev.Location = new System.Drawing.Point(721, 255);
+            this.cutPrev.Margin = new System.Windows.Forms.Padding(2);
             this.cutPrev.Name = "cutPrev";
-            this.cutPrev.Size = new System.Drawing.Size(370, 347);
+            this.cutPrev.Size = new System.Drawing.Size(278, 283);
             this.cutPrev.TabIndex = 5;
             this.cutPrev.TabStop = false;
             // 
@@ -96,9 +119,10 @@ namespace BlasphemousSkinEditor
             this.chargePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.chargePrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.chargePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.chargePrev.Location = new System.Drawing.Point(407, 298);
+            this.chargePrev.Location = new System.Drawing.Point(305, 242);
+            this.chargePrev.Margin = new System.Windows.Forms.Padding(2);
             this.chargePrev.Name = "chargePrev";
-            this.chargePrev.Size = new System.Drawing.Size(370, 347);
+            this.chargePrev.Size = new System.Drawing.Size(278, 283);
             this.chargePrev.TabIndex = 4;
             this.chargePrev.TabStop = false;
             // 
@@ -107,35 +131,19 @@ namespace BlasphemousSkinEditor
             this.idlePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.idlePrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.idlePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.idlePrev.Location = new System.Drawing.Point(0, 314);
+            this.idlePrev.Location = new System.Drawing.Point(0, 255);
+            this.idlePrev.Margin = new System.Windows.Forms.Padding(2);
             this.idlePrev.Name = "idlePrev";
-            this.idlePrev.Size = new System.Drawing.Size(370, 347);
+            this.idlePrev.Size = new System.Drawing.Size(278, 283);
             this.idlePrev.TabIndex = 0;
             this.idlePrev.TabStop = false;
             // 
-            // nameText
-            // 
-            this.nameText.Location = new System.Drawing.Point(1034, 275);
-            this.nameText.MaxLength = 20;
-            this.nameText.Name = "nameText";
-            this.nameText.Size = new System.Drawing.Size(131, 22);
-            this.nameText.TabIndex = 6;
-            // 
-            // nameLabel
-            // 
-            this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(1062, 255);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(74, 17);
-            this.nameLabel.TabIndex = 7;
-            this.nameLabel.Text = "Skin name";
-            // 
             // SkinForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(1287, 753);
+            this.ClientSize = new System.Drawing.Size(965, 612);
             this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.nameText);
             this.Controls.Add(this.cutPrev);
@@ -143,6 +151,7 @@ namespace BlasphemousSkinEditor
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.idlePrev);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "SkinForm";
             this.Text = "Blasphemous Skin Editor";
             this.Load += new System.EventHandler(this.SkinForm_Load);

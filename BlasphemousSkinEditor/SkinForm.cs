@@ -32,7 +32,7 @@ namespace BlasphemousSkinEditor
             basePreviews = new Bitmap[3];
             basePreviews[0] = Properties.Resources.idle;
             basePreviews[1] = Properties.Resources.charged;
-            basePreviews[2] = Properties.Resources.cut;
+            basePreviews[2] = Properties.Resources.parry;
 
             realTexture = new Bitmap(baseTexture);
             realPreviews = new Bitmap[3];
@@ -44,7 +44,7 @@ namespace BlasphemousSkinEditor
                 indexPreview(baseTexture, preview);
 
             previewImages = new PictureBox[] { idlePrev, chargePrev, cutPrev };
-            scaleFactors = new byte[] { 4, 2, 2 };
+            scaleFactors = new byte[] { 4, 2, 4 };
 
             for (int i = 0; i < previewImages.Length; i++)
                 setPreviewImage(i, realPreviews[i]);
@@ -200,18 +200,18 @@ namespace BlasphemousSkinEditor
             MessageBox.Show(foundPixels.Count + "/91 pixels found", "Pixel finder");
             foreach (PixelGroup group in pixelGroups)
             {
-                if (group.name == "Unknown")
-                {
-                    foreach (byte pixel in group.pixels)
-                        setTexturePixel(pixel, Color.Magenta);
-                }
-                else
+                if (group.name != "Unknown")
                 {
                     foreach (byte pixel in group.pixels)
                         setTexturePixel(pixel, Color.Black);
                 }
+                //else
+                //{
+                //    foreach (byte pixel in group.pixels)
+                //        setTexturePixel(pixel, Color.Magenta);
+                //}
             }
-            //return;
+            return;
 
             string skinName = nameText.Text;
             if (skinName == null || skinName == "")
@@ -349,17 +349,21 @@ namespace BlasphemousSkinEditor
             new PixelGroup("Belt", new Size(1, 2), new byte[] { 46, 11 }),
             new PixelGroup("Sword", new Size(1, 4), new byte[] { 141, 140, 175, 189 }),
             new PixelGroup("Blood", new Size(1, 3), new byte[] { 41, 26, 25 }),
-            new PixelGroup("Dust", new Size(1, 1), new byte[] { 142 }),
-            new PixelGroup("Charge Aura", new Size(2, 3), new byte[] { 89, 138, 160, 183, 208, 251 }),
+            new PixelGroup("Rocks", new Size(2, 3), new byte[] { 32, 51, 80, 94, 97 }),
+            //new PixelGroup("Dust", new Size(1, 1), new byte[] {  }),
+            new PixelGroup("Effects", new Size(2, 3), new byte[] { 142, 39, 1, 2, 179, 255 }),
+            new PixelGroup("Charged", new Size(2, 3), new byte[] { 89, 138, 160, 183, 208 }),
+            new PixelGroup("Parry", new Size(1, 2), new byte[] { 187, 230 }),
+            new PixelGroup("White", new Size(1, 1), new byte[] { 251 }),
 
-            new PixelGroup("Unknown", new Size(16, 4), new byte[]
+            new PixelGroup("Unknown", new Size(10, 4), new byte[]
             {
-                0, 1, 2, 21, 22, 24, 29, 31, 32, 33, 35,
-                39, 42, 45, 47, 49, 50, 51, 52, 53, 55,
-                56, 57, 58, 59, 61, 64, 65, 71, 75, 80,
-                88, 94, 97, 98, 99, 127, 132, 133,
-                145, 151, 171, 179, 187,
-                199, 230, 233, 234, 238, 255
+                0, 21, 22, 24, 29, 31, 33, 35,
+                42, 45, 47, 49, 50, 52, 53, 55,
+                56, 57, 58, 59, 61, 64, 65, 71, 75,
+                88, 98, 99, 127, 132, 133,
+                145, 151, 171,
+                199, 233, 234, 238
             })
         };
     }
