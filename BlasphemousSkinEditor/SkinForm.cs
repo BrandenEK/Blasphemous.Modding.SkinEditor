@@ -197,15 +197,20 @@ namespace BlasphemousSkinEditor
             //        btn.BackColor = Color.Magenta;
             //}
 
-            //MessageBox.Show(foundPixels.Count + "/91 pixels found", "Pixel finder");
-            //foreach (PixelGroup group in pixelGroups)
-            //{
-            //    if (group.name == "Unknown")
-            //    {
-            //        foreach (byte pixel in group.pixels)
-            //            setTexturePixel(pixel, Color.Magenta);
-            //    }
-            //}
+            MessageBox.Show(foundPixels.Count + "/91 pixels found", "Pixel finder");
+            foreach (PixelGroup group in pixelGroups)
+            {
+                if (group.name == "Unknown")
+                {
+                    foreach (byte pixel in group.pixels)
+                        setTexturePixel(pixel, Color.Magenta);
+                }
+                else
+                {
+                    foreach (byte pixel in group.pixels)
+                        setTexturePixel(pixel, Color.Black);
+                }
+            }
             //return;
 
             string skinName = nameText.Text;
