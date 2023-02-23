@@ -197,7 +197,13 @@ namespace BlasphemousSkinEditor
             //        btn.BackColor = Color.Magenta;
             //}
 
-            MessageBox.Show(foundPixels.Count + "/91 pixels found", "Pixel finder");
+            int knownPixels = 0;
+            //knownPixels = foundPixels.Count;
+            foreach (PixelGroup group in pixelGroups)
+                if (group.name != "Unknown")
+                    knownPixels += group.pixels.Length;
+
+            MessageBox.Show(knownPixels + "/91 pixels found", "Pixel finder");
             foreach (PixelGroup group in pixelGroups)
             {
                 if (group.name != "Unknown")
@@ -205,13 +211,13 @@ namespace BlasphemousSkinEditor
                     foreach (byte pixel in group.pixels)
                         setTexturePixel(pixel, Color.Black);
                 }
-                //else
-                //{
-                //    foreach (byte pixel in group.pixels)
-                //        setTexturePixel(pixel, Color.Magenta);
-                //}
+                else
+                {
+                    foreach (byte pixel in group.pixels)
+                        setTexturePixel(pixel, Color.Magenta);
+                }
             }
-            return;
+            //return;
 
             string skinName = nameText.Text;
             if (skinName == null || skinName == "")
@@ -349,20 +355,18 @@ namespace BlasphemousSkinEditor
             new PixelGroup("Sword", new Size(1, 4), new byte[] { 141, 140, 175, 189 }),
             new PixelGroup("Blood", new Size(2, 3), new byte[] { 41, 26, 53, 49, 25, 24 }),
             new PixelGroup("Rocks", new Size(2, 3), new byte[] { 32, 51, 80, 94, 97 }),
-            new PixelGroup("Effects", new Size(2, 4), new byte[] { 99, 142, 39, 1, 2, 179, 255 }),
-            new PixelGroup("Charged", new Size(2, 3), new byte[] { 89, 138, 160, 183, 208 }),
-            new PixelGroup("Parry", new Size(1, 2), new byte[] { 187, 230 }),
+            new PixelGroup("Effects", new Size(2, 4), new byte[] { 71, 99, 142, 39, 1, 2, 179, 255 }),
+            new PixelGroup("Abilities", new Size(3, 4), new byte[] { 89, 138, 160, 183, 208, 187, 230, 234, 238 }),
+            //new PixelGroup("Parry", new Size(1, 2), new byte[] {  }),
             new PixelGroup("Healing", new Size(1, 4), new byte[] { 64, 98, 133, 233 }),
             new PixelGroup("White", new Size(1, 1), new byte[] { 251 }),
 
-            new PixelGroup("Unknown", new Size(8, 4), new byte[]
+            new PixelGroup("Unknown", new Size(7, 4), new byte[]
             {
                 0, 21, 22, 29, 31, 33, 35,
                 42, 45, 47, 50, 52, 55,
-                56, 57, 58, 59, 61, 65, 71, 75,
-                88, 127, 132,
-                145, 151, 171,
-                199, 234, 238
+                56, 57, 58, 59, 61, 65, 75,
+                88, 127, 132, 145, 151, 171, 199
             })
         };
     }
