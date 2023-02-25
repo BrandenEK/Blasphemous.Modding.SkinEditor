@@ -56,7 +56,7 @@ namespace BlasphemousSkinEditor
             this.colorPanel.Controls.Add(this.importBtn);
             this.colorPanel.Controls.Add(this.exportBtn);
             this.colorPanel.Location = new System.Drawing.Point(0, 0);
-            this.colorPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.colorPanel.Margin = new System.Windows.Forms.Padding(2);
             this.colorPanel.Name = "colorPanel";
             this.colorPanel.Size = new System.Drawing.Size(1350, 171);
             this.colorPanel.TabIndex = 2;
@@ -64,7 +64,7 @@ namespace BlasphemousSkinEditor
             // importBtn
             // 
             this.importBtn.Location = new System.Drawing.Point(738, 128);
-            this.importBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.importBtn.Margin = new System.Windows.Forms.Padding(2);
             this.importBtn.Name = "importBtn";
             this.importBtn.Size = new System.Drawing.Size(82, 28);
             this.importBtn.TabIndex = 3;
@@ -75,7 +75,7 @@ namespace BlasphemousSkinEditor
             // exportBtn
             // 
             this.exportBtn.Location = new System.Drawing.Point(832, 128);
-            this.exportBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.exportBtn.Margin = new System.Windows.Forms.Padding(2);
             this.exportBtn.Name = "exportBtn";
             this.exportBtn.Size = new System.Drawing.Size(82, 28);
             this.exportBtn.TabIndex = 3;
@@ -86,7 +86,7 @@ namespace BlasphemousSkinEditor
             // nameText
             // 
             this.nameText.Location = new System.Drawing.Point(776, 223);
-            this.nameText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nameText.Margin = new System.Windows.Forms.Padding(2);
             this.nameText.MaxLength = 20;
             this.nameText.Name = "nameText";
             this.nameText.Size = new System.Drawing.Size(99, 20);
@@ -107,6 +107,7 @@ namespace BlasphemousSkinEditor
             this.cutPrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.cutPrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.cutPrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.cutPrev.Image = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.cutPrev.Location = new System.Drawing.Point(721, 255);
             this.cutPrev.Margin = new System.Windows.Forms.Padding(2);
             this.cutPrev.Name = "cutPrev";
@@ -151,7 +152,7 @@ namespace BlasphemousSkinEditor
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.idlePrev);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SkinForm";
             this.Text = "Blasphemous Skin Editor";
             this.Load += new System.EventHandler(this.SkinForm_Load);
