@@ -36,13 +36,15 @@ namespace BlasphemousSkinEditor
             this.exportBtn = new System.Windows.Forms.Button();
             this.nameText = new System.Windows.Forms.TextBox();
             this.nameLabel = new System.Windows.Forms.Label();
-            this.previewImage2 = new System.Windows.Forms.PictureBox();
-            this.previewImage1 = new System.Windows.Forms.PictureBox();
             this.backgroundBtn = new System.Windows.Forms.Button();
             this.previewType1 = new System.Windows.Forms.ComboBox();
             this.previewType2 = new System.Windows.Forms.ComboBox();
             this.currentBtn = new System.Windows.Forms.Button();
             this.currentText = new System.Windows.Forms.TextBox();
+            this.undoBtn = new System.Windows.Forms.Button();
+            this.previewImage2 = new System.Windows.Forms.PictureBox();
+            this.previewImage1 = new System.Windows.Forms.PictureBox();
+            this.redoBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.previewImage2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.previewImage1)).BeginInit();
             this.SuspendLayout();
@@ -102,32 +104,6 @@ namespace BlasphemousSkinEditor
             this.nameLabel.Size = new System.Drawing.Size(57, 13);
             this.nameLabel.TabIndex = 7;
             this.nameLabel.Text = "Skin name";
-            // 
-            // previewImage2
-            // 
-            this.previewImage2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.previewImage2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage2.BackgroundImage")));
-            this.previewImage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.previewImage2.Location = new System.Drawing.Point(655, 250);
-            this.previewImage2.Margin = new System.Windows.Forms.Padding(2);
-            this.previewImage2.Name = "previewImage2";
-            this.previewImage2.Size = new System.Drawing.Size(620, 480);
-            this.previewImage2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.previewImage2.TabIndex = 4;
-            this.previewImage2.TabStop = false;
-            // 
-            // previewImage1
-            // 
-            this.previewImage1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.previewImage1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage1.BackgroundImage")));
-            this.previewImage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.previewImage1.Location = new System.Drawing.Point(10, 250);
-            this.previewImage1.Margin = new System.Windows.Forms.Padding(2);
-            this.previewImage1.Name = "previewImage1";
-            this.previewImage1.Size = new System.Drawing.Size(620, 480);
-            this.previewImage1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.previewImage1.TabIndex = 0;
-            this.previewImage1.TabStop = false;
             // 
             // backgroundBtn
             // 
@@ -194,12 +170,64 @@ namespace BlasphemousSkinEditor
             this.currentText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.currentText_KeyDown);
             this.currentText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.currentText_MouseDown);
             // 
+            // undoBtn
+            // 
+            this.undoBtn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.undoBtn.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.undo;
+            this.undoBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.undoBtn.Location = new System.Drawing.Point(1202, 211);
+            this.undoBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.undoBtn.Name = "undoBtn";
+            this.undoBtn.Size = new System.Drawing.Size(30, 30);
+            this.undoBtn.TabIndex = 14;
+            this.undoBtn.UseVisualStyleBackColor = false;
+            // 
+            // previewImage2
+            // 
+            this.previewImage2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.previewImage2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage2.BackgroundImage")));
+            this.previewImage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.previewImage2.Location = new System.Drawing.Point(655, 250);
+            this.previewImage2.Margin = new System.Windows.Forms.Padding(2);
+            this.previewImage2.Name = "previewImage2";
+            this.previewImage2.Size = new System.Drawing.Size(620, 480);
+            this.previewImage2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.previewImage2.TabIndex = 4;
+            this.previewImage2.TabStop = false;
+            // 
+            // previewImage1
+            // 
+            this.previewImage1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.previewImage1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage1.BackgroundImage")));
+            this.previewImage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.previewImage1.Location = new System.Drawing.Point(10, 250);
+            this.previewImage1.Margin = new System.Windows.Forms.Padding(2);
+            this.previewImage1.Name = "previewImage1";
+            this.previewImage1.Size = new System.Drawing.Size(620, 480);
+            this.previewImage1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.previewImage1.TabIndex = 0;
+            this.previewImage1.TabStop = false;
+            // 
+            // redoBtn
+            // 
+            this.redoBtn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.redoBtn.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.redo;
+            this.redoBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.redoBtn.Location = new System.Drawing.Point(1236, 211);
+            this.redoBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.redoBtn.Name = "redoBtn";
+            this.redoBtn.Size = new System.Drawing.Size(30, 30);
+            this.redoBtn.TabIndex = 15;
+            this.redoBtn.UseVisualStyleBackColor = false;
+            // 
             // SkinForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1289, 761);
+            this.Controls.Add(this.redoBtn);
+            this.Controls.Add(this.undoBtn);
             this.Controls.Add(this.currentText);
             this.Controls.Add(this.currentBtn);
             this.Controls.Add(this.previewType2);
@@ -239,6 +267,8 @@ namespace BlasphemousSkinEditor
         private System.Windows.Forms.ComboBox previewType2;
         private System.Windows.Forms.Button currentBtn;
         private System.Windows.Forms.TextBox currentText;
+        private System.Windows.Forms.Button undoBtn;
+        private System.Windows.Forms.Button redoBtn;
     }
 }
 
