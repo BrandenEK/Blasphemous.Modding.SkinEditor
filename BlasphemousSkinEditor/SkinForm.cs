@@ -190,6 +190,7 @@ namespace BlasphemousSkinEditor
                     return;
                 }
 
+                realTexture.Dispose();
                 realTexture = new Bitmap(fileTexture);
             }
 
@@ -259,10 +260,14 @@ namespace BlasphemousSkinEditor
         private void exportTexture(string path)
         {
             realTexture.Save(path + "texture.png", System.Drawing.Imaging.ImageFormat.Png);
-            Bitmap scaledIdle = scalePreview(realPreviews[0], scaleFactors[0]);
-            scaledIdle.Save(path + "idlePreview.png", System.Drawing.Imaging.ImageFormat.Png);
-            Bitmap scaledCharged = scalePreview(realPreviews[2], scaleFactors[2]);
-            scaledCharged.Save(path + "chargedPreview.png", System.Drawing.Imaging.ImageFormat.Png);
+            using (Bitmap scaledIdle = scalePreview(realPreviews[0], scaleFactors[0]))
+            {
+                scaledIdle.Save(path + "idlePreview.png", System.Drawing.Imaging.ImageFormat.Png);
+            }
+            using (Bitmap scaledCharged = scalePreview(realPreviews[2], scaleFactors[2]))
+            {
+                scaledCharged.Save(path + "chargedPreview.png", System.Drawing.Imaging.ImageFormat.Png);
+            }
             MessageBox.Show("Texture successfully saved!", "Export Texture");
         }
 
@@ -311,6 +316,8 @@ namespace BlasphemousSkinEditor
         // Takes in the preview image and scales it up before setting the preview image
         private void setPreviewImage(PictureBox box, int previewIdx)
         {
+            if (box.Image != null)
+                box.Image.Dispose();
             Bitmap scaledPreview = scalePreview(realPreviews[previewIdx], scaleFactors[previewIdx]);
             box.Image = scaledPreview;
         }
