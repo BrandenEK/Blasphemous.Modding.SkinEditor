@@ -17,7 +17,7 @@ namespace BlasphemousSkinEditor
         Button[] buttons;
         byte[] scaleFactors;
 
-        bool backgroundColor = false;
+        bool backgroundColor;
         Color currentColor;
         int preview1 = 0, preview2 = 2;
 
@@ -64,6 +64,7 @@ namespace BlasphemousSkinEditor
             setPreviewType(1, preview1);
             previewType2.SelectedIndex = preview2;
             setPreviewType(2, preview2);
+            setPreviewBackgrounds(true);
 
             // Set form size
             this.Size = new Size(1305, 800);
@@ -142,7 +143,7 @@ namespace BlasphemousSkinEditor
                 setTexturePixel(int.Parse(btn.Name), TextureColor.Color);
                 btn.BackColor = TextureColor.Color;
                 // temp
-                MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
+                //MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
             }
         }
 
@@ -224,7 +225,7 @@ namespace BlasphemousSkinEditor
                 if (group.name != "Unknown")
                     knownPixels += group.pixels.Length;
 
-            MessageBox.Show(knownPixels + "/91 pixels found", "Pixel finder");
+            //MessageBox.Show(knownPixels + "/91 pixels found", "Pixel finder");
             //foreach (PixelGroup group in pixelGroups)
             //{
             //    if (group.name != "Unknown")
@@ -437,7 +438,12 @@ namespace BlasphemousSkinEditor
 
         private void backgroundBtn_Click(object sender, EventArgs e)
         {
-            backgroundColor = !backgroundColor;
+            setPreviewBackgrounds(!backgroundColor);
+        }
+
+        private void setPreviewBackgrounds(bool darkMode)
+        {
+            backgroundColor = darkMode;
             Bitmap newBackground = backgroundColor ? Properties.Resources.transdark : Properties.Resources.translight;
             previewImage1.BackgroundImage = newBackground;
             previewImage2.BackgroundImage = newBackground;
