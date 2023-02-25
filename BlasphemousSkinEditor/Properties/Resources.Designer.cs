@@ -123,9 +123,19 @@ namespace BlasphemousSkinEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap transparent {
+        internal static System.Drawing.Bitmap transdark {
             get {
-                object obj = ResourceManager.GetObject("transparent", resourceCulture);
+                object obj = ResourceManager.GetObject("transdark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap translight {
+            get {
+                object obj = ResourceManager.GetObject("translight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

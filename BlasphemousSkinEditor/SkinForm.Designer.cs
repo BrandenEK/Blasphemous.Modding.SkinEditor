@@ -29,6 +29,7 @@ namespace BlasphemousSkinEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SkinForm));
             this.TextureColor = new System.Windows.Forms.ColorDialog();
             this.colorPanel = new System.Windows.Forms.Panel();
             this.importBtn = new System.Windows.Forms.Button();
@@ -38,7 +39,6 @@ namespace BlasphemousSkinEditor
             this.cutPrev = new System.Windows.Forms.PictureBox();
             this.chargePrev = new System.Windows.Forms.PictureBox();
             this.idlePrev = new System.Windows.Forms.PictureBox();
-            this.colorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cutPrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).BeginInit();
@@ -53,8 +53,6 @@ namespace BlasphemousSkinEditor
             // colorPanel
             // 
             this.colorPanel.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.colorPanel.Controls.Add(this.importBtn);
-            this.colorPanel.Controls.Add(this.exportBtn);
             this.colorPanel.Location = new System.Drawing.Point(0, 0);
             this.colorPanel.Margin = new System.Windows.Forms.Padding(2);
             this.colorPanel.Name = "colorPanel";
@@ -63,7 +61,7 @@ namespace BlasphemousSkinEditor
             // 
             // importBtn
             // 
-            this.importBtn.Location = new System.Drawing.Point(738, 128);
+            this.importBtn.Location = new System.Drawing.Point(734, 177);
             this.importBtn.Margin = new System.Windows.Forms.Padding(2);
             this.importBtn.Name = "importBtn";
             this.importBtn.Size = new System.Drawing.Size(82, 28);
@@ -74,7 +72,7 @@ namespace BlasphemousSkinEditor
             // 
             // exportBtn
             // 
-            this.exportBtn.Location = new System.Drawing.Point(832, 128);
+            this.exportBtn.Location = new System.Drawing.Point(828, 177);
             this.exportBtn.Margin = new System.Windows.Forms.Padding(2);
             this.exportBtn.Name = "exportBtn";
             this.exportBtn.Size = new System.Drawing.Size(82, 28);
@@ -85,7 +83,7 @@ namespace BlasphemousSkinEditor
             // 
             // nameText
             // 
-            this.nameText.Location = new System.Drawing.Point(776, 223);
+            this.nameText.Location = new System.Drawing.Point(860, 201);
             this.nameText.Margin = new System.Windows.Forms.Padding(2);
             this.nameText.MaxLength = 20;
             this.nameText.Name = "nameText";
@@ -95,7 +93,7 @@ namespace BlasphemousSkinEditor
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(796, 207);
+            this.nameLabel.Location = new System.Drawing.Point(880, 185);
             this.nameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(57, 13);
@@ -105,9 +103,8 @@ namespace BlasphemousSkinEditor
             // cutPrev
             // 
             this.cutPrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.cutPrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
+            this.cutPrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cutPrev.BackgroundImage")));
             this.cutPrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.cutPrev.Image = global::BlasphemousSkinEditor.Properties.Resources.transparent;
             this.cutPrev.Location = new System.Drawing.Point(721, 255);
             this.cutPrev.Margin = new System.Windows.Forms.Padding(2);
             this.cutPrev.Name = "cutPrev";
@@ -118,7 +115,7 @@ namespace BlasphemousSkinEditor
             // chargePrev
             // 
             this.chargePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.chargePrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
+            this.chargePrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chargePrev.BackgroundImage")));
             this.chargePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.chargePrev.Location = new System.Drawing.Point(305, 242);
             this.chargePrev.Margin = new System.Windows.Forms.Padding(2);
@@ -130,7 +127,7 @@ namespace BlasphemousSkinEditor
             // idlePrev
             // 
             this.idlePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.idlePrev.BackgroundImage = global::BlasphemousSkinEditor.Properties.Resources.transparent;
+            this.idlePrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("idlePrev.BackgroundImage")));
             this.idlePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.idlePrev.Location = new System.Drawing.Point(0, 255);
             this.idlePrev.Margin = new System.Windows.Forms.Padding(2);
@@ -145,6 +142,8 @@ namespace BlasphemousSkinEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(965, 612);
+            this.Controls.Add(this.importBtn);
+            this.Controls.Add(this.exportBtn);
             this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.nameText);
             this.Controls.Add(this.cutPrev);
@@ -156,7 +155,6 @@ namespace BlasphemousSkinEditor
             this.Name = "SkinForm";
             this.Text = "Blasphemous Skin Editor";
             this.Load += new System.EventHandler(this.SkinForm_Load);
-            this.colorPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cutPrev)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).EndInit();

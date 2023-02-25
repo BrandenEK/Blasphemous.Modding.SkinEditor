@@ -54,9 +54,9 @@ namespace BlasphemousSkinEditor
             this.Size = new Size(1305, 800);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            importBtn.Location = new Point(1090, 120); // 90
+            importBtn.Location = new Point(1090, 190); // 90
             importBtn.Size = new Size(90, 30);
-            exportBtn.Location = new Point(1190, 120); // 90
+            exportBtn.Location = new Point(1190, 190); // 90
             exportBtn.Size = new Size(90, 30);
         }
 
