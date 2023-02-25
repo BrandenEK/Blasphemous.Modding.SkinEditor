@@ -70,6 +70,7 @@ namespace BlasphemousSkinEditor
             this.Size = new Size(1305, 800);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.Icon = Properties.Resources.icon;
             //importBtn.Location = new Point(1090, 190); // 90
             //importBtn.Size = new Size(90, 30);
             //exportBtn.Location = new Point(1190, 190); // 90
