@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
@@ -76,6 +74,8 @@ namespace BlasphemousSkinEditor
             //exportBtn.Location = new Point(1190, 190); // 90
             //exportBtn.Size = new Size(90, 30);
         }
+
+        #region Color Buttons
 
         // Create and register all 91 color buttons
         private void createColorButtons()
@@ -157,6 +157,10 @@ namespace BlasphemousSkinEditor
             setPreviewImage(previewImage2, preview2);
         }
 
+        #endregion Color Buttons
+
+        #region Import Texture
+
         // Asks where to import the texture from
         private void importBtn_Click(object sender, EventArgs e)
         {
@@ -198,6 +202,10 @@ namespace BlasphemousSkinEditor
             setPreviewImage(previewImage1, preview1);
             setPreviewImage(previewImage2, preview2);
         }
+
+        #endregion Import Texture
+
+        #region Export Texture
 
         // Exports the current texture to the output folder
         private void exportBtn_Click(object sender, EventArgs e)
@@ -255,6 +263,10 @@ namespace BlasphemousSkinEditor
             MessageBox.Show("Texture successfully saved!", "Export Texture");
         }
 
+        #endregion Export Texture
+
+        #region Update Previews
+
         // Updates the preview with a single new pixel color
         private void updatePreview(int previewIdx, int pixelIdx, Color newColor)
         {
@@ -290,21 +302,6 @@ namespace BlasphemousSkinEditor
                         preview.SetPixel(x, y, texture.GetPixel(pixelColor.R, 0));
                     }
                 }
-            }
-        }
-
-        // When selecting new option from dropdown changes preview image
-        private void setPreviewType(int boxIdx, int previewIdx)
-        {
-            if (boxIdx == 1)
-            {
-                preview1 = previewIdx;
-                setPreviewImage(previewImage1, previewIdx);
-            }
-            else
-            {
-                preview2 = previewIdx;
-                setPreviewImage(previewImage2, previewIdx);
             }
         }
 
@@ -352,6 +349,102 @@ namespace BlasphemousSkinEditor
             }
         }
 
+        #endregion Update Previews
+
+        #region Selected Previews
+
+        private void previewType1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setPreviewType(1, previewType1.SelectedIndex);
+        }
+
+        private void previewType2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setPreviewType(2, previewType2.SelectedIndex);
+        }
+
+        // When selecting new option from dropdown changes preview image
+        private void setPreviewType(int boxIdx, int previewIdx)
+        {
+            if (boxIdx == 1)
+            {
+                preview1 = previewIdx;
+                setPreviewImage(previewImage1, previewIdx);
+            }
+            else
+            {
+                preview2 = previewIdx;
+                setPreviewImage(previewImage2, previewIdx);
+            }
+        }
+
+        #endregion Selected Previews
+
+        #region Current Color
+
+        private void currentText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Up || e.KeyCode == Keys.Home)
+                e.Handled = true;
+        }
+
+        private void currentText_MouseDown(object sender, MouseEventArgs e)
+        {
+            currentText.SelectionStart = currentText.Text.Length;
+            currentText.SelectionLength = 0;
+        }
+
+        private void currentText_TextChanged(object sender, EventArgs e)
+        {
+            string text = currentText.Text.ToUpper();
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')))
+                {
+                    text = text.Substring(0, i) + text.Substring(i + 1);
+                    i--;
+                }
+            }
+
+            text = "#" + text;
+            currentText.SelectionStart = currentText.Text.Length;
+            currentText.SelectionLength = 0;
+
+            if (text.Length == 7)
+            {
+                setCurrentColor(ColorTranslator.FromHtml(text));
+            }
+            else
+            {
+                setCurrentColor(Color.Black, false);
+                currentText.Text = text;
+            }
+        }
+
+        // Updates the current color
+        private void setCurrentColor(Color color, bool changeText = true)
+        {
+            currentColor = color;
+            currentBtn.BackColor = color;
+            if (changeText)
+                currentText.Text = ColorTranslator.ToHtml(Color.FromArgb(color.ToArgb()));
+        }
+
+        #endregion Current Color
+
+        #region Preview Backgrounds
+
+        private void backgroundBtn_Click(object sender, EventArgs e)
+        {
+            backgroundColor = !backgroundColor;
+            Bitmap newBackground = backgroundColor ? Properties.Resources.transdark : Properties.Resources.translight;
+            previewImage1.BackgroundImage = newBackground;
+            previewImage2.BackgroundImage = newBackground;
+        }
+
+        #endregion Preview Backgrounds
+
         private List<int> foundPixels = new List<int>();
         private void foundPixel(int pixel)
         {
@@ -393,72 +486,6 @@ namespace BlasphemousSkinEditor
                 88, 127, 132, 151, 171, 199
             })
         };
-
-        private void backgroundBtn_Click(object sender, EventArgs e)
-        {
-            backgroundColor = !backgroundColor;
-            Bitmap newBackground = backgroundColor ? Properties.Resources.transdark : Properties.Resources.translight;
-            previewImage1.BackgroundImage = newBackground;
-            previewImage2.BackgroundImage = newBackground;
-        }
-
-        private void previewType1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            setPreviewType(1, previewType1.SelectedIndex);
-        }
-
-        private void previewType2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            setPreviewType(2, previewType2.SelectedIndex);
-        }
-
-        private void currentText_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Up|| e.KeyCode == Keys.Home)
-                e.Handled = true;
-        }
-
-        private void currentText_MouseDown(object sender, MouseEventArgs e)
-        {
-            currentText.SelectionStart = currentText.Text.Length;
-            currentText.SelectionLength = 0;
-        }
-
-        private void currentText_TextChanged(object sender, EventArgs e)
-        {
-            string text = currentText.Text.ToUpper();
-            for (int i = 0; i < text.Length; i++)
-            {
-                char c = text[i];
-                if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')))
-                {
-                    text = text.Substring(0, i) + text.Substring(i + 1);
-                    i--;
-                }
-            }
-
-            text = "#" + text;
-            currentText.SelectionStart = currentText.Text.Length;
-            currentText.SelectionLength = 0;
-
-            if (text.Length == 7)
-            {
-                setCurrentColor(ColorTranslator.FromHtml(text));
-            }
-            else
-            {
-                setCurrentColor(Color.Black, false);
-                currentText.Text = text;
-            }
-        }
-
-        private void setCurrentColor(Color color, bool changeText = true)
-        {
-            currentColor = color;
-            currentBtn.BackColor = color;
-            if (changeText)
-                currentText.Text = ColorTranslator.ToHtml(Color.FromArgb(color.ToArgb()));
-        }
     }
 
     class PixelGroup
