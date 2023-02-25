@@ -180,6 +180,7 @@ namespace BlasphemousSkinEditor
             this.undoBtn.Size = new System.Drawing.Size(30, 30);
             this.undoBtn.TabIndex = 14;
             this.undoBtn.UseVisualStyleBackColor = false;
+            this.undoBtn.Click += new System.EventHandler(this.undoBtn_Click);
             // 
             // previewImage2
             // 
@@ -216,6 +217,7 @@ namespace BlasphemousSkinEditor
             this.redoBtn.Size = new System.Drawing.Size(30, 30);
             this.redoBtn.TabIndex = 15;
             this.redoBtn.UseVisualStyleBackColor = false;
+            this.redoBtn.Click += new System.EventHandler(this.redoBtn_Click);
             // 
             // SkinForm
             // 

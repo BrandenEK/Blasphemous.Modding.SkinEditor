@@ -10,12 +10,12 @@ namespace BlasphemousSkinEditor
     {
         Bitmap baseTexture;
         Bitmap[] basePreviews;
-
         Bitmap realTexture;
         Bitmap[] realPreviews;
-
-        Button[] buttons;
         byte[] scaleFactors;
+
+        URSystem urSystem;
+        Button[] buttons;
 
         bool darkBackground;
         Color currentColor;
@@ -66,15 +66,12 @@ namespace BlasphemousSkinEditor
             setPreviewType(2, preview2);
             setPreviewBackgrounds(true);
 
-            // Set form size
+            // Set form properties
             this.Size = new Size(1305, 800);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Icon = Properties.Resources.icon;
-            //importBtn.Location = new Point(1090, 190); // 90
-            //importBtn.Size = new Size(90, 30);
-            //exportBtn.Location = new Point(1190, 190); // 90
-            //exportBtn.Size = new Size(90, 30);
+            urSystem = new URSystem();
         }
 
         #region Color Buttons
@@ -141,15 +138,19 @@ namespace BlasphemousSkinEditor
 
             if (TextureColor.ShowDialog() == DialogResult.OK)
             {
-                setTexturePixel(int.Parse(btn.Name), TextureColor.Color);
+                byte pixelIdx = byte.Parse(btn.Name);
+                setTexturePixel(pixelIdx, TextureColor.Color);
+
+                Color oldColor = btn.BackColor;
                 btn.BackColor = TextureColor.Color;
+                urSystem.Do(new Command(pixelIdx, TextureColor.Color, oldColor));
                 // temp
                 //MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
             }
         }
 
         // Sets the specific pixel in the texture and updates previews
-        private void setTexturePixel(int pixelIdx, Color newColor)
+        private void setTexturePixel(byte pixelIdx, Color newColor)
         {
             realTexture.SetPixel(pixelIdx, 0, newColor);
             for (int i = 0; i < realPreviews.Length; i++)
@@ -434,6 +435,42 @@ namespace BlasphemousSkinEditor
         }
 
         #endregion Current Color
+
+        #region Undo Redo
+
+        private void undoBtn_Click(object sender, EventArgs e)
+        {
+            Command command = urSystem.Undo();
+            if (command == null) return;
+
+            setTexturePixel(command.pixelIdx, command.oldColor);
+            foreach (Button btn in buttons)
+            {
+                if (btn.Name == command.pixelIdx.ToString())
+                {
+                    btn.BackColor = command.oldColor;
+                    return;
+                }
+            }
+        }
+
+        private void redoBtn_Click(object sender, EventArgs e)
+        {
+            Command command = urSystem.Redo();
+            if (command == null) return;
+
+            setTexturePixel(command.pixelIdx, command.newColor);
+            foreach (Button btn in buttons)
+            {
+                if (btn.Name == command.pixelIdx.ToString())
+                {
+                    btn.BackColor = command.newColor;
+                    return;
+                }
+            }
+        }
+
+        #endregion Undo Redo
 
         #region Preview Backgrounds
 
