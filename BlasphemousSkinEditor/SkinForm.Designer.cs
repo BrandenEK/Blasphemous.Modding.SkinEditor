@@ -36,13 +36,13 @@ namespace BlasphemousSkinEditor
             this.exportBtn = new System.Windows.Forms.Button();
             this.nameText = new System.Windows.Forms.TextBox();
             this.nameLabel = new System.Windows.Forms.Label();
-            this.chargePrev = new System.Windows.Forms.PictureBox();
-            this.idlePrev = new System.Windows.Forms.PictureBox();
+            this.previewImage2 = new System.Windows.Forms.PictureBox();
+            this.previewImage1 = new System.Windows.Forms.PictureBox();
             this.backgroundBtn = new System.Windows.Forms.Button();
             this.previewType1 = new System.Windows.Forms.ComboBox();
             this.previewType2 = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previewImage2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previewImage1)).BeginInit();
             this.SuspendLayout();
             // 
             // TextureColor
@@ -101,31 +101,31 @@ namespace BlasphemousSkinEditor
             this.nameLabel.TabIndex = 7;
             this.nameLabel.Text = "Skin name";
             // 
-            // chargePrev
+            // previewImage2
             // 
-            this.chargePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.chargePrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chargePrev.BackgroundImage")));
-            this.chargePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.chargePrev.Location = new System.Drawing.Point(655, 250);
-            this.chargePrev.Margin = new System.Windows.Forms.Padding(2);
-            this.chargePrev.Name = "chargePrev";
-            this.chargePrev.Size = new System.Drawing.Size(620, 480);
-            this.chargePrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.chargePrev.TabIndex = 4;
-            this.chargePrev.TabStop = false;
+            this.previewImage2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.previewImage2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage2.BackgroundImage")));
+            this.previewImage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.previewImage2.Location = new System.Drawing.Point(655, 250);
+            this.previewImage2.Margin = new System.Windows.Forms.Padding(2);
+            this.previewImage2.Name = "previewImage2";
+            this.previewImage2.Size = new System.Drawing.Size(620, 480);
+            this.previewImage2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.previewImage2.TabIndex = 4;
+            this.previewImage2.TabStop = false;
             // 
-            // idlePrev
+            // previewImage1
             // 
-            this.idlePrev.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.idlePrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("idlePrev.BackgroundImage")));
-            this.idlePrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.idlePrev.Location = new System.Drawing.Point(10, 250);
-            this.idlePrev.Margin = new System.Windows.Forms.Padding(2);
-            this.idlePrev.Name = "idlePrev";
-            this.idlePrev.Size = new System.Drawing.Size(620, 480);
-            this.idlePrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.idlePrev.TabIndex = 0;
-            this.idlePrev.TabStop = false;
+            this.previewImage1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.previewImage1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage1.BackgroundImage")));
+            this.previewImage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.previewImage1.Location = new System.Drawing.Point(10, 250);
+            this.previewImage1.Margin = new System.Windows.Forms.Padding(2);
+            this.previewImage1.Name = "previewImage1";
+            this.previewImage1.Size = new System.Drawing.Size(620, 480);
+            this.previewImage1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.previewImage1.TabIndex = 0;
+            this.previewImage1.TabStop = false;
             // 
             // backgroundBtn
             // 
@@ -152,6 +152,7 @@ namespace BlasphemousSkinEditor
             this.previewType1.Name = "previewType1";
             this.previewType1.Size = new System.Drawing.Size(121, 21);
             this.previewType1.TabIndex = 10;
+            this.previewType1.SelectedIndexChanged += new System.EventHandler(this.previewType1_SelectedIndexChanged);
             // 
             // previewType2
             // 
@@ -166,6 +167,7 @@ namespace BlasphemousSkinEditor
             this.previewType2.Name = "previewType2";
             this.previewType2.Size = new System.Drawing.Size(121, 21);
             this.previewType2.TabIndex = 11;
+            this.previewType2.SelectedIndexChanged += new System.EventHandler(this.previewType2_SelectedIndexChanged);
             // 
             // SkinForm
             // 
@@ -180,16 +182,16 @@ namespace BlasphemousSkinEditor
             this.Controls.Add(this.exportBtn);
             this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.nameText);
-            this.Controls.Add(this.chargePrev);
+            this.Controls.Add(this.previewImage2);
             this.Controls.Add(this.colorPanel);
-            this.Controls.Add(this.idlePrev);
+            this.Controls.Add(this.previewImage1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SkinForm";
             this.Text = "Blasphemous Skin Editor";
             this.Load += new System.EventHandler(this.SkinForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.chargePrev)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.idlePrev)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previewImage2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previewImage1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -197,12 +199,12 @@ namespace BlasphemousSkinEditor
 
         #endregion
 
-        private System.Windows.Forms.PictureBox idlePrev;
+        private System.Windows.Forms.PictureBox previewImage1;
         private System.Windows.Forms.ColorDialog TextureColor;
         private System.Windows.Forms.Panel colorPanel;
         private System.Windows.Forms.Button exportBtn;
         private System.Windows.Forms.Button importBtn;
-        private System.Windows.Forms.PictureBox chargePrev;
+        private System.Windows.Forms.PictureBox previewImage2;
         private System.Windows.Forms.TextBox nameText;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Button backgroundBtn;

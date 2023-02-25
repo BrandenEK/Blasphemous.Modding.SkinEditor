@@ -17,10 +17,10 @@ namespace BlasphemousSkinEditor
         Bitmap[] realPreviews;
 
         Button[] buttons;
-        PictureBox[] previewImages;
         byte[] scaleFactors;
 
         bool backgroundColor = false;
+        int preview1 = 0, preview2 = 2;
 
         public SkinForm()
         {
@@ -30,29 +30,42 @@ namespace BlasphemousSkinEditor
         // Load base images, create default texture & previews, set form size, and create color buttons
         private void SkinForm_Load(object sender, EventArgs e)
         {
+            // Create bitmaps to store indexed base colors
             baseTexture = Properties.Resources._base;
-            basePreviews = new Bitmap[3];
+            basePreviews = new Bitmap[5];
             basePreviews[0] = Properties.Resources.idle;
-            basePreviews[1] = Properties.Resources.charged;
-            basePreviews[2] = Properties.Resources.parry;
+            basePreviews[1] = Properties.Resources.kneel;
+            basePreviews[2] = Properties.Resources.charged;
+            basePreviews[3] = Properties.Resources.parry;
+            basePreviews[4] = Properties.Resources.cut;
 
+            // Create bitmaps to store the current previews
             realTexture = new Bitmap(baseTexture);
-            realPreviews = new Bitmap[3];
+            realPreviews = new Bitmap[5];
             realPreviews[0] = new Bitmap(basePreviews[0]);
             realPreviews[1] = new Bitmap(basePreviews[1]);
             realPreviews[2] = new Bitmap(basePreviews[2]);
+            realPreviews[3] = new Bitmap(basePreviews[3]);
+            realPreviews[4] = new Bitmap(basePreviews[4]);
 
+            // Set scale factors for each type of preview
+            scaleFactors = new byte[] { 5, 4, 3, 3, 4 };
+
+            // Convert the base previews to grayscale
             foreach (Bitmap preview in basePreviews)
                 indexPreview(baseTexture, preview);
 
-            previewImages = new PictureBox[] { idlePrev, chargePrev };
-            scaleFactors = new byte[] { 5, 3 };
-
-            for (int i = 0; i < previewImages.Length; i++)
-                setPreviewImage(i, realPreviews[i]);
+            // Create color buttons
             createColorButtons();
             colorPanel.SendToBack();
 
+            // Set initial previews
+            previewType1.SelectedIndex = preview1;
+            setPreviewType(1, preview1);
+            previewType2.SelectedIndex = preview2;
+            setPreviewType(2, preview2);
+
+            // Set form size
             this.Size = new Size(1305, 800);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -149,8 +162,11 @@ namespace BlasphemousSkinEditor
         private void setTexturePixel(int pixelIdx, Color newColor)
         {
             realTexture.SetPixel(pixelIdx, 0, newColor);
-            for (int i = 0; i < previewImages.Length; i++)
+            for (int i = 0; i < realPreviews.Length; i++)
                 updatePreview(i, pixelIdx, newColor);
+
+            setPreviewImage(previewImage1, preview1);
+            setPreviewImage(previewImage2, preview2);
         }
 
         // Asks where to import the texture from
@@ -179,13 +195,17 @@ namespace BlasphemousSkinEditor
             }
 
             realTexture = newTexture;
-            for (int i = 0; i < previewImages.Length; i++)
+            for (int i = 0; i < realPreviews.Length; i++)
                 updatePreview(i, newTexture);
+
             foreach (Button btn in buttons)
             {
                 int pixelIdx = int.Parse(btn.Name);
                 btn.BackColor = newTexture.GetPixel(pixelIdx, 0);
             }
+
+            setPreviewImage(previewImage1, preview1);
+            setPreviewImage(previewImage2, preview2);
         }
 
         // Exports the current texture to the output folder
@@ -261,7 +281,6 @@ namespace BlasphemousSkinEditor
                     }
                 }
             }
-            setPreviewImage(previewIdx, preview);
         }
 
         // Updates the preview with every pixel in the texture
@@ -281,16 +300,28 @@ namespace BlasphemousSkinEditor
                     }
                 }
             }
-            setPreviewImage(previewIdx, preview);
+        }
+
+        // When selecting new option from dropdown changes preview image
+        private void setPreviewType(int boxIdx, int previewIdx)
+        {
+            if (boxIdx == 1)
+            {
+                preview1 = previewIdx;
+                setPreviewImage(previewImage1, previewIdx);
+            }
+            else
+            {
+                preview2 = previewIdx;
+                setPreviewImage(previewImage2, previewIdx);
+            }
         }
 
         // Takes in the preview image and scales it up before setting the preview image
-        private void setPreviewImage(int previewIdx, Bitmap preview)
+        private void setPreviewImage(PictureBox box, int previewIdx)
         {
-            PictureBox previewImage = previewImages[previewIdx];
-            Bitmap scaledPreview = scalePreview(preview, scaleFactors[previewIdx]);
-            //previewImage.Size = new Size(scaledPreview.Width, scaledPreview.Height);
-            previewImage.Image = scaledPreview;
+            Bitmap scaledPreview = scalePreview(realPreviews[previewIdx], scaleFactors[previewIdx]);
+            box.Image = scaledPreview;
         }
 
         private Bitmap scalePreview(Bitmap preview, int scaleFactor)
@@ -376,9 +407,18 @@ namespace BlasphemousSkinEditor
         {
             backgroundColor = !backgroundColor;
             Bitmap newBackground = backgroundColor ? Properties.Resources.transdark : Properties.Resources.translight;
+            previewImage1.BackgroundImage = newBackground;
+            previewImage2.BackgroundImage = newBackground;
+        }
 
-            foreach (PictureBox box in previewImages)
-                box.BackgroundImage = newBackground;
+        private void previewType1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setPreviewType(1, previewType1.SelectedIndex);
+        }
+
+        private void previewType2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setPreviewType(2, previewType2.SelectedIndex);
         }
     }
 
