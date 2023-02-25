@@ -5,8 +5,9 @@ namespace BlasphemousSkinEditor
 {
     public class URSystem
     {
-        private Stack<Command> undo;
-        private Stack<Command> redo;
+        private List<Command> undo;
+        private List<Command> redo;
+        private int maxStackSize = 20;
 
         public URSystem()
         {
@@ -15,13 +16,15 @@ namespace BlasphemousSkinEditor
 
         private void Reset()
         {
-            undo = new Stack<Command>();
-            redo = new Stack<Command>();
+            undo = new List<Command>();
+            redo = new List<Command>();
         }
 
         public void Do(Command command)
         {
-            undo.Push(command);
+            undo.Add(command);
+            if (undo.Count > maxStackSize)
+                undo.RemoveAt(0);
             redo.Clear();
         }
 
@@ -29,8 +32,9 @@ namespace BlasphemousSkinEditor
         {
             if (undo.Count == 0) return null;
 
-            Command command = undo.Pop();
-            redo.Push(command);
+            Command command = undo[undo.Count - 1];
+            undo.RemoveAt(undo.Count - 1);
+            redo.Add(command);
             return command;
         }
 
@@ -38,8 +42,9 @@ namespace BlasphemousSkinEditor
         {
             if (redo.Count == 0) return null;
 
-            Command command = redo.Pop();
-            undo.Push(command);
+            Command command = redo[redo.Count - 1];
+            redo.RemoveAt(redo.Count - 1);
+            undo.Add(command);
             return command;
         }
     }
