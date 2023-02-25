@@ -20,6 +20,8 @@ namespace BlasphemousSkinEditor
         PictureBox[] previewImages;
         byte[] scaleFactors;
 
+        bool backgroundColor = false;
+
         public SkinForm()
         {
             InitializeComponent();
@@ -43,8 +45,8 @@ namespace BlasphemousSkinEditor
             foreach (Bitmap preview in basePreviews)
                 indexPreview(baseTexture, preview);
 
-            previewImages = new PictureBox[] { idlePrev, chargePrev, cutPrev };
-            scaleFactors = new byte[] { 4, 2, 4 };
+            previewImages = new PictureBox[] { idlePrev, chargePrev };
+            scaleFactors = new byte[] { 5, 3 };
 
             for (int i = 0; i < previewImages.Length; i++)
                 setPreviewImage(i, realPreviews[i]);
@@ -54,10 +56,10 @@ namespace BlasphemousSkinEditor
             this.Size = new Size(1305, 800);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            importBtn.Location = new Point(1090, 190); // 90
-            importBtn.Size = new Size(90, 30);
-            exportBtn.Location = new Point(1190, 190); // 90
-            exportBtn.Size = new Size(90, 30);
+            //importBtn.Location = new Point(1090, 190); // 90
+            //importBtn.Size = new Size(90, 30);
+            //exportBtn.Location = new Point(1190, 190); // 90
+            //exportBtn.Size = new Size(90, 30);
         }
 
         // Create and register all 91 color buttons
@@ -287,7 +289,7 @@ namespace BlasphemousSkinEditor
         {
             PictureBox previewImage = previewImages[previewIdx];
             Bitmap scaledPreview = scalePreview(preview, scaleFactors[previewIdx]);
-            previewImage.Size = new Size(scaledPreview.Width, scaledPreview.Height);
+            //previewImage.Size = new Size(scaledPreview.Width, scaledPreview.Height);
             previewImage.Image = scaledPreview;
         }
 
@@ -369,6 +371,15 @@ namespace BlasphemousSkinEditor
                 88, 127, 132, 151, 171, 199
             })
         };
+
+        private void backgroundBtn_Click(object sender, EventArgs e)
+        {
+            backgroundColor = !backgroundColor;
+            Bitmap newBackground = backgroundColor ? Properties.Resources.transdark : Properties.Resources.translight;
+
+            foreach (PictureBox box in previewImages)
+                box.BackgroundImage = newBackground;
+        }
     }
 
     class PixelGroup
