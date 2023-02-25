@@ -20,6 +20,7 @@ namespace BlasphemousSkinEditor
         byte[] scaleFactors;
 
         bool backgroundColor = false;
+        Color currentColor;
         int preview1 = 0, preview2 = 2;
 
         public SkinForm()
@@ -58,6 +59,7 @@ namespace BlasphemousSkinEditor
             // Create color buttons
             createColorButtons();
             colorPanel.SendToBack();
+            setCurrentColor(Color.Black);
 
             // Set initial previews
             previewType1.SelectedIndex = preview1;
@@ -153,6 +155,7 @@ namespace BlasphemousSkinEditor
             {
                 setTexturePixel(int.Parse(btn.Name), TextureColor.Color);
                 btn.BackColor = TextureColor.Color;
+                setCurrentColor(TextureColor.Color);
                 // temp
                 MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
             }
@@ -187,21 +190,24 @@ namespace BlasphemousSkinEditor
         // Imports a texture and updates the previews & color buttons entirely
         private void importTexture(string path)
         {
-            Bitmap newTexture = new Bitmap(path);
-            if (newTexture.Width != 256 || newTexture.Height != 1)
+            using (Bitmap fileTexture = new Bitmap(path))
             {
-                MessageBox.Show("Error: The texture must be 256x1 pixels!", "Import Texture");
-                return;
+                if (fileTexture.Width != 256 || fileTexture.Height != 1)
+                {
+                    MessageBox.Show("Error: The texture must be 256x1 pixels!", "Import Texture");
+                    return;
+                }
+
+                realTexture = new Bitmap(fileTexture);
             }
 
-            realTexture = newTexture;
             for (int i = 0; i < realPreviews.Length; i++)
-                updatePreview(i, newTexture);
+                updatePreview(i, realTexture);
 
             foreach (Button btn in buttons)
             {
                 int pixelIdx = int.Parse(btn.Name);
-                btn.BackColor = newTexture.GetPixel(pixelIdx, 0);
+                btn.BackColor = realTexture.GetPixel(pixelIdx, 0);
             }
 
             setPreviewImage(previewImage1, preview1);
@@ -259,7 +265,7 @@ namespace BlasphemousSkinEditor
             realTexture.Save(path + "texture.png", System.Drawing.Imaging.ImageFormat.Png);
             Bitmap scaledIdle = scalePreview(realPreviews[0], scaleFactors[0]);
             scaledIdle.Save(path + "idlePreview.png", System.Drawing.Imaging.ImageFormat.Png);
-            Bitmap scaledCharged = scalePreview(realPreviews[1], scaleFactors[1]);
+            Bitmap scaledCharged = scalePreview(realPreviews[2], scaleFactors[2]);
             scaledCharged.Save(path + "chargedPreview.png", System.Drawing.Imaging.ImageFormat.Png);
             MessageBox.Show("Texture successfully saved!", "Export Texture");
         }
@@ -419,6 +425,54 @@ namespace BlasphemousSkinEditor
         private void previewType2_SelectedIndexChanged(object sender, EventArgs e)
         {
             setPreviewType(2, previewType2.SelectedIndex);
+        }
+
+        private void currentText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Up|| e.KeyCode == Keys.Home)
+                e.Handled = true;
+        }
+
+        private void currentText_MouseDown(object sender, MouseEventArgs e)
+        {
+            currentText.SelectionStart = currentText.Text.Length;
+            currentText.SelectionLength = 0;
+        }
+
+        private void currentText_TextChanged(object sender, EventArgs e)
+        {
+            string text = currentText.Text.ToUpper();
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')))
+                {
+                    text = text.Substring(0, i) + text.Substring(i + 1);
+                    i--;
+                }
+            }
+
+            text = "#" + text;
+            currentText.SelectionStart = currentText.Text.Length;
+            currentText.SelectionLength = 0;
+
+            if (text.Length == 7)
+            {
+                setCurrentColor(ColorTranslator.FromHtml(text));
+            }
+            else
+            {
+                setCurrentColor(Color.Black, false);
+                currentText.Text = text;
+            }
+        }
+
+        private void setCurrentColor(Color color, bool changeText = true)
+        {
+            currentColor = color;
+            currentBtn.BackColor = color;
+            if (changeText)
+                currentText.Text = ColorTranslator.ToHtml(Color.FromArgb(color.ToArgb()));
         }
     }
 

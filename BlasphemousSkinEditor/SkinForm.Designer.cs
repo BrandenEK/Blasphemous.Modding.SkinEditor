@@ -41,6 +41,8 @@ namespace BlasphemousSkinEditor
             this.backgroundBtn = new System.Windows.Forms.Button();
             this.previewType1 = new System.Windows.Forms.ComboBox();
             this.previewType2 = new System.Windows.Forms.ComboBox();
+            this.currentBtn = new System.Windows.Forms.Button();
+            this.currentText = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.previewImage2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.previewImage1)).BeginInit();
             this.SuspendLayout();
@@ -169,12 +171,37 @@ namespace BlasphemousSkinEditor
             this.previewType2.TabIndex = 11;
             this.previewType2.SelectedIndexChanged += new System.EventHandler(this.previewType2_SelectedIndexChanged);
             // 
+            // currentBtn
+            // 
+            this.currentBtn.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.currentBtn.Enabled = false;
+            this.currentBtn.Location = new System.Drawing.Point(159, 174);
+            this.currentBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.currentBtn.Name = "currentBtn";
+            this.currentBtn.Size = new System.Drawing.Size(30, 30);
+            this.currentBtn.TabIndex = 12;
+            this.currentBtn.UseVisualStyleBackColor = false;
+            // 
+            // currentText
+            // 
+            this.currentText.Location = new System.Drawing.Point(193, 180);
+            this.currentText.Margin = new System.Windows.Forms.Padding(2);
+            this.currentText.MaxLength = 7;
+            this.currentText.Name = "currentText";
+            this.currentText.Size = new System.Drawing.Size(70, 20);
+            this.currentText.TabIndex = 13;
+            this.currentText.TextChanged += new System.EventHandler(this.currentText_TextChanged);
+            this.currentText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.currentText_KeyDown);
+            this.currentText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.currentText_MouseDown);
+            // 
             // SkinForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1289, 761);
+            this.Controls.Add(this.currentText);
+            this.Controls.Add(this.currentBtn);
             this.Controls.Add(this.previewType2);
             this.Controls.Add(this.previewType1);
             this.Controls.Add(this.backgroundBtn);
@@ -210,6 +237,8 @@ namespace BlasphemousSkinEditor
         private System.Windows.Forms.Button backgroundBtn;
         private System.Windows.Forms.ComboBox previewType1;
         private System.Windows.Forms.ComboBox previewType2;
+        private System.Windows.Forms.Button currentBtn;
+        private System.Windows.Forms.TextBox currentText;
     }
 }
 
