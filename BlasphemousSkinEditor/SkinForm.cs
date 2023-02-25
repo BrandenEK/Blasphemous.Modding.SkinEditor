@@ -110,7 +110,7 @@ namespace BlasphemousSkinEditor
                         button.Location = new Point(start.X + (btnSize + 5) * col, start.Y + (btnSize + 5) * row);
                         button.Size = new Size(btnSize, btnSize);
                         button.BackColor = realTexture.GetPixel(pixelIdx, 0);
-                        button.Click += new EventHandler(colorButtonClicked);
+                        button.MouseDown += new MouseEventHandler(colorButtonClicked);
 
                         buttons[currBtn] = button;
                         Controls.Add(button);
@@ -122,40 +122,25 @@ namespace BlasphemousSkinEditor
             }
         }
 
-        private void oldButtons()
-        {
-            Point start = new Point(10, 10);
-            int buttonsPerRow = 32, currIdx = 0;
-
-            buttons = new Button[validPixels.Length];
-            while (currIdx < validPixels.Length)
-            {
-                for (int i = 0; i < buttonsPerRow && currIdx < validPixels.Length; i++)
-                {
-                    Button button = new Button();
-                    button.Name = validPixels[currIdx].ToString();
-                    button.Location = new Point(start.X + (40 * i), start.Y + (40 * (currIdx / buttonsPerRow)));
-                    button.Size = new Size(30, 30);
-                    button.BackColor = realTexture.GetPixel(validPixels[currIdx], 0);
-                    button.Click += new EventHandler(colorButtonClicked);
-
-                    buttons[currIdx] = button;
-                    Controls.Add(button);
-                    currIdx++;
-                }
-            }
-        }
-
         // When updating a specific color button, set the pixel in the texture
-        private void colorButtonClicked(object sender, EventArgs e)
+        private void colorButtonClicked(object sender, MouseEventArgs e)
         {
             Button btn = (Button)sender;
-            TextureColor.Color = btn.BackColor;
+            if (e.Button == MouseButtons.Middle)
+            {
+                setCurrentColor(btn.BackColor);
+                return;
+            }
+
+            if (e.Button == MouseButtons.Left)
+                TextureColor.Color = btn.BackColor;
+            else if (e.Button == MouseButtons.Right)
+                TextureColor.Color = currentColor;
+
             if (TextureColor.ShowDialog() == DialogResult.OK)
             {
                 setTexturePixel(int.Parse(btn.Name), TextureColor.Color);
                 btn.BackColor = TextureColor.Color;
-                setCurrentColor(TextureColor.Color);
                 // temp
                 MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
             }

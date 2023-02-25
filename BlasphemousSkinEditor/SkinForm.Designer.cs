@@ -150,7 +150,7 @@ namespace BlasphemousSkinEditor
             "Charged",
             "Parry",
             "Bleed"});
-            this.previewType1.Location = new System.Drawing.Point(4, 224);
+            this.previewType1.Location = new System.Drawing.Point(10, 224);
             this.previewType1.Name = "previewType1";
             this.previewType1.Size = new System.Drawing.Size(121, 21);
             this.previewType1.TabIndex = 10;
