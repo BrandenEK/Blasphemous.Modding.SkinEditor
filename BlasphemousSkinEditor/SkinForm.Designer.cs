@@ -29,7 +29,6 @@ namespace BlasphemousSkinEditor
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SkinForm));
             this.TextureColor = new System.Windows.Forms.ColorDialog();
             this.colorPanel = new System.Windows.Forms.Panel();
             this.importBtn = new System.Windows.Forms.Button();
@@ -184,8 +183,7 @@ namespace BlasphemousSkinEditor
             // 
             // previewImage2
             // 
-            this.previewImage2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.previewImage2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage2.BackgroundImage")));
+            this.previewImage2.BackColor = System.Drawing.Color.White;
             this.previewImage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.previewImage2.Location = new System.Drawing.Point(655, 250);
             this.previewImage2.Margin = new System.Windows.Forms.Padding(2);
@@ -197,8 +195,7 @@ namespace BlasphemousSkinEditor
             // 
             // previewImage1
             // 
-            this.previewImage1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.previewImage1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previewImage1.BackgroundImage")));
+            this.previewImage1.BackColor = System.Drawing.Color.White;
             this.previewImage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.previewImage1.Location = new System.Drawing.Point(10, 250);
             this.previewImage1.Margin = new System.Windows.Forms.Padding(2);

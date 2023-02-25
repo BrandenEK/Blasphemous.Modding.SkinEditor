@@ -17,7 +17,7 @@ namespace BlasphemousSkinEditor
         Button[] buttons;
         byte[] scaleFactors;
 
-        bool backgroundColor;
+        bool darkBackground;
         Color currentColor;
         int preview1 = 0, preview2 = 2;
 
@@ -438,15 +438,15 @@ namespace BlasphemousSkinEditor
 
         private void backgroundBtn_Click(object sender, EventArgs e)
         {
-            setPreviewBackgrounds(!backgroundColor);
+            setPreviewBackgrounds(!darkBackground);
         }
 
         private void setPreviewBackgrounds(bool darkMode)
         {
-            backgroundColor = darkMode;
-            Bitmap newBackground = backgroundColor ? Properties.Resources.transdark : Properties.Resources.translight;
-            previewImage1.BackgroundImage = newBackground;
-            previewImage2.BackgroundImage = newBackground;
+            darkBackground = darkMode;
+            Color color = ColorTranslator.FromHtml(darkMode ? "#110803" : "#202020");
+            previewImage1.BackColor = color;
+            previewImage2.BackColor = color;
         }
 
         #endregion Preview Backgrounds
