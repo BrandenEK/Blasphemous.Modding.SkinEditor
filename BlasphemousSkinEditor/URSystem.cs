@@ -14,7 +14,7 @@ namespace BlasphemousSkinEditor
             Reset();
         }
 
-        private void Reset()
+        public void Reset()
         {
             undo = new List<Command>();
             redo = new List<Command>();

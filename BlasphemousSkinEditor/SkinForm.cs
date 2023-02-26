@@ -75,6 +75,7 @@ namespace BlasphemousSkinEditor
             this.MinimizeBox = false;
             this.Icon = Properties.Resources.icon;
             urSystem = new URSystem();
+            currentSkinSettings = new Skin(unknownId, unknownName, unknownAuthor);
         }
 
         #region Color Buttons
@@ -208,6 +209,19 @@ namespace BlasphemousSkinEditor
 
             setPreviewImage(previewImage1, preview1);
             setPreviewImage(previewImage2, preview2);
+
+            string infoPath = path.Substring(0, path.LastIndexOf("\\") + 1) + "info.txt";
+            if (File.Exists(infoPath))
+            {
+                string jsonString = File.ReadAllText(infoPath);
+                currentSkinSettings = JsonConvert.DeserializeObject<Skin>(jsonString);
+            }
+            else
+            {
+                currentSkinSettings = new Skin(unknownId, unknownName, unknownAuthor);
+            }
+
+            urSystem.Reset();
         }
 
         #endregion Import Texture
@@ -248,23 +262,24 @@ namespace BlasphemousSkinEditor
             //return;
 
             string id, name, author;
-            using (TextPrompt idPrompt = new TextPrompt("Skin ID:", "Export Texture", currentSkinSettings == null ? "" : currentSkinSettings.id))
+            using (TextPrompt idPrompt = new TextPrompt("Skin ID:", "Export Texture", currentSkinSettings.id))
             {
                 id = idPrompt.Result;
+                if (id == null) return;
+                if (id == "") id = unknownId;
+                id = id.ToUpper();
             }
-            using (TextPrompt idPrompt = new TextPrompt("Skin Name:", "Export Texture", currentSkinSettings == null ? "" : currentSkinSettings.name))
+            using (TextPrompt namePrompt = new TextPrompt("Skin Name:", "Export Texture", currentSkinSettings.name))
             {
-                name = idPrompt.Result;
+                name = namePrompt.Result;
+                if (name == null) return;
+                if (name == "") name = unknownName;
             }
-            using (TextPrompt idPrompt = new TextPrompt("Skin Author:", "Export Texture", currentSkinSettings == null ? "" : currentSkinSettings.author))
+            using (TextPrompt authorPrompt = new TextPrompt("Skin Author:", "Export Texture", currentSkinSettings.author))
             {
-                author = idPrompt.Result;
-            }
-
-            if (id == "" || name == "" || author == "")
-            {
-                MessageBox.Show("One of the skin settings was left empty!", "Export Texture");
-                return;
+                author = authorPrompt.Result;
+                if (author == null) return;
+                if (author == "") author = unknownAuthor;
             }
             currentSkinSettings = new Skin(id, name, author);
 
@@ -561,6 +576,10 @@ namespace BlasphemousSkinEditor
                 88, 127, 132, 151, 171, 199
             })
         };
+
+        private const string unknownId = "PENITENT_IN_UNKNOWN";
+        private const string unknownName = "Unknown Palette";
+        private const string unknownAuthor = "Unknown";
     }
 
     class PixelGroup

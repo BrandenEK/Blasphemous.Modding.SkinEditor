@@ -33,8 +33,6 @@ namespace BlasphemousSkinEditor
             this.colorPanel = new System.Windows.Forms.Panel();
             this.importBtn = new System.Windows.Forms.Button();
             this.exportBtn = new System.Windows.Forms.Button();
-            this.nameText = new System.Windows.Forms.TextBox();
-            this.nameLabel = new System.Windows.Forms.Label();
             this.backgroundBtn = new System.Windows.Forms.Button();
             this.previewType1 = new System.Windows.Forms.ComboBox();
             this.previewType2 = new System.Windows.Forms.ComboBox();
@@ -84,25 +82,6 @@ namespace BlasphemousSkinEditor
             this.exportBtn.Text = "Export";
             this.exportBtn.UseVisualStyleBackColor = true;
             this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
-            // 
-            // nameText
-            // 
-            this.nameText.Location = new System.Drawing.Point(971, 196);
-            this.nameText.Margin = new System.Windows.Forms.Padding(2);
-            this.nameText.MaxLength = 20;
-            this.nameText.Name = "nameText";
-            this.nameText.Size = new System.Drawing.Size(99, 20);
-            this.nameText.TabIndex = 6;
-            // 
-            // nameLabel
-            // 
-            this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(991, 180);
-            this.nameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(57, 13);
-            this.nameLabel.TabIndex = 7;
-            this.nameLabel.Text = "Skin name";
             // 
             // backgroundBtn
             // 
@@ -234,8 +213,6 @@ namespace BlasphemousSkinEditor
             this.Controls.Add(this.backgroundBtn);
             this.Controls.Add(this.importBtn);
             this.Controls.Add(this.exportBtn);
-            this.Controls.Add(this.nameLabel);
-            this.Controls.Add(this.nameText);
             this.Controls.Add(this.previewImage2);
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.previewImage1);
@@ -259,8 +236,6 @@ namespace BlasphemousSkinEditor
         private System.Windows.Forms.Button exportBtn;
         private System.Windows.Forms.Button importBtn;
         private System.Windows.Forms.PictureBox previewImage2;
-        private System.Windows.Forms.TextBox nameText;
-        private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Button backgroundBtn;
         private System.Windows.Forms.ComboBox previewType1;
         private System.Windows.Forms.ComboBox previewType2;
