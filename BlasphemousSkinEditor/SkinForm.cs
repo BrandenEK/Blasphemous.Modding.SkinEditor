@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace BlasphemousSkinEditor
 {
@@ -10,9 +11,11 @@ namespace BlasphemousSkinEditor
     {
         Bitmap baseTexture;
         Bitmap[] basePreviews;
+        byte[] scaleFactors;
+
         Bitmap realTexture;
         Bitmap[] realPreviews;
-        byte[] scaleFactors;
+        Skin currentSkinSettings;
 
         URSystem urSystem;
         Button[] buttons;
@@ -244,14 +247,28 @@ namespace BlasphemousSkinEditor
             //}
             //return;
 
-            string skinName = nameText.Text;
-            if (skinName == null || skinName == "")
+            string id, name, author;
+            using (TextPrompt idPrompt = new TextPrompt("Skin ID:", "Export Texture", currentSkinSettings == null ? "" : currentSkinSettings.id))
             {
-                MessageBox.Show("No skin name has been selected!", "Export Texture");
-                return;
+                id = idPrompt.Result;
+            }
+            using (TextPrompt idPrompt = new TextPrompt("Skin Name:", "Export Texture", currentSkinSettings == null ? "" : currentSkinSettings.name))
+            {
+                name = idPrompt.Result;
+            }
+            using (TextPrompt idPrompt = new TextPrompt("Skin Author:", "Export Texture", currentSkinSettings == null ? "" : currentSkinSettings.author))
+            {
+                author = idPrompt.Result;
             }
 
-            string path = Environment.CurrentDirectory + "\\output\\" + skinName + "\\";
+            if (id == "" || name == "" || author == "")
+            {
+                MessageBox.Show("One of the skin settings was left empty!", "Export Texture");
+                return;
+            }
+            currentSkinSettings = new Skin(id, name, author);
+
+            string path = Environment.CurrentDirectory + "\\output\\" + name + "\\";
             Directory.CreateDirectory(path);
             exportTexture(path);
         }
@@ -259,15 +276,22 @@ namespace BlasphemousSkinEditor
         // For the texture and each preview, saves them to a filestream in the output folder
         private void exportTexture(string path)
         {
+            // Texture
             realTexture.Save(path + "texture.png", System.Drawing.Imaging.ImageFormat.Png);
+            // Idle preview
             using (Bitmap scaledIdle = scalePreview(realPreviews[0], scaleFactors[0]))
             {
                 scaledIdle.Save(path + "idlePreview.png", System.Drawing.Imaging.ImageFormat.Png);
             }
+            // Charged preview
             using (Bitmap scaledCharged = scalePreview(realPreviews[2], scaleFactors[2]))
             {
                 scaledCharged.Save(path + "chargedPreview.png", System.Drawing.Imaging.ImageFormat.Png);
             }
+            // Info
+            string jsonString = JsonConvert.SerializeObject(currentSkinSettings, Formatting.Indented);
+            File.WriteAllText(path + "info.txt", jsonString);
+
             MessageBox.Show("Texture successfully saved!", "Export Texture");
         }
 
