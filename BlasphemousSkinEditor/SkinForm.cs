@@ -136,7 +136,7 @@ namespace BlasphemousSkinEditor
                 btn.BackColor = TextureColor.Color;
                 urSystem.Do(new Command(pixelIdx, TextureColor.Color, oldColor));
                 // temp
-                //MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
+                MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
             }
         }
 
@@ -554,7 +554,7 @@ namespace BlasphemousSkinEditor
             new PixelGroup("Effects", new Size(3, 3), new byte[] { 39, 1, 2, 142, 145, 179, 255, 71, 99 }),
             new PixelGroup("Abilities", new Size(3, 4), new byte[] { 89, 138, 160, 183, 208, 187, 230, 234, 238 }),
             //new PixelGroup("Parry", new Size(1, 2), new byte[] {  }),
-            new PixelGroup("Healing", new Size(1, 4), new byte[] { 64, 98, 133, 233 }),
+            new PixelGroup("Healing", new Size(2, 3), new byte[] { 64, 98, 133, 233, 199 }),
             new PixelGroup("White", new Size(1, 1), new byte[] { 251 }),
 
             new PixelGroup("Unknown", new Size(7, 4), new byte[]
@@ -562,7 +562,7 @@ namespace BlasphemousSkinEditor
                 0, 21, 22, 29, 31, 33, 35,
                 42, 45, 47, 50, 52, 55,
                 56, 57, 58, 59, 61, 65, 75,
-                88, 127, 132, 151, 171, 199
+                88, 127, 132, 151, 171
             })
         };
 
