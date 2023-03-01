@@ -10,11 +10,9 @@ namespace BlasphemousSkinEditor
     public partial class SkinForm : Form
     {
         Bitmap baseTexture;
-        Bitmap[] basePreviews;
-        byte[] scaleFactors;
-
         Bitmap realTexture;
-        Bitmap[] realPreviews;
+        Dictionary<string, PreviewImage> allPreviews;
+
         Skin currentSkinSettings;
 
         URSystem urSystem;
@@ -22,7 +20,7 @@ namespace BlasphemousSkinEditor
 
         bool darkBackground;
         Color currentColor;
-        int preview1 = 0, preview2 = 2;
+        PreviewImage preview1, preview2;
 
         public SkinForm()
         {
@@ -32,30 +30,21 @@ namespace BlasphemousSkinEditor
         // Load base images, create default texture & previews, set form size, and create color buttons
         private void SkinForm_Load(object sender, EventArgs e)
         {
-            // Create bitmaps to store indexed base colors
+            // Create initial texture & previews
+            allPreviews = new Dictionary<string, PreviewImage>()
+            {
+                { "idle", new PreviewImage(Properties.Resources.idle, 5) },
+                { "kneel", new PreviewImage(Properties.Resources.kneel, 4) },
+                { "charged", new PreviewImage(Properties.Resources.charged, 3) },
+                { "parry", new PreviewImage(Properties.Resources.parry, 3) },
+                { "bleed", new PreviewImage(Properties.Resources.cut, 4) },
+            };
             baseTexture = Properties.Resources._base;
-            basePreviews = new Bitmap[5];
-            basePreviews[0] = Properties.Resources.idle;
-            basePreviews[1] = Properties.Resources.kneel;
-            basePreviews[2] = Properties.Resources.charged;
-            basePreviews[3] = Properties.Resources.parry;
-            basePreviews[4] = Properties.Resources.cut;
-
-            // Create bitmaps to store the current previews
             realTexture = new Bitmap(baseTexture);
-            realPreviews = new Bitmap[5];
-            realPreviews[0] = new Bitmap(basePreviews[0]);
-            realPreviews[1] = new Bitmap(basePreviews[1]);
-            realPreviews[2] = new Bitmap(basePreviews[2]);
-            realPreviews[3] = new Bitmap(basePreviews[3]);
-            realPreviews[4] = new Bitmap(basePreviews[4]);
-
-            // Set scale factors for each type of preview
-            scaleFactors = new byte[] { 5, 4, 3, 3, 4 };
 
             // Convert the base previews to grayscale
-            foreach (Bitmap preview in basePreviews)
-                indexPreview(baseTexture, preview);
+            foreach (PreviewImage preview in allPreviews.Values)
+                indexPreview(baseTexture, preview.basePreview);
 
             // Create color buttons
             createColorButtons();
@@ -63,10 +52,8 @@ namespace BlasphemousSkinEditor
             setCurrentColor(Color.Black);
 
             // Set initial previews
-            previewType1.SelectedIndex = preview1;
-            setPreviewType(1, preview1);
-            previewType2.SelectedIndex = preview2;
-            setPreviewType(2, preview2);
+            previewType1.SelectedIndex = 0;
+            previewType2.SelectedIndex = 2;
             setPreviewBackgrounds(true);
 
             // Set form properties
@@ -157,8 +144,8 @@ namespace BlasphemousSkinEditor
         private void setTexturePixel(byte pixelIdx, Color newColor)
         {
             realTexture.SetPixel(pixelIdx, 0, newColor);
-            for (int i = 0; i < realPreviews.Length; i++)
-                updatePreview(i, pixelIdx, newColor);
+            foreach (PreviewImage preview in allPreviews.Values)
+                updatePreview(preview, pixelIdx, newColor);
 
             setPreviewImage(previewImage1, preview1);
             setPreviewImage(previewImage2, preview2);
@@ -198,8 +185,8 @@ namespace BlasphemousSkinEditor
                 realTexture = new Bitmap(fileTexture);
             }
 
-            for (int i = 0; i < realPreviews.Length; i++)
-                updatePreview(i, realTexture);
+            foreach (PreviewImage preview in allPreviews.Values)
+                updatePreview(preview, realTexture);
 
             foreach (Button btn in buttons)
             {
@@ -294,12 +281,14 @@ namespace BlasphemousSkinEditor
             // Texture
             realTexture.Save(path + "texture.png", System.Drawing.Imaging.ImageFormat.Png);
             // Idle preview
-            using (Bitmap scaledIdle = scalePreview(realPreviews[0], scaleFactors[0]))
+            PreviewImage idle = allPreviews["idle"];
+            using (Bitmap scaledIdle = scalePreview(idle.realPreview, idle.scaleFactor))
             {
                 scaledIdle.Save(path + "idlePreview.png", System.Drawing.Imaging.ImageFormat.Png);
             }
             // Charged preview
-            using (Bitmap scaledCharged = scalePreview(realPreviews[2], scaleFactors[2]))
+            PreviewImage charged = allPreviews["charged"];
+            using (Bitmap scaledCharged = scalePreview(charged.realPreview, charged.scaleFactor))
             {
                 scaledCharged.Save(path + "chargedPreview.png", System.Drawing.Imaging.ImageFormat.Png);
             }
@@ -315,10 +304,10 @@ namespace BlasphemousSkinEditor
         #region Update Previews
 
         // Updates the preview with a single new pixel color
-        private void updatePreview(int previewIdx, int pixelIdx, Color newColor)
+        private void updatePreview(PreviewImage previewImage, int pixelIdx, Color newColor)
         {
-            Bitmap preview = realPreviews[previewIdx];
-            Bitmap basePreview = basePreviews[previewIdx];
+            Bitmap preview = previewImage.realPreview;
+            Bitmap basePreview = previewImage.basePreview;
 
             for (int x = 0; x < preview.Width; x++)
             {
@@ -334,10 +323,10 @@ namespace BlasphemousSkinEditor
         }
 
         // Updates the preview with every pixel in the texture
-        private void updatePreview(int previewIdx, Bitmap texture)
+        private void updatePreview(PreviewImage previewImage, Bitmap texture)
         {
-            Bitmap preview = realPreviews[previewIdx];
-            Bitmap basePreview = basePreviews[previewIdx];
+            Bitmap preview = previewImage.realPreview;
+            Bitmap basePreview = previewImage.basePreview;
 
             for (int x = 0; x < preview.Width; x++)
             {
@@ -353,11 +342,11 @@ namespace BlasphemousSkinEditor
         }
 
         // Takes in the preview image and scales it up before setting the preview image
-        private void setPreviewImage(PictureBox box, int previewIdx)
+        private void setPreviewImage(PictureBox box, PreviewImage previewImage)
         {
             if (box.Image != null)
                 box.Image.Dispose();
-            Bitmap scaledPreview = scalePreview(realPreviews[previewIdx], scaleFactors[previewIdx]);
+            Bitmap scaledPreview = scalePreview(previewImage.realPreview, previewImage.scaleFactor);
             box.Image = scaledPreview;
         }
 
@@ -404,26 +393,26 @@ namespace BlasphemousSkinEditor
 
         private void previewType1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setPreviewType(1, previewType1.SelectedIndex);
+            setPreviewType(1, previewType1.SelectedItem.ToString());
         }
 
         private void previewType2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setPreviewType(2, previewType2.SelectedIndex);
+            setPreviewType(2, previewType2.SelectedItem.ToString());
         }
 
         // When selecting new option from dropdown changes preview image
-        private void setPreviewType(int boxIdx, int previewIdx)
+        private void setPreviewType(int boxIdx, string previewName)
         {
             if (boxIdx == 1)
             {
-                preview1 = previewIdx;
-                setPreviewImage(previewImage1, previewIdx);
+                preview1 = allPreviews[previewName.ToLower()];
+                setPreviewImage(previewImage1, allPreviews[previewName.ToLower()]);
             }
             else
             {
-                preview2 = previewIdx;
-                setPreviewImage(previewImage2, previewIdx);
+                preview2 = allPreviews[previewName.ToLower()];
+                setPreviewImage(previewImage2, allPreviews[previewName.ToLower()]);
             }
         }
 
@@ -593,6 +582,20 @@ namespace BlasphemousSkinEditor
             this.name = name;
             this.boxSize = boxSize;
             this.pixels = pixels;
+        }
+    }
+
+    class PreviewImage
+    {
+        public Bitmap basePreview;
+        public Bitmap realPreview;
+        public int scaleFactor;
+
+        public PreviewImage(Bitmap preview, int scaleFactor)
+        {
+            basePreview = preview;
+            realPreview = new Bitmap(preview);
+            this.scaleFactor = scaleFactor;
         }
     }
 }
