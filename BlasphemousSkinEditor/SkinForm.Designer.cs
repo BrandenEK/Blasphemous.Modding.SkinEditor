@@ -81,7 +81,7 @@ namespace BlasphemousSkinEditor
             this.exportBtn.TabIndex = 3;
             this.exportBtn.Text = "Export";
             this.exportBtn.UseVisualStyleBackColor = true;
-            this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
+            this.exportBtn.Click += new System.EventHandler(this.ClickedExport);
             // 
             // backgroundBtn
             // 

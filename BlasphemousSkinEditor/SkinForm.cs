@@ -13,7 +13,17 @@ namespace BlasphemousSkinEditor
         Bitmap realTexture;
         Dictionary<string, PreviewImage> allPreviews;
 
-        Skin currentSkinSettings;
+        public static SkinForm Instance { get; private set; }
+
+        private readonly Skin _currentSkinSettings;
+
+        public void UpdateSkinSettings(Skin settings)
+        {
+            _currentSkinSettings.id = settings.id;
+            _currentSkinSettings.name = settings.name;
+            _currentSkinSettings.author = settings.author;
+            _currentSkinSettings.version = settings.version;
+        }
 
         URSystem urSystem;
         Button[] buttons;
@@ -22,8 +32,17 @@ namespace BlasphemousSkinEditor
         Color currentColor;
         PreviewImage preview1, preview2;
 
+        // New
+        public Exporter Exporter { get; private set; }
+
         public SkinForm()
         {
+            if (Instance == null) Instance = this;
+            // New
+            Exporter = new Exporter();
+
+            _currentSkinSettings = new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION);
+
             InitializeComponent();
         }
 
@@ -62,7 +81,7 @@ namespace BlasphemousSkinEditor
             this.MinimizeBox = false;
             this.Icon = Properties.Resources.icon;
             urSystem = new URSystem();
-            currentSkinSettings = new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION);
+
         }
 
         #region Color Buttons
@@ -201,121 +220,17 @@ namespace BlasphemousSkinEditor
             if (File.Exists(infoPath))
             {
                 string jsonString = File.ReadAllText(infoPath);
-                currentSkinSettings = JsonConvert.DeserializeObject<Skin>(jsonString);
+                UpdateSkinSettings(JsonConvert.DeserializeObject<Skin>(jsonString));
             }
             else
             {
-                currentSkinSettings = new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION);
+                UpdateSkinSettings(new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION));
             }
 
             urSystem.Reset();
         }
 
         #endregion Import Texture
-
-        #region Export Texture
-
-        // Exports the current texture to the output folder
-        private void exportBtn_Click(object sender, EventArgs e)
-        {
-            // Temp
-            //foreach (Button btn in buttons)
-            //{
-            //    int pixelIdx = int.Parse(btn.Name);
-            //    if (foundPixels.Contains(pixelIdx))
-            //        btn.BackColor = Color.Magenta;
-            //}
-
-            int knownPixels = 0;
-            //knownPixels = foundPixels.Count;
-            foreach (PixelGroup group in pixelGroups)
-                if (group.name != "Unknown")
-                    knownPixels += group.pixels.Length;
-
-            //MessageBox.Show(knownPixels + "/91 pixels found", "Pixel finder");
-            //foreach (PixelGroup group in pixelGroups)
-            //{
-            //    if (group.name != "Unknown")
-            //    {
-            //        foreach (byte pixel in group.pixels)
-            //            setTexturePixel(pixel, Color.Black);
-            //    }
-            //    else
-            //    {
-            //        foreach (byte pixel in group.pixels)
-            //            setTexturePixel(pixel, Color.Magenta);
-            //    }
-            //}
-            //return;
-
-            string id, name, author, version;
-            using (TextPrompt idPrompt = new TextPrompt("Skin Id:", "Export Texture", currentSkinSettings.id))
-            {
-                id = idPrompt.Result;
-
-                if (id == null)
-                    return;
-                if (id == string.Empty)
-                    id = UNKNOWN_ID;
-                id = CleanId(id);
-            }
-            using (TextPrompt namePrompt = new TextPrompt("Skin Name:", "Export Texture", currentSkinSettings.name))
-            {
-                name = namePrompt.Result;
-
-                if (name == null)
-                    return;
-                if (name == string.Empty)
-                    name = UNKNOWN_NAME;
-            }
-            using (TextPrompt authorPrompt = new TextPrompt("Skin Author:", "Export Texture", currentSkinSettings.author))
-            {
-                author = authorPrompt.Result;
-
-                if (author == null)
-                    return;
-                if (author == string.Empty)
-                    author = UNKNOWN_AUTHOR;
-            }
-            using (TextPrompt versionPrompt = new TextPrompt("Skin Version:", "Export Texture", currentSkinSettings.version))
-            {
-                version = versionPrompt.Result;
-
-                if (version == null)
-                    return;
-                if (version == string.Empty)
-                    version = UNKNOWN_VERSION;
-            }
-            currentSkinSettings = new Skin(id, name, author, version);
-
-            string path = Environment.CurrentDirectory + "\\output\\" + id + "\\";
-            Directory.CreateDirectory(path);
-            exportTexture(path);
-        }
-
-        // For the texture and each preview, saves them to a filestream in the output folder
-        private void exportTexture(string path)
-        {
-            // Texture
-            realTexture.Save(path + "texture.png", System.Drawing.Imaging.ImageFormat.Png);
-            // Idle preview
-            using (Bitmap scaledIdle = allPreviews["idle"].ScaledPreview)
-            {
-                scaledIdle.Save(path + "idlePreview.png", System.Drawing.Imaging.ImageFormat.Png);
-            }
-            // Charged preview
-            using (Bitmap scaledCharged = allPreviews["charged"].ScaledPreview)
-            {
-                scaledCharged.Save(path + "chargedPreview.png", System.Drawing.Imaging.ImageFormat.Png);
-            }
-            // Info
-            string jsonString = JsonConvert.SerializeObject(currentSkinSettings, Formatting.Indented);
-            File.WriteAllText(path + "info.txt", jsonString);
-
-            MessageBox.Show("Texture successfully saved!", "Export Texture");
-        }
-
-        #endregion Export Texture
 
         #region Selected Previews
 
@@ -452,6 +367,8 @@ namespace BlasphemousSkinEditor
 
         #endregion Preview Backgrounds
 
+
+
         // Takes in the preview image and scales it up before setting the preview image
         private void setPreviewImage(PictureBox box, PreviewImage previewImage)
         {
@@ -461,7 +378,12 @@ namespace BlasphemousSkinEditor
             box.Image = scaledPreview;
         }
 
-        public static string CleanId(string id) => id.ToUpper().Replace(' ', '_');
+
+        private void ClickedExport(object sender, EventArgs e)
+        {
+            Exporter.ExportTexture(_currentSkinSettings, realTexture, allPreviews["idle"], allPreviews["charged"]);
+        }
+
 
         private List<int> foundPixels = new List<int>();
         private void foundPixel(int pixel)
@@ -505,10 +427,10 @@ namespace BlasphemousSkinEditor
             })
         };
 
-        private const string UNKNOWN_ID = "PENITENT_XX_DEFAULT";
-        private const string UNKNOWN_NAME = "Default Name";
-        private const string UNKNOWN_AUTHOR = "Default Author";
-        private const string UNKNOWN_VERSION = "1.0.0";
+        public const string UNKNOWN_ID = "PENITENT_XX_DEFAULT";
+        public const string UNKNOWN_NAME = "Default Name";
+        public const string UNKNOWN_AUTHOR = "Default Author";
+        public const string UNKNOWN_VERSION = "1.0.0";
     }
 
     class PixelGroup
