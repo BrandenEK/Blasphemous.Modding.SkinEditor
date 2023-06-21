@@ -62,7 +62,7 @@ namespace BlasphemousSkinEditor
             this.MinimizeBox = false;
             this.Icon = Properties.Resources.icon;
             urSystem = new URSystem();
-            currentSkinSettings = new Skin(unknownId, unknownName, unknownAuthor);
+            currentSkinSettings = new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION);
         }
 
         #region Color Buttons
@@ -205,7 +205,7 @@ namespace BlasphemousSkinEditor
             }
             else
             {
-                currentSkinSettings = new Skin(unknownId, unknownName, unknownAuthor);
+                currentSkinSettings = new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION);
             }
 
             urSystem.Reset();
@@ -248,29 +248,47 @@ namespace BlasphemousSkinEditor
             //}
             //return;
 
-            string id, name, author;
-            using (TextPrompt idPrompt = new TextPrompt("Skin ID:", "Export Texture", currentSkinSettings.id))
+            string id, name, author, version;
+            using (TextPrompt idPrompt = new TextPrompt("Skin Id:", "Export Texture", currentSkinSettings.id))
             {
                 id = idPrompt.Result;
-                if (id == null) return;
-                if (id == "") id = unknownId;
-                id = id.ToUpper();
+
+                if (id == null)
+                    return;
+                if (id == string.Empty)
+                    id = UNKNOWN_ID;
+                id = CleanId(id);
             }
             using (TextPrompt namePrompt = new TextPrompt("Skin Name:", "Export Texture", currentSkinSettings.name))
             {
                 name = namePrompt.Result;
-                if (name == null) return;
-                if (name == "") name = unknownName;
+
+                if (name == null)
+                    return;
+                if (name == string.Empty)
+                    name = UNKNOWN_NAME;
             }
             using (TextPrompt authorPrompt = new TextPrompt("Skin Author:", "Export Texture", currentSkinSettings.author))
             {
                 author = authorPrompt.Result;
-                if (author == null) return;
-                if (author == "") author = unknownAuthor;
-            }
-            currentSkinSettings = new Skin(id, name, author);
 
-            string path = Environment.CurrentDirectory + "\\output\\" + name + "\\";
+                if (author == null)
+                    return;
+                if (author == string.Empty)
+                    author = UNKNOWN_AUTHOR;
+            }
+            using (TextPrompt versionPrompt = new TextPrompt("Skin Version:", "Export Texture", currentSkinSettings.version))
+            {
+                version = versionPrompt.Result;
+
+                if (version == null)
+                    return;
+                if (version == string.Empty)
+                    version = UNKNOWN_VERSION;
+            }
+            currentSkinSettings = new Skin(id, name, author, version);
+
+            string path = Environment.CurrentDirectory + "\\output\\" + id + "\\";
             Directory.CreateDirectory(path);
             exportTexture(path);
         }
@@ -524,6 +542,8 @@ namespace BlasphemousSkinEditor
 
         #endregion Preview Backgrounds
 
+        public static string CleanId(string id) => id.ToUpper().Replace(' ', '_');
+
         private List<int> foundPixels = new List<int>();
         private void foundPixel(int pixel)
         {
@@ -566,9 +586,10 @@ namespace BlasphemousSkinEditor
             })
         };
 
-        private const string unknownId = "PENITENT_IN_UNKNOWN";
-        private const string unknownName = "Unknown Palette";
-        private const string unknownAuthor = "Unknown";
+        private const string UNKNOWN_ID = "PENITENT_XX_DEFAULT";
+        private const string UNKNOWN_NAME = "Default Name";
+        private const string UNKNOWN_AUTHOR = "Default Author";
+        private const string UNKNOWN_VERSION = "1.0.0";
     }
 
     class PixelGroup
