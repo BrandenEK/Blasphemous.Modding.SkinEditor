@@ -70,7 +70,7 @@ namespace BlasphemousSkinEditor
             this.importBtn.TabIndex = 3;
             this.importBtn.Text = "Import";
             this.importBtn.UseVisualStyleBackColor = true;
-            this.importBtn.Click += new System.EventHandler(this.importBtn_Click);
+            this.importBtn.Click += new System.EventHandler(this.ClickedImport);
             // 
             // exportBtn
             // 
@@ -93,7 +93,7 @@ namespace BlasphemousSkinEditor
             this.backgroundBtn.TabIndex = 8;
             this.backgroundBtn.Text = "Toggle Background";
             this.backgroundBtn.UseVisualStyleBackColor = false;
-            this.backgroundBtn.Click += new System.EventHandler(this.backgroundBtn_Click);
+            this.backgroundBtn.Click += new System.EventHandler(this.ClickedPreviewBackgroundToggle);
             // 
             // previewType1
             // 
@@ -108,7 +108,7 @@ namespace BlasphemousSkinEditor
             this.previewType1.Name = "previewType1";
             this.previewType1.Size = new System.Drawing.Size(121, 21);
             this.previewType1.TabIndex = 10;
-            this.previewType1.SelectedIndexChanged += new System.EventHandler(this.previewType1_SelectedIndexChanged);
+            this.previewType1.SelectedIndexChanged += new System.EventHandler(this.ChangedLeftPreviewSelection);
             // 
             // previewType2
             // 
@@ -123,7 +123,7 @@ namespace BlasphemousSkinEditor
             this.previewType2.Name = "previewType2";
             this.previewType2.Size = new System.Drawing.Size(121, 21);
             this.previewType2.TabIndex = 11;
-            this.previewType2.SelectedIndexChanged += new System.EventHandler(this.previewType2_SelectedIndexChanged);
+            this.previewType2.SelectedIndexChanged += new System.EventHandler(this.ChangedRightPreviewSelection);
             // 
             // currentBtn
             // 
@@ -159,7 +159,7 @@ namespace BlasphemousSkinEditor
             this.undoBtn.Size = new System.Drawing.Size(30, 30);
             this.undoBtn.TabIndex = 14;
             this.undoBtn.UseVisualStyleBackColor = false;
-            this.undoBtn.Click += new System.EventHandler(this.undoBtn_Click);
+            this.undoBtn.Click += new System.EventHandler(this.ClickedUndo);
             // 
             // previewImage2
             // 
@@ -196,7 +196,7 @@ namespace BlasphemousSkinEditor
             this.redoBtn.Size = new System.Drawing.Size(30, 30);
             this.redoBtn.TabIndex = 15;
             this.redoBtn.UseVisualStyleBackColor = false;
-            this.redoBtn.Click += new System.EventHandler(this.redoBtn_Click);
+            this.redoBtn.Click += new System.EventHandler(this.ClickedRedo);
             // 
             // SkinForm
             // 

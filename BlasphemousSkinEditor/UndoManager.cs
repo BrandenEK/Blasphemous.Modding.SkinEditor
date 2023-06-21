@@ -3,14 +3,14 @@ using System.Drawing;
 
 namespace BlasphemousSkinEditor
 {
-    public class URSystem
+    public class UndoManager
     {
         private const int MAX_STACK_SIZE = 20;
 
         private readonly List<Command> undo = new List<Command>();
         private readonly List<Command> redo = new List<Command>();
 
-        public URSystem()
+        public UndoManager()
         {
             Reset();
         }

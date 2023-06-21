@@ -9,7 +9,7 @@ namespace BlasphemousSkinEditor
 {
     public class Exporter
     {
-        public void ExportTexture(Skin settings, Bitmap texture, PreviewImage idlePreview, PreviewImage chargedPreview)
+        public void ExportTexture(Skin settings, Bitmap texture)
         {
             // Prompt user for new settings
             string id = PromptId(settings.id);
@@ -27,13 +27,13 @@ namespace BlasphemousSkinEditor
             texture.Save(outputPath + "texture.png", ImageFormat.Png);
 
             // Save idle preview
-            using (Bitmap scaledIdle = idlePreview.ScaledPreview)
+            using (Bitmap scaledIdle = SkinForm.PreviewManager.IdlePreview.ScaledPreview)
             {
                 scaledIdle.Save(outputPath + "idlePreview.png", ImageFormat.Png);
             }
 
             // Save charged preview
-            using (Bitmap scaledCharged = chargedPreview.ScaledPreview)
+            using (Bitmap scaledCharged = SkinForm.PreviewManager.ChargedPreview.ScaledPreview)
             {
                 scaledCharged.Save(outputPath + "chargedPreview.png", ImageFormat.Png);
             }

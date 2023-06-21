@@ -2,21 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace BlasphemousSkinEditor
 {
     public partial class SkinForm : Form
     {
-        Bitmap baseTexture;
-        Bitmap realTexture;
-        Dictionary<string, PreviewImage> allPreviews;
-
         public static SkinForm Instance { get; private set; }
 
         private readonly Skin _currentSkinSettings;
-
         public void UpdateSkinSettings(Skin settings)
         {
             _currentSkinSettings.id = settings.id;
@@ -25,45 +18,55 @@ namespace BlasphemousSkinEditor
             _currentSkinSettings.version = settings.version;
         }
 
-        URSystem urSystem;
+        private readonly Bitmap _baseTexture;
+
+        private Bitmap _realTexture;
+        public Bitmap RealTexture
+        {
+            set
+            {
+                if (_realTexture != null)
+                    _realTexture.Dispose();
+
+                _realTexture = new Bitmap(value);
+            }
+        }
+
         Button[] buttons;
 
-        bool darkBackground;
         Color currentColor;
-        PreviewImage preview1, preview2;
 
         // New
-        public Exporter Exporter { get; private set; }
+        public static ButtonManager ButtonManager { get; private set; }
+        public static PreviewManager PreviewManager { get; private set; }
+        public static UndoManager UndoManager { get; private set; }
+        public static Importer Importer { get; private set; }
+        public static Exporter Exporter { get; private set; }
 
         public SkinForm()
         {
+            InitializeComponent();
             if (Instance == null) Instance = this;
-            // New
-            Exporter = new Exporter();
+
 
             _currentSkinSettings = new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION);
 
-            InitializeComponent();
+            _baseTexture = Properties.Resources._base;
+            RealTexture = _baseTexture;
+
+            ButtonManager = new ButtonManager();
+            PreviewManager = new PreviewManager(previewImage1, previewImage2, _baseTexture);
+            UndoManager = new UndoManager();
+            Importer = new Importer();
+            Exporter = new Exporter();
         }
 
         // Load base images, create default texture & previews, set form size, and create color buttons
         private void SkinForm_Load(object sender, EventArgs e)
         {
-            // Create initial texture & previews
-            allPreviews = new Dictionary<string, PreviewImage>()
-            {
-                { "idle", new PreviewImage(Properties.Resources.idle, 5) },
-                { "kneel", new PreviewImage(Properties.Resources.kneel, 4) },
-                { "charged", new PreviewImage(Properties.Resources.charged, 3) },
-                { "parry", new PreviewImage(Properties.Resources.parry, 3) },
-                { "bleed", new PreviewImage(Properties.Resources.cut, 4) },
-            };
-            baseTexture = Properties.Resources._base;
-            realTexture = new Bitmap(baseTexture);
+            // Create initial texture
 
-            // Convert the base previews to grayscale
-            foreach (PreviewImage preview in allPreviews.Values)
-                preview.IndexPreview(baseTexture);
+            
 
             // Create color buttons
             createColorButtons();
@@ -73,14 +76,12 @@ namespace BlasphemousSkinEditor
             // Set initial previews
             previewType1.SelectedIndex = 0;
             previewType2.SelectedIndex = 2;
-            setPreviewBackgrounds(true);
 
             // Set form properties
             this.Size = new Size(1305, 800);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Icon = Properties.Resources.icon;
-            urSystem = new URSystem();
 
         }
 
@@ -118,7 +119,7 @@ namespace BlasphemousSkinEditor
                         button.Name = pixelIdx.ToString();
                         button.Location = new Point(start.X + (btnSize + 5) * col, start.Y + (btnSize + 5) * row);
                         button.Size = new Size(btnSize, btnSize);
-                        button.BackColor = realTexture.GetPixel(pixelIdx, 0);
+                        button.BackColor = _realTexture.GetPixel(pixelIdx, 0);
                         button.MouseDown += new MouseEventHandler(colorButtonClicked);
 
                         buttons[currBtn] = button;
@@ -153,7 +154,7 @@ namespace BlasphemousSkinEditor
 
                 Color oldColor = btn.BackColor;
                 btn.BackColor = TextureColor.Color;
-                urSystem.Do(new Command(pixelIdx, TextureColor.Color, oldColor));
+                UndoManager.Do(new Command(pixelIdx, TextureColor.Color, oldColor));
                 // temp
                 //MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
             }
@@ -162,104 +163,11 @@ namespace BlasphemousSkinEditor
         // Sets the specific pixel in the texture and updates previews
         private void setTexturePixel(byte pixelIdx, Color newColor)
         {
-            realTexture.SetPixel(pixelIdx, 0, newColor);
-            foreach (PreviewImage preview in allPreviews.Values)
-                preview.UpdatePreview(pixelIdx, newColor);
-
-            setPreviewImage(previewImage1, preview1);
-            setPreviewImage(previewImage2, preview2);
+            _realTexture.SetPixel(pixelIdx, 0, newColor);
+            PreviewManager.UpdatePreviewImages(pixelIdx, newColor);
         }
 
         #endregion Color Buttons
-
-        #region Import Texture
-
-        // Asks where to import the texture from
-        private void importBtn_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog dialog = new OpenFileDialog())
-            {
-                dialog.Title = "Import existing texture";
-                dialog.Filter = "PNG files (*.png)|*.png";
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    importTexture(dialog.FileName);
-                }
-            }
-        }
-
-        // Imports a texture and updates the previews & color buttons entirely
-        private void importTexture(string path)
-        {
-            using (Bitmap fileTexture = new Bitmap(path))
-            {
-                if (fileTexture.Width != 256 || fileTexture.Height != 1)
-                {
-                    MessageBox.Show("Error: The texture must be 256x1 pixels!", "Import Texture");
-                    return;
-                }
-
-                realTexture.Dispose();
-                realTexture = new Bitmap(fileTexture);
-            }
-
-            foreach (PreviewImage preview in allPreviews.Values)
-                preview.UpdatePreview(realTexture);
-
-            foreach (Button btn in buttons)
-            {
-                int pixelIdx = int.Parse(btn.Name);
-                btn.BackColor = realTexture.GetPixel(pixelIdx, 0);
-            }
-
-            setPreviewImage(previewImage1, preview1);
-            setPreviewImage(previewImage2, preview2);
-
-            string infoPath = path.Substring(0, path.LastIndexOf("\\") + 1) + "info.txt";
-            if (File.Exists(infoPath))
-            {
-                string jsonString = File.ReadAllText(infoPath);
-                UpdateSkinSettings(JsonConvert.DeserializeObject<Skin>(jsonString));
-            }
-            else
-            {
-                UpdateSkinSettings(new Skin(UNKNOWN_ID, UNKNOWN_NAME, UNKNOWN_AUTHOR, UNKNOWN_VERSION));
-            }
-
-            urSystem.Reset();
-        }
-
-        #endregion Import Texture
-
-        #region Selected Previews
-
-        private void previewType1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            setPreviewType(1, previewType1.SelectedItem.ToString());
-        }
-
-        private void previewType2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            setPreviewType(2, previewType2.SelectedItem.ToString());
-        }
-
-        // When selecting new option from dropdown changes preview image
-        private void setPreviewType(int boxIdx, string previewName)
-        {
-            if (boxIdx == 1)
-            {
-                preview1 = allPreviews[previewName.ToLower()];
-                setPreviewImage(previewImage1, allPreviews[previewName.ToLower()]);
-            }
-            else
-            {
-                preview2 = allPreviews[previewName.ToLower()];
-                setPreviewImage(previewImage2, allPreviews[previewName.ToLower()]);
-            }
-        }
-
-        #endregion Selected Previews
 
         #region Current Color
 
@@ -314,11 +222,34 @@ namespace BlasphemousSkinEditor
 
         #endregion Current Color
 
-        #region Undo Redo
-
-        private void undoBtn_Click(object sender, EventArgs e)
+        private void ClickedImport(object sender, EventArgs e)
         {
-            Command command = urSystem.Undo();
+            Importer.ImportTexture();
+        }
+
+        private void ClickedExport(object sender, EventArgs e)
+        {
+            Exporter.ExportTexture(_currentSkinSettings, _realTexture);
+        }
+
+        private void ClickedPreviewBackgroundToggle(object sender, EventArgs e)
+        {
+            PreviewManager.ToggleBackgroundColor();
+        }
+
+        private void ChangedLeftPreviewSelection(object sender, EventArgs e)
+        {
+            PreviewManager.SetLeftPreviewType(previewType1.SelectedItem.ToString());
+        }
+
+        private void ChangedRightPreviewSelection(object sender, EventArgs e)
+        {
+            PreviewManager.SetRightPreviewType(previewType2.SelectedItem.ToString());
+        }
+
+        private void ClickedUndo(object sender, EventArgs e)
+        {
+            Command command = UndoManager.Undo();
             if (command == null) return;
 
             setTexturePixel(command.pixelIdx, command.oldColor);
@@ -332,9 +263,9 @@ namespace BlasphemousSkinEditor
             }
         }
 
-        private void redoBtn_Click(object sender, EventArgs e)
+        private void ClickedRedo(object sender, EventArgs e)
         {
-            Command command = urSystem.Redo();
+            Command command = UndoManager.Redo();
             if (command == null) return;
 
             setTexturePixel(command.pixelIdx, command.newColor);
@@ -348,41 +279,6 @@ namespace BlasphemousSkinEditor
             }
         }
 
-        #endregion Undo Redo
-
-        #region Preview Backgrounds
-
-        private void backgroundBtn_Click(object sender, EventArgs e)
-        {
-            setPreviewBackgrounds(!darkBackground);
-        }
-
-        private void setPreviewBackgrounds(bool darkMode)
-        {
-            darkBackground = darkMode;
-            Color color = ColorTranslator.FromHtml(darkMode ? "#110803" : "#202020");
-            previewImage1.BackColor = color;
-            previewImage2.BackColor = color;
-        }
-
-        #endregion Preview Backgrounds
-
-
-
-        // Takes in the preview image and scales it up before setting the preview image
-        private void setPreviewImage(PictureBox box, PreviewImage previewImage)
-        {
-            if (box.Image != null)
-                box.Image.Dispose();
-            Bitmap scaledPreview = previewImage.ScaledPreview;
-            box.Image = scaledPreview;
-        }
-
-
-        private void ClickedExport(object sender, EventArgs e)
-        {
-            Exporter.ExportTexture(_currentSkinSettings, realTexture, allPreviews["idle"], allPreviews["charged"]);
-        }
 
 
         private List<int> foundPixels = new List<int>();
