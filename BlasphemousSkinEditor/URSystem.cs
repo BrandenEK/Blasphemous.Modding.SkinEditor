@@ -5,9 +5,10 @@ namespace BlasphemousSkinEditor
 {
     public class URSystem
     {
-        private List<Command> undo;
-        private List<Command> redo;
-        private int maxStackSize = 20;
+        private const int MAX_STACK_SIZE = 20;
+
+        private readonly List<Command> undo = new List<Command>();
+        private readonly List<Command> redo = new List<Command>();
 
         public URSystem()
         {
@@ -16,14 +17,14 @@ namespace BlasphemousSkinEditor
 
         public void Reset()
         {
-            undo = new List<Command>();
-            redo = new List<Command>();
+            undo.Clear();
+            redo.Clear();
         }
 
         public void Do(Command command)
         {
             undo.Add(command);
-            if (undo.Count > maxStackSize)
+            if (undo.Count > MAX_STACK_SIZE)
                 undo.RemoveAt(0);
             redo.Clear();
         }

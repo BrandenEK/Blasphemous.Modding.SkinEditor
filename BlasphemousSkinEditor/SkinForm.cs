@@ -136,7 +136,7 @@ namespace BlasphemousSkinEditor
                 btn.BackColor = TextureColor.Color;
                 urSystem.Do(new Command(pixelIdx, TextureColor.Color, oldColor));
                 // temp
-                MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
+                //MessageBox.Show("Pixel selected: " + int.Parse(btn.Name));
             }
         }
 
