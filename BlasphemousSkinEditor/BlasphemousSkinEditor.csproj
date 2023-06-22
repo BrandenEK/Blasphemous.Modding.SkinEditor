@@ -56,6 +56,7 @@
     <Compile Include="Exporter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Importer.cs" />
+    <Compile Include="PixelGroup.cs" />
     <Compile Include="PreviewImage.cs" />
     <Compile Include="PreviewManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
