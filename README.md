@@ -8,11 +8,21 @@
 
 ## Exporting
 
-When exporting the skin info, follow this example format:
-- Id: PENITENT_RV_DEFORMITY
-- Name: Voice of the Deformity
-- Author: Raider
-- Version: 1.0.0
+When exporting the skin texture, you need to specify this info:
+- Id: Unique id of the skin that will never change and follows this format - "PENITENT_{*AUTHOR_INITIALS*}_{*SKIN_SHORT_NAME*}"
+- Name: Full name of the skin
+- Author: Name of the author
+- Version: Latest version of the skin - Should start at 1.0.0
+
+Example:
+```
+{
+  "id": "PENITENT_RV_DEFORMITY",
+  "name": "Voice of the Deformity",
+  "author": "Raider",
+  "version": "1.0.0"
+}
+```
 
 ## Community Repo
 
