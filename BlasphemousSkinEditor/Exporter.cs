@@ -26,16 +26,10 @@ namespace BlasphemousSkinEditor
             // Save texture
             texture.Save(outputPath + "texture.png", ImageFormat.Png);
 
-            // Save idle preview
-            using (Bitmap scaledIdle = SkinForm.PreviewManager.IdlePreview.ScaledPreview)
+            // Save preview
+            using (Bitmap preview = SkinForm.PreviewManager.CreateExportPreview(texture))
             {
-                scaledIdle.Save(outputPath + "idlePreview.png", ImageFormat.Png);
-            }
-
-            // Save charged preview
-            using (Bitmap scaledCharged = SkinForm.PreviewManager.ChargedPreview.ScaledPreview)
-            {
-                scaledCharged.Save(outputPath + "chargedPreview.png", ImageFormat.Png);
+                preview.Save(outputPath + "preview.png", ImageFormat.Png);
             }
 
             // Save info

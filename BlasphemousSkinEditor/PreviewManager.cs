@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using BlasphemousSkinEditor.Properties;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace BlasphemousSkinEditor
@@ -98,6 +100,25 @@ namespace BlasphemousSkinEditor
             Color color = ColorTranslator.FromHtml(dark ? "#110803" : "#202020");
             _leftPreviewBox.BackColor = color;
             _rightPreviewBox.BackColor = color;
+        }
+
+        public Bitmap CreateExportPreview(Bitmap texture)
+        {
+            Bitmap export = new Bitmap(Resources.preview);
+
+            for (int i = 0; i < export.Width; i++)
+            {
+                for (int j = 0; j < export.Height; j++)
+                {
+                    Color pixel = export.GetPixel(i, j);
+                    if (pixel.R != pixel.G || pixel.R != pixel.B)
+                        continue;
+
+                    export.SetPixel(i, j, texture.GetPixel(pixel.R, 0));
+                }
+            }
+            
+            return export;
         }
     }
 }
