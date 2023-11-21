@@ -110,6 +110,7 @@ namespace BlasphemousSkinEditor
                 if (colorPicker.ShowDialog() == DialogResult.OK)
                 {
                     byte pixelIdx = byte.Parse(btn.Name);
+                    //MessageBox.Show($"Setting pixel {pixelIdx}!");
                     SkinForm.Instance.SetTexturePixel(pixelIdx, colorPicker.Color);
 
                     Color oldColor = btn.BackColor;

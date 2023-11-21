@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using BlasphemousSkinEditor.Properties;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -36,6 +38,44 @@ namespace BlasphemousSkinEditor
             using (Bitmap scaledCharged = SkinForm.PreviewManager.ChargedPreview.ScaledPreview)
             {
                 scaledCharged.Save(outputPath + "chargedPreview.png", ImageFormat.Png);
+            }
+
+            // 0b,1a,2e,3c,3f,4e,53,57,76,8a,8b,8d,a0,a3,af,b7,bc,bd
+
+            // Serialize the colors from palette into a dictionary
+            var colors = new Dictionary<byte, string>();
+            byte[] colorIndexes = new byte[]
+            {
+                11, 26, 46, 60, 63, 78, 83, 87, 118, 138,
+                139, 141, 160, 163, 175, 183, 188, 189
+            };
+            for (int i = 0; i < colorIndexes.Length; i++)
+                colors[colorIndexes[i]] = texture.GetPixel(colorIndexes[i], 0).ToHTML();
+            string json = JsonConvert.SerializeObject(colors);
+
+            // Parse the json into a dictionary of real colors
+            var jsonColors = JsonConvert.DeserializeObject<Dictionary<byte, string>>(json);
+            var realColors = new Dictionary<byte, Color>();
+            foreach (var kvp in jsonColors)
+            {
+                realColors[kvp.Key] = ColorTranslator.FromHtml(kvp.Value);
+            }
+
+            // Color each pixel of the preview based on the json value
+            using (Bitmap unlock = Resources.final_grayscale)
+            {
+                for (int i = 0; i < unlock.Width; i++)
+                {
+                    for (int j = 0; j < unlock.Height; j++)
+                    {
+                        Color pixel = unlock.GetPixel(i, j);
+                        if (pixel.R != pixel.G || pixel.R != pixel.B || !realColors.TryGetValue(pixel.R, out Color color))
+                            continue;
+
+                        unlock.SetPixel(i, j, color);
+                    }
+                }
+                unlock.Save(outputPath + "unlock.png", ImageFormat.Png);
             }
 
             // Save info
