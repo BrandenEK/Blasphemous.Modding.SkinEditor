@@ -1,6 +1,6 @@
 ﻿namespace Blasphemous.Modding.SkinEditor;
 
-partial class Form1
+partial class MainForm
 {
     /// <summary>
     ///  Required designer variable.
@@ -28,10 +28,18 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
-        this.components = new System.ComponentModel.Container();
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 450);
-        this.Text = "Form1";
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        SuspendLayout();
+        // 
+        // MainForm
+        // 
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(1264, 681);
+        Icon = (Icon)resources.GetObject("$this.Icon");
+        Name = "MainForm";
+        Text = "Blasphemous Skin Editor";
+        ResumeLayout(false);
     }
 
     #endregion
