@@ -39,6 +39,8 @@ partial class MainForm
         Icon = (Icon)resources.GetObject("$this.Icon");
         Name = "MainForm";
         Text = "Blasphemous Skin Editor";
+        FormClosing += this.OnFormClose;
+        Load += this.OnFormOpen;
         ResumeLayout(false);
     }
 

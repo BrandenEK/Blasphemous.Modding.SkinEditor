@@ -6,4 +6,14 @@ public partial class MainForm : Form
     {
         InitializeComponent();
     }
+
+    private void OnFormOpen(object sender, EventArgs e)
+    {
+        Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
+    }
+
+    private void OnFormClose(object sender, FormClosingEventArgs e)
+    {
+        Logger.Info("Closed installer");
+    }
 }
