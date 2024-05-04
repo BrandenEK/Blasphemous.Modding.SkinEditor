@@ -1,4 +1,5 @@
-﻿using Blasphemous.Modding.SkinEditor.Models;
+﻿using Blasphemous.Modding.SkinEditor.Extensions;
+using Blasphemous.Modding.SkinEditor.Models;
 using Newtonsoft.Json;
 
 namespace Blasphemous.Modding.SkinEditor.Recoloring;
@@ -64,17 +65,13 @@ public class RecolorHandler : IRecolorHandler
             Location = location,
             Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
             BackColor = Color.FromArgb(pixel, pixel, pixel),
-            ForeColor = InvertColor(Color.FromArgb(pixel, pixel, pixel)),
+            ForeColor = Color.FromArgb(pixel, pixel, pixel).GetTextColor(),
             Font = new Font(parent.Font.FontFamily, 7),
             TextAlign = ContentAlignment.MiddleCenter,
             Text = pixel.ToString()
         };
     }
 
-    private Color InvertColor(Color c)
-    {
-        return c.R * 2 + c.G * 7 + c.B < 500 ? Color.White : Color.Black;
-    }
 
     private const int START_OFFSET = 10;
     private const int LABEL_SIZE = 20;
