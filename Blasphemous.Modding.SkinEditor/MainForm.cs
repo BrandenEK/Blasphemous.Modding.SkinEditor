@@ -18,7 +18,7 @@ public partial class MainForm : Form
         _textureHandler = new TextureHandler();
         _recolorHandler = new RecolorHandler(_textureHandler, _left);
         _settingsHandler = new SettingsHandler();
-        _spritePreviewer = new SpritePreviewer(_right_image);
+        _spritePreviewer = new SpritePreviewer(_textureHandler, _right_image);
     }
 
     private void OnFormOpen(object sender, EventArgs e)
@@ -100,6 +100,6 @@ public partial class MainForm : Form
         string anim = _left_selector.SelectedItem.ToString() ?? string.Empty;
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
-        _spritePreviewer.Update(new Bitmap(file));
+        _spritePreviewer.ChangePreview(new Bitmap(file));
     }
 }

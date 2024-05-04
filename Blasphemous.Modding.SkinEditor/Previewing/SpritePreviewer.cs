@@ -3,30 +3,35 @@ namespace Blasphemous.Modding.SkinEditor.Previewing;
 
 public class SpritePreviewer : ISpritePreviewer
 {
+    private readonly TextureHandler _textureHandler;
+
     private readonly PictureBox _pictureBox;
 
-    private Bitmap? _preview;
+    private Bitmap? _indexedPreview;
+    private Bitmap? _coloredPreview;
     private int _lastScale = 1;
 
-    public SpritePreviewer(PictureBox pictureBox)
+    public SpritePreviewer(TextureHandler textureHandler, PictureBox pictureBox)
     {
+        _textureHandler = textureHandler;
+
         _pictureBox = pictureBox;
         _pictureBox.SizeChanged += OnPictureResized;
     }
 
     private void OnPictureResized(object? sender, EventArgs e)
     {
-        if (_preview == null || _pictureBox.Image == null || _lastScale == CurrentScale)
+        if (_coloredPreview == null || _pictureBox.Image == null || _lastScale == CurrentScale)
             return;
 
         Logger.Warn("Resizing preview image");
-        DisplayScaledPreview();
+        DisplayPreview(_coloredPreview);
     }
 
-    private void DisplayScaledPreview()
+    private void DisplayPreview(Bitmap preview)
     {
         int currentScale = CurrentScale;
-        Bitmap? newPreview = _preview == null ? null : ScalePreview(_preview, currentScale);
+        Bitmap newPreview = ScalePreview(preview, currentScale);
 
         _pictureBox.Image?.Dispose();
         _pictureBox.Image = newPreview;
@@ -48,15 +53,40 @@ public class SpritePreviewer : ISpritePreviewer
         return scaled;
     }
 
-    public void Update(Bitmap preview)
+    private Bitmap ColorPreview(Bitmap preview)
     {
-        _preview?.Dispose();
-        _preview = preview;
+        Bitmap colored = new(preview.Width, preview.Height);
 
-        DisplayScaledPreview();
+        for (int x = 0; x < colored.Width; x++)
+        {
+            for (int y = 0; y < colored.Height; y++)
+            {
+                Color pixelColor = preview.GetPixel(x, y);
+                if (pixelColor.A > 0)
+                {
+                    colored.SetPixel(x, y, _textureHandler.GetPixel(pixelColor.R));
+                }
+            }
+        }
+
+        return colored;
     }
 
-    private int CurrentScale => _preview == null
+    public void ChangePreview(Bitmap preview)
+    {
+        // Store the indexed preview
+        _indexedPreview?.Dispose();
+        _indexedPreview = preview;
+
+        // Color and store the colored preview
+        _coloredPreview?.Dispose();
+        _coloredPreview = ColorPreview(preview);
+
+        // Update display
+        DisplayPreview(_coloredPreview);
+    }
+
+    private int CurrentScale => _coloredPreview == null
         ? -1
-        : Math.Min(_pictureBox.Size.Width / _preview!.Width, _pictureBox.Size.Height / _preview.Height);
+        : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
 }
