@@ -1,10 +1,12 @@
 using Blasphemous.Modding.SkinEditor.Previewing;
+using Blasphemous.Modding.SkinEditor.Recoloring;
 using Blasphemous.Modding.SkinEditor.Settings;
 
 namespace Blasphemous.Modding.SkinEditor;
 
 public partial class MainForm : Form
 {
+    private readonly IRecolorHandler _recolorHandler;
     private readonly ISettingsHandler _settingsHandler;
     private readonly ISpritePreviewer _spritePreviewer;
 
@@ -12,6 +14,7 @@ public partial class MainForm : Form
     {
         InitializeComponent();
 
+        _recolorHandler = new RecolorHandler(_left);
         _settingsHandler = new SettingsHandler();
         _spritePreviewer = new SpritePreviewer(_right_image);
     }
