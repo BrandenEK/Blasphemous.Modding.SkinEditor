@@ -1,3 +1,4 @@
+using Blasphemous.Modding.SkinEditor.Previewing;
 using Blasphemous.Modding.SkinEditor.Settings;
 
 namespace Blasphemous.Modding.SkinEditor;
@@ -5,12 +6,14 @@ namespace Blasphemous.Modding.SkinEditor;
 public partial class MainForm : Form
 {
     private readonly ISettingsHandler _settingsHandler;
+    private readonly ISpritePreviewer _spritePreviewer;
 
     public MainForm()
     {
-        _settingsHandler = new SettingsHandler();
-
         InitializeComponent();
+
+        _settingsHandler = new SettingsHandler();
+        _spritePreviewer = new SpritePreviewer(_right_image);
     }
 
     private void OnFormOpen(object sender, EventArgs e)
@@ -49,15 +52,15 @@ public partial class MainForm : Form
 
     private void Test()
     {
-        //Bitmap parry = Preview("penitent_parry_failed.png", new Point(0, 185), new Size(68, 71));
+        Bitmap parry = Preview("penitent_parry_failed.png", new Point(0, 185), new Size(68, 71));
         Bitmap lunge = Preview("penitent_dodge_attack_LVL2.png", new Point(580, 180), new Size(170, 70));
 
-        _right_image.Image = lunge;
+        _spritePreviewer.Update(lunge);
 
         Bitmap Preview(string anim, Point offset, Size size)
         {
             using Bitmap full = new(Path.Combine(Environment.CurrentDirectory, "anim", anim));
-            using Bitmap cropped = new(size.Width, size.Height);
+            Bitmap cropped = new(size.Width, size.Height);
 
             for (int x = 0; x < size.Width; x++)
             {
@@ -70,22 +73,7 @@ public partial class MainForm : Form
             int xScale = _right_image.Size.Width / size.Width;
             int yScale = _right_image.Size.Height / size.Height;
 
-            return Scale(cropped, Math.Min(xScale, yScale));
-        }
-
-        Bitmap Scale(Bitmap bmp, int factor)
-        {
-            Bitmap scaledPreview = new(bmp.Width * factor, bmp.Height * factor);
-
-            for (int x = 0; x < scaledPreview.Width; x++)
-            {
-                for (int y = 0; y < scaledPreview.Height; y++)
-                {
-                    scaledPreview.SetPixel(x, y, bmp.GetPixel(x / factor, y / factor));
-                }
-            }
-
-            return scaledPreview;
+            return cropped;// Scale(cropped, Math.Min(xScale, yScale));
         }
     }
 }
