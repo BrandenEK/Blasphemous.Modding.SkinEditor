@@ -37,7 +37,7 @@ public class RecolorHandler : IRecolorHandler
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
     {
-        string path = Path.Combine(Environment.CurrentDirectory, "anim", "pixels.json");
+        string path = Path.Combine(Environment.CurrentDirectory, "data", "pixels.json");
         string json = File.ReadAllText(path);
         return JsonConvert.DeserializeObject<PixelGroup[]>(json) ?? Array.Empty<PixelGroup>();
     }
@@ -63,8 +63,17 @@ public class RecolorHandler : IRecolorHandler
             Parent = parent,
             Location = location,
             Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
-            BackColor = Color.FromArgb(pixel, pixel, pixel)
+            BackColor = Color.FromArgb(pixel, pixel, pixel),
+            ForeColor = InvertColor(Color.FromArgb(pixel, pixel, pixel)),
+            Font = new Font(parent.Font.FontFamily, 7),
+            TextAlign = ContentAlignment.MiddleCenter,
+            Text = pixel.ToString()
         };
+    }
+
+    private Color InvertColor(Color c)
+    {
+        return c.R * 2 + c.G * 7 + c.B < 500 ? Color.White : Color.Black;
     }
 
     private const int START_OFFSET = 10;
