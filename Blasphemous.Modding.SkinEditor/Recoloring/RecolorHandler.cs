@@ -34,6 +34,8 @@ public class RecolorHandler : IRecolorHandler
             }
             y += BUTTON_SIZE + GROUP_GAP;
         }
+
+        Logger.Info("Created all recolor buttons");
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
@@ -58,7 +60,7 @@ public class RecolorHandler : IRecolorHandler
 
     private Button CreateButton(byte pixel, Panel parent, Point location)
     {
-        return new Button()
+        var btn = new Button()
         {
             Name = pixel.ToString(),
             Parent = parent,
@@ -70,8 +72,34 @@ public class RecolorHandler : IRecolorHandler
             TextAlign = ContentAlignment.MiddleCenter,
             Text = pixel.ToString()
         };
+
+        btn.MouseDown += OnClickColorButton;
+        return btn;
     }
 
+    private void OnClickColorButton(object? sender, MouseEventArgs e)
+    {
+        if (sender == null || e.Button != MouseButtons.Left)
+            return;
+
+        Button btn = (Button)sender;
+
+        using ColorDialog colorDialog = new()
+        {
+            AnyColor = true,
+            Color = btn.BackColor,
+            FullOpen = true,
+            SolidColorOnly = true,
+        };
+
+        if (colorDialog.ShowDialog() == DialogResult.OK)
+        {
+            byte pixel = byte.Parse(btn.Name);
+            btn.BackColor = colorDialog.Color;
+
+            Logger.Warn($"Changed pixel {pixel} to {colorDialog.Color}");
+        }
+    }
 
     private const int START_OFFSET = 10;
     private const int LABEL_SIZE = 20;
