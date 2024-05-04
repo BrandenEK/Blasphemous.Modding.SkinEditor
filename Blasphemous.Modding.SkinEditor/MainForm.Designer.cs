@@ -31,8 +31,11 @@ partial class MainForm
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         UI = new Panel();
         _right = new Panel();
+        _right_image = new PictureBox();
         _left = new Panel();
         UI.SuspendLayout();
+        _right.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)_right_image).BeginInit();
         SuspendLayout();
         // 
         // UI
@@ -51,10 +54,22 @@ partial class MainForm
         _right.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         _right.BackColor = Color.FromArgb(64, 64, 64);
         _right.BorderStyle = BorderStyle.Fixed3D;
+        _right.Controls.Add(_right_image);
         _right.Location = new Point(300, 0);
         _right.Name = "_right";
         _right.Size = new Size(900, 650);
         _right.TabIndex = 1;
+        // 
+        // _right_image
+        // 
+        _right_image.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        _right_image.BorderStyle = BorderStyle.FixedSingle;
+        _right_image.Location = new Point(50, 50);
+        _right_image.Name = "_right_image";
+        _right_image.Size = new Size(800, 550);
+        _right_image.SizeMode = PictureBoxSizeMode.CenterImage;
+        _right_image.TabIndex = 0;
+        _right_image.TabStop = false;
         // 
         // _left
         // 
@@ -80,6 +95,8 @@ partial class MainForm
         Load += OnFormOpen;
         SizeChanged += OnFormResized;
         UI.ResumeLayout(false);
+        _right.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)_right_image).EndInit();
         ResumeLayout(false);
     }
 
@@ -88,4 +105,5 @@ partial class MainForm
     private Panel UI;
     private Panel _left;
     private Panel _right;
+    private PictureBox _right_image;
 }
