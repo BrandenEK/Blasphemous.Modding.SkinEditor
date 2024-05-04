@@ -35,6 +35,12 @@ public class RecolorHandler : IRecolorHandler
             y += BUTTON_SIZE + GROUP_GAP;
         }
 
+        foreach (var btn in _buttons)
+        {
+            byte pixel = byte.Parse(btn.Name);
+            UpdateButtonColor(btn, Color.FromArgb(pixel, pixel, pixel));
+        }
+
         Logger.Info("Created all recolor buttons");
     }
 
@@ -66,8 +72,6 @@ public class RecolorHandler : IRecolorHandler
             Parent = parent,
             Location = location,
             Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
-            BackColor = Color.FromArgb(pixel, pixel, pixel),
-            ForeColor = Color.FromArgb(pixel, pixel, pixel).GetTextColor(),
             Font = new Font(parent.Font.FontFamily, 7),
             TextAlign = ContentAlignment.MiddleCenter,
             Text = pixel.ToString()
@@ -93,12 +97,16 @@ public class RecolorHandler : IRecolorHandler
         };
 
         if (colorDialog.ShowDialog() == DialogResult.OK)
-        {
-            byte pixel = byte.Parse(btn.Name);
-            btn.BackColor = colorDialog.Color;
+            UpdateButtonColor(btn, colorDialog.Color);
+    }
 
-            Logger.Warn($"Changed pixel {pixel} to {colorDialog.Color}");
-        }
+    public void UpdateButtonColor(Button btn, Color color)
+    {
+        btn.BackColor = color;
+        btn.ForeColor = color.GetTextColor();
+
+        byte pixel = byte.Parse(btn.Name);
+        Logger.Warn($"Changed pixel {pixel} to {color}");
     }
 
     private const int START_OFFSET = 10;
