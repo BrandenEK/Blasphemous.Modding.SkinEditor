@@ -10,8 +10,10 @@ public class RecolorHandler : IRecolorHandler
     public RecolorHandler(Panel buttonParent)
     {
         var groups = LoadPixelGroups();
-        int y = START_OFFSET;
+        _buttons = new Button[groups.Sum(x => x.Pixels.Length)];
+        int currButton = 0;
 
+        int y = START_OFFSET;
         foreach (var group in groups)
         {
             CreateLabel(group.Name, buttonParent, new Point(0, y));
@@ -26,7 +28,7 @@ public class RecolorHandler : IRecolorHandler
                     y += BUTTON_SIZE + BUTTON_GAP;
                 }
 
-                CreateButton(pixel, buttonParent, new Point(x, y));
+                _buttons[currButton++] = CreateButton(pixel, buttonParent, new Point(x, y));
                 x += BUTTON_SIZE + BUTTON_GAP;
             }
             y += BUTTON_SIZE + GROUP_GAP;
@@ -60,7 +62,8 @@ public class RecolorHandler : IRecolorHandler
             Name = pixel.ToString(),
             Parent = parent,
             Location = location,
-            Size = new Size(BUTTON_SIZE, BUTTON_SIZE)
+            Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
+            BackColor = Color.FromArgb(pixel, pixel, pixel)
         };
     }
 
