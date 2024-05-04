@@ -29,21 +29,35 @@ partial class MainForm
     private void InitializeComponent()
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        UI = new Panel();
         SuspendLayout();
+        // 
+        // UI
+        // 
+        UI.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        UI.BackColor = Color.Fuchsia;
+        UI.Location = new Point(30, 15);
+        UI.Name = "UI";
+        UI.Size = new Size(1200, 650);
+        UI.TabIndex = 0;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1264, 681);
+        Controls.Add(UI);
         Icon = (Icon)resources.GetObject("$this.Icon");
         MinimumSize = new Size(1280, 720);
         Name = "MainForm";
         Text = "Blasphemous Skin Editor";
         FormClosing += OnFormClose;
         Load += OnFormOpen;
+        SizeChanged += OnFormResized;
         ResumeLayout(false);
     }
 
     #endregion
+
+    private Panel UI;
 }
