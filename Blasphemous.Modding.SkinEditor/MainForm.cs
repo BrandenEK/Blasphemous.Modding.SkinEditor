@@ -9,12 +9,14 @@ public partial class MainForm : Form
     private readonly IRecolorHandler _recolorHandler;
     private readonly ISettingsHandler _settingsHandler;
     private readonly ISpritePreviewer _spritePreviewer;
+    private readonly TextureHandler _textureHandler;
 
     public MainForm()
     {
         InitializeComponent();
 
-        _recolorHandler = new RecolorHandler(_left);
+        _textureHandler = new TextureHandler();
+        _recolorHandler = new RecolorHandler(_textureHandler, _left);
         _settingsHandler = new SettingsHandler();
         _spritePreviewer = new SpritePreviewer(_right_image);
     }

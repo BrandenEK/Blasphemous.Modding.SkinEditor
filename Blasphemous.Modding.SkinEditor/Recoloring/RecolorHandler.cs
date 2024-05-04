@@ -6,10 +6,14 @@ namespace Blasphemous.Modding.SkinEditor.Recoloring;
 
 public class RecolorHandler : IRecolorHandler
 {
+    private readonly TextureHandler _textureHandler;
+
     private readonly Button[] _buttons;
 
-    public RecolorHandler(Panel buttonParent)
+    public RecolorHandler(TextureHandler textureHandler, Panel buttonParent)
     {
+        _textureHandler = textureHandler;
+
         var groups = LoadPixelGroups();
         _buttons = new Button[groups.Sum(x => x.Pixels.Length)];
         int currButton = 0;
@@ -38,7 +42,7 @@ public class RecolorHandler : IRecolorHandler
         foreach (var btn in _buttons)
         {
             byte pixel = byte.Parse(btn.Name);
-            UpdateButtonColor(btn, Color.FromArgb(pixel, pixel, pixel));
+            UpdateButtonColor(btn, _textureHandler.GetPixel(pixel));
         }
 
         Logger.Info("Created all recolor buttons");
@@ -106,6 +110,7 @@ public class RecolorHandler : IRecolorHandler
         btn.ForeColor = color.GetTextColor();
 
         byte pixel = byte.Parse(btn.Name);
+        _textureHandler.SetPixel(pixel, color);
         Logger.Warn($"Changed pixel {pixel} to {color}");
     }
 
