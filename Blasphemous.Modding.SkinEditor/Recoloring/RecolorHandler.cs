@@ -1,5 +1,6 @@
 ﻿using Blasphemous.Modding.SkinEditor.Extensions;
 using Blasphemous.Modding.SkinEditor.Models;
+using Blasphemous.Modding.SkinEditor.Previewing;
 using Newtonsoft.Json;
 
 namespace Blasphemous.Modding.SkinEditor.Recoloring;
@@ -7,12 +8,14 @@ namespace Blasphemous.Modding.SkinEditor.Recoloring;
 public class RecolorHandler : IRecolorHandler
 {
     private readonly TextureHandler _textureHandler;
+    private readonly ISpritePreviewer _spritePreviewer;
 
     private readonly Button[] _buttons;
 
-    public RecolorHandler(TextureHandler textureHandler, Panel buttonParent)
+    public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel buttonParent)
     {
         _textureHandler = textureHandler;
+        _spritePreviewer = spritePreviewer;
 
         var groups = LoadPixelGroups();
         _buttons = new Button[groups.Sum(x => x.Pixels.Length)];
@@ -111,6 +114,7 @@ public class RecolorHandler : IRecolorHandler
 
         byte pixel = byte.Parse(btn.Name);
         _textureHandler.SetPixel(pixel, color);
+        _spritePreviewer.UpdatePreview(pixel, color);
         Logger.Warn($"Changed pixel {pixel} to {color}");
     }
 
