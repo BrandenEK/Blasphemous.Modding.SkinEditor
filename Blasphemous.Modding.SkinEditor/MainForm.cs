@@ -9,11 +9,13 @@ public partial class MainForm : Form
 
     private void OnFormOpen(object sender, EventArgs e)
     {
+        Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
+
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
     }
 
     private void OnFormClose(object sender, FormClosingEventArgs e)
     {
-        Logger.Info("Closed installer");
+        Logger.Info("Closing editor");
     }
 }

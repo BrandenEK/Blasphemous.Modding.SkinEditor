@@ -5,6 +5,8 @@ internal static class Core
     [STAThread]
     static void Main()
     {
+        Logger.Show();
+
         ApplicationConfiguration.Initialize();
         Application.Run(new MainForm());
     }
