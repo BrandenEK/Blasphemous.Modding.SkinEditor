@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AssemblyName>BlasSkinEditor</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    
+    <Title>Blasphemous Skin Editor</Title>
+    <Product>Blasphemous Skin Editor</Product>
+    <Authors>Damocles</Authors>
+    <Company>Damocles</Company>
+    <Description>Easily create and export custom skins for the game Blasphemous</Description>
+    <Version>1.1.0</Version>
+    
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="app.ico" />
+  </ItemGroup>
+  
+  <Target Name="Development" AfterTargets="PostBuildEvent">
+
+    <!-- Export & zip the release build -->
+    <ItemGroup>
+      <BuildFolder Include="$(OutDir)*" />
+    </ItemGroup>
+    <PropertyGroup>
+      <ExportFolder>$(SolutionDir)publish\$(TargetName)</ExportFolder>
+    </PropertyGroup>
+    <Copy SourceFiles="@(BuildFolder)" DestinationFolder="$(ExportFolder)" />
+    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)\..\$(TargetName).zip" Overwrite="true" />
+
+  </Target>
+
+</Project>
