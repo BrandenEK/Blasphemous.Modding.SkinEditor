@@ -37,10 +37,11 @@ partial class MainForm
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1264, 681);
         Icon = (Icon)resources.GetObject("$this.Icon");
+        MinimumSize = new Size(1280, 720);
         Name = "MainForm";
         Text = "Blasphemous Skin Editor";
-        FormClosing += this.OnFormClose;
-        Load += this.OnFormOpen;
+        FormClosing += OnFormClose;
+        Load += OnFormOpen;
         ResumeLayout(false);
     }
 
