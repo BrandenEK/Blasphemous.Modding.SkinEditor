@@ -41,8 +41,11 @@ public class PreviewManager : IManager
         int currentScale = CurrentScale;
         Bitmap newPreview = ScalePreview(preview, currentScale);
 
+        _pictureBox.Enabled = false;
         _pictureBox.Image?.Dispose();
         _pictureBox.Image = newPreview;
+        _pictureBox.Enabled = true;
+
         _lastScale = currentScale;
     }
 

@@ -31,10 +31,10 @@ public class RecolorManager : IManager
     {
         Logger.Info("Refreshing visibility of all buttons");
 
-        _parent.Visible = false;
+        _parent.Enabled = false;
         DeleteButtons();
         CreateButtons();
-        _parent.Visible = true;
+        _parent.Enabled = true;
 
         RefreshButtonsColor();
     }
