@@ -29,15 +29,6 @@ public class RecolorManager : IManager
         return JsonConvert.DeserializeObject<PixelGroup[]>(json) ?? Array.Empty<PixelGroup>();
     }
 
-    public void ToggleShowingAll()
-    {
-        _showingAll = !_showingAll;
-        //Properties.Settings.Default.view_all = _showingAll;
-        //Properties.Settings.Default.Save();
-
-        RefreshButtonsVisibility();
-    }
-
     public void RefreshButtonsVisibility()
     {
         Logger.Info("Refreshing visibility of all buttons");
@@ -181,6 +172,7 @@ public class RecolorManager : IManager
     public void Initialize()
     {
         Core.PreviewManager.OnPreviewChanged += OnPreviewChanged;
+        Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
@@ -188,6 +180,15 @@ public class RecolorManager : IManager
 
     private void OnPreviewChanged()
     {
+        RefreshButtonsVisibility();
+    }
+
+    private void OnSettingChanged(string property, bool status)
+    {
+        if (property != "view_all")
+            return;
+
+        _showingAll = status;
         RefreshButtonsVisibility();
     }
 
