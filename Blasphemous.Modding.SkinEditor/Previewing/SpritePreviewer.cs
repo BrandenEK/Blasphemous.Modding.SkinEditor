@@ -1,4 +1,6 @@
 ﻿
+using Blasphemous.Modding.SkinEditor.Undo;
+
 namespace Blasphemous.Modding.SkinEditor.Previewing;
 
 public class SpritePreviewer : ISpritePreviewer
@@ -17,6 +19,12 @@ public class SpritePreviewer : ISpritePreviewer
 
         _pictureBox = pictureBox;
         _pictureBox.SizeChanged += OnPictureResized;
+    }
+
+    public void Initialize()
+    {
+        Core.UndoManager.OnUndo += OnUndo;
+        Core.UndoManager.OnRedo += OnRedo;
     }
 
     private void OnPictureResized(object? sender, EventArgs e)
@@ -124,6 +132,22 @@ public class SpritePreviewer : ISpritePreviewer
         }
 
         return pixels;
+    }
+
+    private void OnUndo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdatePreview(pc.Pixel, pc.OldColor);
+    }
+
+    private void OnRedo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdatePreview(pc.Pixel, pc.NewColor);
     }
 
     private int CurrentScale => _coloredPreview == null

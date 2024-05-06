@@ -1,4 +1,6 @@
 ﻿
+using Blasphemous.Modding.SkinEditor.Undo;
+
 namespace Blasphemous.Modding.SkinEditor;
 
 public class TextureHandler
@@ -11,6 +13,12 @@ public class TextureHandler
         _texture = new Bitmap(path);
     }
 
+    public void Initialize()
+    {
+        Core.UndoManager.OnUndo += OnUndo;
+        Core.UndoManager.OnRedo += OnRedo;
+    }
+
     public void SetPixel(byte pixel, Color color)
     {
         _texture.SetPixel(pixel, 0, color);
@@ -19,5 +27,21 @@ public class TextureHandler
     public Color GetPixel(byte pixel)
     {
         return _texture.GetPixel(pixel, 0);
+    }
+
+    private void OnUndo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        SetPixel(pc.Pixel, pc.OldColor);
+    }
+
+    private void OnRedo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        SetPixel(pc.Pixel, pc.NewColor);
     }
 }

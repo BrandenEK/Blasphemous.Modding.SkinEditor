@@ -8,7 +8,7 @@ public partial class MainForm : Form
 {
     private readonly RecolorHandler _recolorHandler;
     private readonly ISettingsHandler _settingsHandler;
-    private readonly ISpritePreviewer _spritePreviewer;
+    private readonly SpritePreviewer _spritePreviewer;
     private readonly TextureHandler _textureHandler;
 
     public MainForm()
@@ -19,6 +19,10 @@ public partial class MainForm : Form
         _spritePreviewer = new SpritePreviewer(_textureHandler, _preview_image);
         _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _buttons, _menu_view_all);
         _settingsHandler = new SettingsHandler();
+
+        _textureHandler.Initialize();
+        _spritePreviewer.Initialize();
+        _recolorHandler.Initialize();
     }
 
     private void OnFormOpen(object sender, EventArgs e)

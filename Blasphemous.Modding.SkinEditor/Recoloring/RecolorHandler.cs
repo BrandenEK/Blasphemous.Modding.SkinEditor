@@ -27,6 +27,12 @@ public class RecolorHandler : IRecolorHandler
         allMenu.Checked = _showingAll;
     }
 
+    public void Initialize()
+    {
+        Core.UndoManager.OnUndo += OnUndo;
+        Core.UndoManager.OnRedo += OnRedo;
+    }
+
     private IEnumerable<PixelGroup> LoadPixelGroups()
     {
         string path = Path.Combine(Environment.CurrentDirectory, "data", "pixels.json");
@@ -171,6 +177,28 @@ public class RecolorHandler : IRecolorHandler
     {
         btn.BackColor = color;
         btn.ForeColor = color.GetTextColor();
+    }
+
+    public void UpdateButtonColor(byte pixel, Color color)
+    {
+        Button btn = (Button)_parent.Controls.Find(pixel.ToString(), false)[0];
+        UpdateButtonColor(btn, color);
+    }
+
+    private void OnUndo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdateButtonColor(pc.Pixel, pc.OldColor);
+    }
+
+    private void OnRedo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdateButtonColor(pc.Pixel, pc.NewColor);
     }
 
     private const int START_OFFSET = 10;
