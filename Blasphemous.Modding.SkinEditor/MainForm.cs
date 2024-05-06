@@ -96,8 +96,14 @@ public partial class MainForm : Form
         _recolorHandler.RefreshButtonsVisibility();
     }
 
-    private void OnClickButtonsBtn(object sender, EventArgs e)
+    private void OnClickMenu_View_Buttons(object _, EventArgs __)
     {
+        Logger.Info("Toggling visibility of all buttons");
         _recolorHandler.ToggleShowingAll();
+    }
+
+    private void OnClickMenu_View_Background(object _, EventArgs __)
+    {
+        Logger.Info("Toggling background style");
     }
 }

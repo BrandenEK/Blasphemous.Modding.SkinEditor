@@ -31,7 +31,6 @@ partial class MainForm
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         UI = new Panel();
         _right = new Panel();
-        _right_buttonsBtn = new Button();
         _right_selector = new ComboBox();
         _right_image = new PictureBox();
         _left = new Panel();
@@ -65,24 +64,12 @@ partial class MainForm
         _right.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         _right.BackColor = Color.FromArgb(17, 8, 3);
         _right.BorderStyle = BorderStyle.Fixed3D;
-        _right.Controls.Add(_right_buttonsBtn);
         _right.Controls.Add(_right_selector);
         _right.Controls.Add(_right_image);
         _right.Location = new Point(300, 0);
         _right.Name = "_right";
         _right.Size = new Size(964, 657);
         _right.TabIndex = 1;
-        // 
-        // _right_buttonsBtn
-        // 
-        _right_buttonsBtn.AutoSize = true;
-        _right_buttonsBtn.Location = new Point(140, 3);
-        _right_buttonsBtn.Name = "_right_buttonsBtn";
-        _right_buttonsBtn.Size = new Size(137, 25);
-        _right_buttonsBtn.TabIndex = 1;
-        _right_buttonsBtn.Text = "Toggle button visibility";
-        _right_buttonsBtn.UseVisualStyleBackColor = true;
-        _right_buttonsBtn.Click += OnClickButtonsBtn;
         // 
         // _right_selector
         // 
@@ -163,7 +150,7 @@ partial class MainForm
         _menu_view_all.ShortcutKeys = Keys.Control | Keys.A;
         _menu_view_all.Size = new Size(232, 22);
         _menu_view_all.Text = "Show all pixel buttons";
-        _menu_view_all.Click += OnClickButtonsBtn;
+        _menu_view_all.Click += OnClickMenu_View_Buttons;
         // 
         // _menu_view_back
         // 
@@ -172,6 +159,7 @@ partial class MainForm
         _menu_view_back.ShortcutKeys = Keys.Control | Keys.B;
         _menu_view_back.Size = new Size(232, 22);
         _menu_view_back.Text = "Use dark background";
+        _menu_view_back.Click += OnClickMenu_View_Background;
         // 
         // MainForm
         // 
@@ -189,7 +177,6 @@ partial class MainForm
         Load += OnFormOpen;
         UI.ResumeLayout(false);
         _right.ResumeLayout(false);
-        _right.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)_right_image).EndInit();
         _menu.ResumeLayout(false);
         _menu.PerformLayout();
@@ -204,7 +191,6 @@ partial class MainForm
     private Panel _right;
     private PictureBox _right_image;
     private ComboBox _right_selector;
-    private Button _right_buttonsBtn;
     private MenuStrip _menu;
     private ToolStripMenuItem _menu_view;
     private ToolStripMenuItem _menu_view_all;
