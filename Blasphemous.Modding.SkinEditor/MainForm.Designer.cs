@@ -42,6 +42,7 @@ partial class MainForm
         _menu_view_all = new ToolStripMenuItem();
         _menu_view_background = new ToolStripMenuItem();
         _menu_view_side = new ToolStripMenuItem();
+        _preview_debug = new Button();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
         _menu.SuspendLayout();
@@ -51,6 +52,7 @@ partial class MainForm
         // 
         _preview.BackColor = Color.FromArgb(17, 8, 3);
         _preview.BorderStyle = BorderStyle.Fixed3D;
+        _preview.Controls.Add(_preview_debug);
         _preview.Controls.Add(_preview_selector);
         _preview.Controls.Add(_preview_image);
         _preview.Dock = DockStyle.Fill;
@@ -162,6 +164,17 @@ partial class MainForm
         _menu_view_side.Text = "Preview on left side";
         _menu_view_side.Click += OnClickMenu_View_Side;
         // 
+        // _preview_debug
+        // 
+        _preview_debug.AutoSize = true;
+        _preview_debug.Location = new Point(131, 3);
+        _preview_debug.Name = "_preview_debug";
+        _preview_debug.Size = new Size(91, 25);
+        _preview_debug.TabIndex = 1;
+        _preview_debug.Text = "Debug button";
+        _preview_debug.UseVisualStyleBackColor = true;
+        _preview_debug.Click += OnClickDebug;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -178,6 +191,7 @@ partial class MainForm
         FormClosing += OnFormClose;
         Load += OnFormOpen;
         _preview.ResumeLayout(false);
+        _preview.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).EndInit();
         _menu.ResumeLayout(false);
         _menu.PerformLayout();
@@ -199,4 +213,5 @@ partial class MainForm
     private ToolStripMenuItem _menu_edit_redo;
     private ToolStripMenuItem _menu_file;
     private ToolStripMenuItem _menu_view_side;
+    private Button _preview_debug;
 }
