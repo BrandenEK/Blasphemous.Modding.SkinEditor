@@ -86,7 +86,6 @@ public partial class MainForm : Form
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
         Core.PreviewManager.ChangePreview(new Bitmap(file));
-        Core.RecolorManager.RefreshButtonsVisibility();
     }
 
     private void OnClickMenu_Edit_Undo(object _, EventArgs __) => Core.UndoManager.Undo();

@@ -180,9 +180,15 @@ public class RecolorManager : IManager
 
     public void Initialize()
     {
+        Core.PreviewManager.OnPreviewChanged += OnPreviewChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
+    }
+
+    private void OnPreviewChanged()
+    {
+        RefreshButtonsVisibility();
     }
 
     private void OnTextureChanged(Bitmap texture)

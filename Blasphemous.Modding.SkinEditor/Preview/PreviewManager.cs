@@ -10,6 +10,10 @@ public class PreviewManager : IManager
     private Bitmap? _coloredPreview;
     private int _lastScale = 1;
 
+    private int CurrentScale => _coloredPreview == null
+        ? -1
+        : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
+
     public PreviewManager(PictureBox pictureBox)
     {
         _pictureBox = pictureBox;
@@ -80,7 +84,9 @@ public class PreviewManager : IManager
         _coloredPreview = ColorPreview(preview);
 
         // Update display
+        Logger.Info("Changing preview image");
         DisplayPreview(_coloredPreview);
+        OnPreviewChanged?.Invoke();
     }
 
     public void UpdatePreview(int pixel, Color color)
@@ -179,7 +185,6 @@ public class PreviewManager : IManager
         UpdatePreview(pc.Pixel, pc.NewColor);
     }
 
-    private int CurrentScale => _coloredPreview == null
-        ? -1
-        : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
+    public delegate void PreviewChangeDelegate();
+    public event PreviewChangeDelegate? OnPreviewChanged;
 }
