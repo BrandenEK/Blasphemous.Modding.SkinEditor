@@ -35,6 +35,8 @@ partial class ColorForm
         _r_text = new TextBox();
         _r_label = new Label();
         _preview = new Panel();
+        _preview_label = new Label();
+        _preview_text = new TextBox();
         _r = new Panel();
         _g = new Panel();
         _g_slider = new TrackBar();
@@ -63,7 +65,7 @@ partial class ColorForm
         _buttons_confirm.Location = new Point(166, 6);
         _buttons_confirm.Name = "_buttons_confirm";
         _buttons_confirm.Size = new Size(75, 25);
-        _buttons_confirm.TabIndex = 0;
+        _buttons_confirm.TabIndex = 4;
         _buttons_confirm.Text = "Confirm";
         _buttons_confirm.UseVisualStyleBackColor = true;
         // 
@@ -75,7 +77,7 @@ partial class ColorForm
         _buttons_cancel.Location = new Point(247, 6);
         _buttons_cancel.Name = "_buttons_cancel";
         _buttons_cancel.Size = new Size(75, 25);
-        _buttons_cancel.TabIndex = 1;
+        _buttons_cancel.TabIndex = 5;
         _buttons_cancel.Text = "Cancel";
         _buttons_cancel.UseVisualStyleBackColor = true;
         // 
@@ -86,7 +88,7 @@ partial class ColorForm
         _preview_color.Location = new Point(10, 10);
         _preview_color.Name = "_preview_color";
         _preview_color.Size = new Size(100, 100);
-        _preview_color.TabIndex = 2;
+        _preview_color.TabIndex = 8;
         // 
         // _r_slider
         // 
@@ -94,15 +96,18 @@ partial class ColorForm
         _r_slider.Maximum = 255;
         _r_slider.Name = "_r_slider";
         _r_slider.Size = new Size(250, 45);
-        _r_slider.TabIndex = 3;
+        _r_slider.TabIndex = 8;
+        _r_slider.TabStop = false;
         // 
         // _r_text
         // 
+        _r_text.CharacterCasing = CharacterCasing.Upper;
         _r_text.Location = new Point(30, 0);
         _r_text.MaxLength = 2;
         _r_text.Name = "_r_text";
         _r_text.Size = new Size(40, 23);
-        _r_text.TabIndex = 4;
+        _r_text.TabIndex = 1;
+        _r_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _r_label
         // 
@@ -110,19 +115,43 @@ partial class ColorForm
         _r_label.Location = new Point(10, 0);
         _r_label.Name = "_r_label";
         _r_label.Size = new Size(17, 15);
-        _r_label.TabIndex = 5;
+        _r_label.TabIndex = 8;
         _r_label.Text = "R:";
         _r_label.TextAlign = ContentAlignment.MiddleRight;
         // 
         // _preview
         // 
         _preview.BackColor = SystemColors.ControlLight;
+        _preview.Controls.Add(_preview_label);
+        _preview.Controls.Add(_preview_text);
         _preview.Controls.Add(_preview_color);
         _preview.Dock = DockStyle.Top;
         _preview.Location = new Point(0, 0);
         _preview.Name = "_preview";
         _preview.Size = new Size(334, 120);
-        _preview.TabIndex = 9;
+        _preview.TabIndex = 8;
+        // 
+        // _preview_label
+        // 
+        _preview_label.AutoSize = true;
+        _preview_label.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
+        _preview_label.Location = new Point(150, 40);
+        _preview_label.Name = "_preview_label";
+        _preview_label.Size = new Size(33, 37);
+        _preview_label.TabIndex = 8;
+        _preview_label.Text = "#";
+        _preview_label.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // _preview_text
+        // 
+        _preview_text.CharacterCasing = CharacterCasing.Upper;
+        _preview_text.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+        _preview_text.Location = new Point(187, 43);
+        _preview_text.MaxLength = 6;
+        _preview_text.Name = "_preview_text";
+        _preview_text.Size = new Size(100, 35);
+        _preview_text.TabIndex = 0;
+        _preview_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _r
         // 
@@ -135,7 +164,7 @@ partial class ColorForm
         _r.Location = new Point(0, 120);
         _r.Name = "_r";
         _r.Size = new Size(334, 48);
-        _r.TabIndex = 10;
+        _r.TabIndex = 8;
         // 
         // _g
         // 
@@ -148,7 +177,7 @@ partial class ColorForm
         _g.Location = new Point(0, 168);
         _g.Name = "_g";
         _g.Size = new Size(334, 48);
-        _g.TabIndex = 11;
+        _g.TabIndex = 8;
         // 
         // _g_slider
         // 
@@ -156,15 +185,18 @@ partial class ColorForm
         _g_slider.Maximum = 255;
         _g_slider.Name = "_g_slider";
         _g_slider.Size = new Size(250, 45);
-        _g_slider.TabIndex = 3;
+        _g_slider.TabIndex = 8;
+        _g_slider.TabStop = false;
         // 
         // _g_text
         // 
+        _g_text.CharacterCasing = CharacterCasing.Upper;
         _g_text.Location = new Point(30, 0);
         _g_text.MaxLength = 2;
         _g_text.Name = "_g_text";
         _g_text.Size = new Size(40, 23);
-        _g_text.TabIndex = 4;
+        _g_text.TabIndex = 2;
+        _g_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _g_label
         // 
@@ -172,7 +204,7 @@ partial class ColorForm
         _g_label.Location = new Point(10, 0);
         _g_label.Name = "_g_label";
         _g_label.Size = new Size(18, 15);
-        _g_label.TabIndex = 5;
+        _g_label.TabIndex = 8;
         _g_label.Text = "G:";
         _g_label.TextAlign = ContentAlignment.MiddleRight;
         // 
@@ -185,7 +217,7 @@ partial class ColorForm
         _buttons.Location = new Point(0, 264);
         _buttons.Name = "_buttons";
         _buttons.Size = new Size(334, 34);
-        _buttons.TabIndex = 12;
+        _buttons.TabIndex = 8;
         // 
         // _b
         // 
@@ -198,7 +230,7 @@ partial class ColorForm
         _b.Location = new Point(0, 216);
         _b.Name = "_b";
         _b.Size = new Size(334, 48);
-        _b.TabIndex = 11;
+        _b.TabIndex = 8;
         // 
         // _b_slider
         // 
@@ -206,15 +238,18 @@ partial class ColorForm
         _b_slider.Maximum = 255;
         _b_slider.Name = "_b_slider";
         _b_slider.Size = new Size(250, 45);
-        _b_slider.TabIndex = 3;
+        _b_slider.TabIndex = 8;
+        _b_slider.TabStop = false;
         // 
         // _b_text
         // 
+        _b_text.CharacterCasing = CharacterCasing.Upper;
         _b_text.Location = new Point(30, 0);
         _b_text.MaxLength = 2;
         _b_text.Name = "_b_text";
         _b_text.Size = new Size(40, 23);
-        _b_text.TabIndex = 4;
+        _b_text.TabIndex = 3;
+        _b_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _b_label
         // 
@@ -222,7 +257,7 @@ partial class ColorForm
         _b_label.Location = new Point(10, 0);
         _b_label.Name = "_b_label";
         _b_label.Size = new Size(17, 15);
-        _b_label.TabIndex = 5;
+        _b_label.TabIndex = 8;
         _b_label.Text = "B:";
         _b_label.TextAlign = ContentAlignment.MiddleRight;
         // 
@@ -249,6 +284,7 @@ partial class ColorForm
         TopMost = true;
         ((System.ComponentModel.ISupportInitialize)_r_slider).EndInit();
         _preview.ResumeLayout(false);
+        _preview.PerformLayout();
         _r.ResumeLayout(false);
         _r.PerformLayout();
         _g.ResumeLayout(false);
@@ -282,4 +318,6 @@ partial class ColorForm
     private TrackBar _b_slider;
     private TextBox _b_text;
     private Label _b_label;
+    private Label _preview_label;
+    private TextBox _preview_text;
 }
