@@ -16,8 +16,8 @@ public partial class MainForm : Form
         InitializeComponent();
 
         _textureHandler = new TextureHandler();
-        _spritePreviewer = new SpritePreviewer(_textureHandler, _right_image);
-        _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _left, _menu_view_all);
+        _spritePreviewer = new SpritePreviewer(_textureHandler, _preview_image);
+        _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _buttons, _menu_view_all);
         _settingsHandler = new SettingsHandler();
     }
 
@@ -54,10 +54,10 @@ public partial class MainForm : Form
         foreach (string file in Directory.EnumerateFiles(Path.Combine(Environment.CurrentDirectory, "anim")))
         {
             Logger.Error($"Loaded anim: {file}");
-            _right_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
+            _preview_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
         }
 
-        _right_selector.SelectedItem = "idle";
+        _preview_selector.SelectedItem = "idle";
     }
 
     //private void Test()
@@ -89,7 +89,7 @@ public partial class MainForm : Form
 
     private void OnSelectAnim(object sender, EventArgs e)
     {
-        string anim = _right_selector.SelectedItem.ToString() ?? string.Empty;
+        string anim = _preview_selector.SelectedItem.ToString() ?? string.Empty;
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
         _spritePreviewer.ChangePreview(new Bitmap(file));
@@ -108,5 +108,12 @@ public partial class MainForm : Form
     private void OnClickMenu_View_Background(object _, EventArgs __)
     {
         Logger.Info("Toggling background style");
+    }
+
+    private void OnClickMenu_View_Side(object _, EventArgs __)
+    {
+        Logger.Info("Toggling preview side");
+        DockStyle style = _buttons.Dock;
+        _buttons.Dock = style == DockStyle.Left ? DockStyle.Right : DockStyle.Left;
     }
 }
