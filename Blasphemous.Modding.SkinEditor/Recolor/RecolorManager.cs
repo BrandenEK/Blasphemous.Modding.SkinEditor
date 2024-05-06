@@ -32,8 +32,8 @@ public class RecolorManager : IManager
     public void ToggleShowingAll()
     {
         _showingAll = !_showingAll;
-        Properties.Settings.Default.view_all = _showingAll;
-        Properties.Settings.Default.Save();
+        //Properties.Settings.Default.view_all = _showingAll;
+        //Properties.Settings.Default.Save();
 
         RefreshButtonsVisibility();
     }
