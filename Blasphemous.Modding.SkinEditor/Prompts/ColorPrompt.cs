@@ -49,12 +49,14 @@ public partial class ColorPrompt : Form
         _preventEvents = false;
     }
 
-    private void OnPreviewTextChanged(object _, EventArgs __)
+    private void OnPreviewTextChanged(object sender, EventArgs __)
     {
         if (_preventEvents)
             return;
 
-        string rgb = _preview_text.Text.PadLeft(6, '0');
+        ValidateHexCharacters((TextBox)sender);
+
+        string rgb = _preview_text.Text.PadRight(6, '0');
         SelectedColor = ColorTranslator.FromHtml($"#{rgb}");
 
         UpdatePreviewColor();
@@ -62,14 +64,16 @@ public partial class ColorPrompt : Form
         UpdateRgbSliders();
     }
 
-    private void OnRgbTextChanged(object _, EventArgs __)
+    private void OnRgbTextChanged(object sender, EventArgs __)
     {
         if (_preventEvents)
             return;
 
-        string r = _r_text.Text.PadLeft(2, '0');
-        string g = _g_text.Text.PadLeft(2, '0');
-        string b = _b_text.Text.PadLeft(2, '0');
+        ValidateHexCharacters((TextBox)sender);
+
+        string r = _r_text.Text.PadRight(2, '0');
+        string g = _g_text.Text.PadRight(2, '0');
+        string b = _b_text.Text.PadRight(2, '0');
         SelectedColor = ColorTranslator.FromHtml($"#{r}{g}{b}");
 
         UpdatePreviewColor();
@@ -91,6 +95,30 @@ public partial class ColorPrompt : Form
         UpdatePreviewText();
         UpdateRgbTexts();
     }
+
+    private void ValidateHexCharacters(TextBox textbox)
+    {
+        string text = textbox.Text;
+        int selection = textbox.SelectionStart;
+
+        int idx = 0;
+        while (idx < text.Length)
+        {
+            if (!HEX_CHARACTERS.Contains(text[idx]))
+            {
+                text = text[..idx] + text[(idx + 1)..];
+                continue;
+            }
+            idx++;
+        }
+
+        _preventEvents = true;
+        textbox.Text = text;
+        textbox.SelectionStart = selection;
+        _preventEvents = false;
+    }
+
+    private const string HEX_CHARACTERS = "0123456789ABCDEF";
 
     private static string Hex(byte b)
     {
