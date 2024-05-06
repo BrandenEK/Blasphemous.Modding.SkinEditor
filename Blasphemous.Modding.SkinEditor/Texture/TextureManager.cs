@@ -26,8 +26,14 @@ public class TextureManager : IManager
 
     public void Initialize()
     {
+        Core.RecolorManager.OnPixelChanged += OnPixelChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
+    }
+
+    private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
+    {
+        SetPixel(pixel, newColor);
     }
 
     private void OnUndo(IUndoCommand command)

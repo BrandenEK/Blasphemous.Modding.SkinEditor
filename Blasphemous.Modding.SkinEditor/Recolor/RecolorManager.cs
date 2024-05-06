@@ -152,14 +152,12 @@ public class RecolorManager : IManager
             return;
 
         byte pixel = byte.Parse(btn.Name);
-        Color color = colorDialog.Color;
-        Logger.Warn($"Changed pixel {pixel} to {color}");
+        Color oldColor = btn.BackColor;
+        Color newColor = colorDialog.Color;
 
-        Core.UndoManager.Do(new PixelColorUndoCommand(pixel, btn.BackColor, color));
-        Core.TextureManager.SetPixel(pixel, color);
-        Core.PreviewManager.UpdatePreview(pixel, color);
-
-        UpdateButtonColor(btn, color);
+        Logger.Warn($"Changed pixel {pixel} to {newColor}");
+        OnPixelChanged?.Invoke(pixel, oldColor, newColor);
+        UpdateButtonColor(btn, newColor);
     }
 
     public void UpdateButtonColor(Button btn, Color color)
@@ -197,6 +195,9 @@ public class RecolorManager : IManager
 
         UpdateButtonColor(pc.Pixel, pc.NewColor);
     }
+
+    public delegate void PixelChangeDelegate(byte pixel, Color oldColor, Color newColor);
+    public event PixelChangeDelegate? OnPixelChanged;
 
     private const int START_OFFSET = 10;
     private const int LABEL_SIZE = 20;
