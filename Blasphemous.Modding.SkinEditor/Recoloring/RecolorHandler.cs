@@ -62,7 +62,7 @@ public class RecolorHandler : IRecolorHandler
             if (group.Pixels.Except(previewPixels).Count() == group.Pixels.Length)
                 continue;
 
-            CreateLabel(group.Name, _parent, new Point(0, y));
+            CreateLabel(group.Name, _parent, new Point(START_OFFSET, y));
             y += LABEL_SIZE + LABEL_GAP;
 
             int x = START_OFFSET;
@@ -90,8 +90,8 @@ public class RecolorHandler : IRecolorHandler
                 Name = name,
                 Parent = parent,
                 Location = location,
-                Size = new Size(parent.Width, LABEL_SIZE),
-                TextAlign = ContentAlignment.TopCenter,
+                Size = new Size(parent.Width - START_OFFSET, LABEL_SIZE),
+                TextAlign = ContentAlignment.TopLeft,
                 Text = name
             };
 
