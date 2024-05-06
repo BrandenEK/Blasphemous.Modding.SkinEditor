@@ -6,7 +6,7 @@ namespace Blasphemous.Modding.SkinEditor;
 
 public partial class MainForm : Form
 {
-    private readonly IRecolorHandler _recolorHandler;
+    private readonly RecolorHandler _recolorHandler;
     private readonly ISettingsHandler _settingsHandler;
     private readonly ISpritePreviewer _spritePreviewer;
     private readonly TextureHandler _textureHandler;
@@ -62,10 +62,10 @@ public partial class MainForm : Form
         foreach (string file in Directory.EnumerateFiles(Path.Combine(Environment.CurrentDirectory, "anim")))
         {
             Logger.Error($"Loaded anim: {file}");
-            _left_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
+            _right_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
         }
 
-        _left_selector.SelectedItem = "idle";
+        _right_selector.SelectedItem = "idle";
     }
 
     //private void Test()
@@ -97,9 +97,15 @@ public partial class MainForm : Form
 
     private void OnSelectAnim(object sender, EventArgs e)
     {
-        string anim = _left_selector.SelectedItem.ToString() ?? string.Empty;
+        string anim = _right_selector.SelectedItem.ToString() ?? string.Empty;
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
         _spritePreviewer.ChangePreview(new Bitmap(file));
+        _recolorHandler.RefreshButtonsVisibility();
+    }
+
+    private void OnClickButtonsBtn(object sender, EventArgs e)
+    {
+        _recolorHandler.ToggleShowingAll();
     }
 }
