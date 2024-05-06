@@ -1,4 +1,3 @@
-using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Properties;
 
 namespace Blasphemous.Modding.SkinEditor;
