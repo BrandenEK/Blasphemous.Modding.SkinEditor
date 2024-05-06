@@ -10,6 +10,7 @@ public class ColorPrompt : IDisposable
 
     public ColorPrompt(string title, Color color)
     {
+        // Main form
         _prompt = new Form()
         {
             Text = title,
@@ -20,6 +21,32 @@ public class ColorPrompt : IDisposable
             MaximizeBox = false,
             TopMost = true,
         };
+
+        // Confirm button
+        Button confirm = new()
+        {
+            Text = "Confirm",
+            Parent = _prompt,
+            AutoSize = true,
+            Anchor = AnchorStyles.Bottom,
+            Location = new Point(-30, -10),
+            DialogResult = DialogResult.OK
+        };
+        confirm.Click += (_, __) => _prompt.Close();
+        _prompt.AcceptButton = confirm;
+
+        // Cancel button
+        Button cancel = new()
+        {
+            Text = "Cancel",
+            Parent = _prompt,
+            AutoSize = true,
+            Anchor = AnchorStyles.Bottom,
+            Location = new Point(30, -10),
+            DialogResult = DialogResult.Cancel
+        };
+        cancel.Click += (_, __) => _prompt.Close();
+        _prompt.CancelButton = cancel;
 
         Result = _prompt.ShowDialog() == DialogResult.OK;
     }
