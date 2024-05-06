@@ -32,14 +32,16 @@ public class RecolorManager : IManager
     public void ToggleShowingAll()
     {
         _showingAll = !_showingAll;
-        Properties.Settings.Default.view_all = _showingAll;
-        Properties.Settings.Default.Save();
+        //Properties.Settings.Default.view_all = _showingAll;
+        //Properties.Settings.Default.Save();
 
         RefreshButtonsVisibility();
     }
 
     public void RefreshButtonsVisibility()
     {
+        Logger.Info("Refreshing visibility of all buttons");
+
         _parent.Visible = false;
         DeleteButtons();
         CreateButtons();
@@ -50,6 +52,8 @@ public class RecolorManager : IManager
 
     public void RefreshButtonsColor()
     {
+        Logger.Info("Refreshing color of all buttons");
+
         foreach (Control c in _parent.Controls)
         {
             if (c is Button btn)
@@ -152,14 +156,12 @@ public class RecolorManager : IManager
             return;
 
         byte pixel = byte.Parse(btn.Name);
-        Color color = colorDialog.Color;
-        Logger.Warn($"Changed pixel {pixel} to {color}");
+        Color oldColor = btn.BackColor;
+        Color newColor = colorDialog.Color;
 
-        Core.UndoManager.Do(new PixelColorUndoCommand(pixel, btn.BackColor, color));
-        Core.TextureManager.SetPixel(pixel, color);
-        Core.PreviewManager.UpdatePreview(pixel, color);
-
-        UpdateButtonColor(btn, color);
+        Logger.Warn($"Changing pixel {pixel} to {newColor}");
+        OnPixelChanged?.Invoke(pixel, oldColor, newColor);
+        UpdateButtonColor(btn, newColor);
     }
 
     public void UpdateButtonColor(Button btn, Color color)
@@ -178,8 +180,20 @@ public class RecolorManager : IManager
 
     public void Initialize()
     {
+        Core.PreviewManager.OnPreviewChanged += OnPreviewChanged;
+        Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
+    }
+
+    private void OnPreviewChanged()
+    {
+        RefreshButtonsVisibility();
+    }
+
+    private void OnTextureChanged(Bitmap texture)
+    {
+        RefreshButtonsColor();
     }
 
     private void OnUndo(IUndoCommand command)
@@ -197,6 +211,9 @@ public class RecolorManager : IManager
 
         UpdateButtonColor(pc.Pixel, pc.NewColor);
     }
+
+    public delegate void PixelChangeDelegate(byte pixel, Color oldColor, Color newColor);
+    public event PixelChangeDelegate? OnPixelChanged;
 
     private const int START_OFFSET = 10;
     private const int LABEL_SIZE = 20;

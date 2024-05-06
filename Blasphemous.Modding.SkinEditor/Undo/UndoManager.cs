@@ -46,7 +46,17 @@ public class UndoManager : IManager
         OnRedo?.Invoke(command);
     }
 
-    public void Initialize() { }
+    // Event handling
+
+    public void Initialize()
+    {
+        Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+    }
+
+    private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
+    {
+        Do(new PixelColorUndoCommand(pixel, oldColor, newColor));
+    }
 
     public delegate void UndoRedoDelegate(IUndoCommand command);
     public event UndoRedoDelegate? OnUndo;

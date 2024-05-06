@@ -10,6 +10,10 @@ public class PreviewManager : IManager
     private Bitmap? _coloredPreview;
     private int _lastScale = 1;
 
+    private int CurrentScale => _coloredPreview == null
+        ? -1
+        : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
+
     public PreviewManager(PictureBox pictureBox)
     {
         _pictureBox = pictureBox;
@@ -80,7 +84,9 @@ public class PreviewManager : IManager
         _coloredPreview = ColorPreview(preview);
 
         // Update display
+        Logger.Info("Changing preview image");
         DisplayPreview(_coloredPreview);
+        OnPreviewChanged?.Invoke();
     }
 
     public void UpdatePreview(int pixel, Color color)
@@ -96,6 +102,26 @@ public class PreviewManager : IManager
                 if (pixelColor.A > 0 && pixelColor.R == pixel)
                 {
                     _coloredPreview.SetPixel(x, y, color);
+                }
+            }
+        }
+
+        DisplayPreview(_coloredPreview);
+    }
+
+    public void UpdatePreview(Bitmap texture)
+    {
+        if (_coloredPreview == null || _indexedPreview == null)
+            return;
+
+        for (int x = 0; x < _coloredPreview.Width; x++)
+        {
+            for (int y = 0; y < _coloredPreview.Height; y++)
+            {
+                Color pixelColor = _indexedPreview.GetPixel(x, y);
+                if (pixelColor.A > 0)
+                {
+                    _coloredPreview.SetPixel(x, y, texture.GetPixel(pixelColor.R, 0));
                 }
             }
         }
@@ -127,8 +153,20 @@ public class PreviewManager : IManager
 
     public void Initialize()
     {
+        Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
+    }
+
+    private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
+    {
+        UpdatePreview(pixel, newColor);
+    }
+
+    private void OnTextureChanged(Bitmap texture)
+    {
+        UpdatePreview(texture);
     }
 
     private void OnUndo(IUndoCommand command)
@@ -147,7 +185,6 @@ public class PreviewManager : IManager
         UpdatePreview(pc.Pixel, pc.NewColor);
     }
 
-    private int CurrentScale => _coloredPreview == null
-        ? -1
-        : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
+    public delegate void PreviewChangeDelegate();
+    public event PreviewChangeDelegate? OnPreviewChanged;
 }

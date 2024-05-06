@@ -1,16 +1,12 @@
-using Blasphemous.Modding.SkinEditor.Settings;
+using Blasphemous.Modding.SkinEditor.Properties;
 
 namespace Blasphemous.Modding.SkinEditor;
 
 public partial class MainForm : Form
 {
-    private readonly ISettingsHandler _settingsHandler;
-
     public MainForm()
     {
         InitializeComponent();
-
-        _settingsHandler = new SettingsHandler();
     }
 
     public T FindUI<T>(string name) where T : Control
@@ -22,14 +18,14 @@ public partial class MainForm : Form
     {
         Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
 
-        // Load editor settings
-        _settingsHandler.Load();
-        WindowState = _settingsHandler.Current.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
-        Location = _settingsHandler.Current.Location;
-        Size = _settingsHandler.Current.Size;
+        // Load window settings
+        WindowState = Settings.Default.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
+        Location = Settings.Default.Location;
+        Size = Settings.Default.Size;
 
         // Initialize form ui
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
+        Core.TextureManager.LoadTexture(Path.Combine(Environment.CurrentDirectory, "data", "default.png"));
 
         // Testing stuff
         LoadAllAnimations();
@@ -39,11 +35,11 @@ public partial class MainForm : Form
     {
         Logger.Info("Closing editor");
 
-        // Save editor settings
-        _settingsHandler.Current.Location = WindowState == FormWindowState.Normal ? Location : RestoreBounds.Location;
-        _settingsHandler.Current.Size = WindowState == FormWindowState.Normal ? Size : RestoreBounds.Size;
-        _settingsHandler.Current.Maximized = WindowState == FormWindowState.Maximized;
-        _settingsHandler.Save();
+        // Save window settings
+        Settings.Default.Location = WindowState == FormWindowState.Normal ? Location : RestoreBounds.Location;
+        Settings.Default.Size = WindowState == FormWindowState.Normal ? Size : RestoreBounds.Size;
+        Settings.Default.Maximized = WindowState == FormWindowState.Maximized;
+        Settings.Default.Save();
     }
 
     private void LoadAllAnimations()
@@ -90,7 +86,6 @@ public partial class MainForm : Form
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
         Core.PreviewManager.ChangePreview(new Bitmap(file));
-        Core.RecolorManager.RefreshButtonsVisibility();
     }
 
     private void OnClickMenu_Edit_Undo(object _, EventArgs __) => Core.UndoManager.Undo();
