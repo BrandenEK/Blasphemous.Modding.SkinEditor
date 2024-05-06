@@ -70,5 +70,29 @@ namespace Blasphemous.Modding.SkinEditor.Properties {
                 this["view_all"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool view_background {
+            get {
+                return ((bool)(this["view_background"]));
+            }
+            set {
+                this["view_background"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool view_side {
+            get {
+                return ((bool)(this["view_side"]));
+            }
+            set {
+                this["view_side"] = value;
+            }
+        }
     }
 }

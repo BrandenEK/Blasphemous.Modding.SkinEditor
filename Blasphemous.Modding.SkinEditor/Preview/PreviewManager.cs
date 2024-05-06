@@ -29,6 +29,13 @@ public class PreviewManager : IManager
         DisplayPreview(_coloredPreview);
     }
 
+    private void SetBackgroundColor(bool dark)
+    {
+        Color color = ColorTranslator.FromHtml(dark ? "#110803" : "#202020");
+        _pictureBox.BackColor = color;
+        _pictureBox.Parent.BackColor = color;
+    }
+
     private void DisplayPreview(Bitmap preview)
     {
         int currentScale = CurrentScale;
@@ -154,6 +161,7 @@ public class PreviewManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
@@ -162,6 +170,14 @@ public class PreviewManager : IManager
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
         UpdatePreview(pixel, newColor);
+    }
+
+    private void OnSettingChanged(string property, bool status)
+    {
+        if (property != "view_background")
+            return;
+
+        SetBackgroundColor(status);
     }
 
     private void OnTextureChanged(Bitmap texture)

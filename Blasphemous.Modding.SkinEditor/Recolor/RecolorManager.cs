@@ -16,10 +16,7 @@ public class RecolorManager : IManager
     public RecolorManager(Panel parent)
     {
         _parent = parent;
-
         _groups = LoadPixelGroups();
-        //_showingAll = (bool)Properties.Settings.Default["view_all"];
-        //allMenu.Checked = _showingAll;
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
@@ -27,15 +24,6 @@ public class RecolorManager : IManager
         string path = Path.Combine(Environment.CurrentDirectory, "data", "pixels.json");
         string json = File.ReadAllText(path);
         return JsonConvert.DeserializeObject<PixelGroup[]>(json) ?? Array.Empty<PixelGroup>();
-    }
-
-    public void ToggleShowingAll()
-    {
-        _showingAll = !_showingAll;
-        //Properties.Settings.Default.view_all = _showingAll;
-        //Properties.Settings.Default.Save();
-
-        RefreshButtonsVisibility();
     }
 
     public void RefreshButtonsVisibility()
@@ -181,6 +169,7 @@ public class RecolorManager : IManager
     public void Initialize()
     {
         Core.PreviewManager.OnPreviewChanged += OnPreviewChanged;
+        Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
@@ -188,6 +177,15 @@ public class RecolorManager : IManager
 
     private void OnPreviewChanged()
     {
+        RefreshButtonsVisibility();
+    }
+
+    private void OnSettingChanged(string property, bool status)
+    {
+        if (property != "view_all")
+            return;
+
+        _showingAll = status;
         RefreshButtonsVisibility();
     }
 

@@ -40,7 +40,7 @@ partial class MainForm
         _menu_edit_redo = new ToolStripMenuItem();
         _menu_view = new ToolStripMenuItem();
         _menu_view_all = new ToolStripMenuItem();
-        _menu_view_back = new ToolStripMenuItem();
+        _menu_view_background = new ToolStripMenuItem();
         _menu_view_side = new ToolStripMenuItem();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
@@ -128,7 +128,7 @@ partial class MainForm
         // 
         // _menu_view
         // 
-        _menu_view.DropDownItems.AddRange(new ToolStripItem[] { _menu_view_all, _menu_view_back, _menu_view_side });
+        _menu_view.DropDownItems.AddRange(new ToolStripItem[] { _menu_view_all, _menu_view_background, _menu_view_side });
         _menu_view.Name = "_menu_view";
         _menu_view.Size = new Size(44, 20);
         _menu_view.Text = "View";
@@ -140,16 +140,16 @@ partial class MainForm
         _menu_view_all.ShortcutKeys = Keys.Control | Keys.A;
         _menu_view_all.Size = new Size(232, 22);
         _menu_view_all.Text = "Show all pixel buttons";
-        _menu_view_all.Click += OnClickMenu_View_Buttons;
+        _menu_view_all.Click += OnClickMenu_View_All;
         // 
-        // _menu_view_back
+        // _menu_view_background
         // 
-        _menu_view_back.CheckOnClick = true;
-        _menu_view_back.Name = "_menu_view_back";
-        _menu_view_back.ShortcutKeys = Keys.Control | Keys.B;
-        _menu_view_back.Size = new Size(232, 22);
-        _menu_view_back.Text = "Use dark background";
-        _menu_view_back.Click += OnClickMenu_View_Background;
+        _menu_view_background.CheckOnClick = true;
+        _menu_view_background.Name = "_menu_view_background";
+        _menu_view_background.ShortcutKeys = Keys.Control | Keys.B;
+        _menu_view_background.Size = new Size(232, 22);
+        _menu_view_background.Text = "Use dark background";
+        _menu_view_background.Click += OnClickMenu_View_Background;
         // 
         // _menu_view_side
         // 
@@ -191,7 +191,7 @@ partial class MainForm
     private MenuStrip _menu;
     private ToolStripMenuItem _menu_view;
     private ToolStripMenuItem _menu_view_all;
-    private ToolStripMenuItem _menu_view_back;
+    private ToolStripMenuItem _menu_view_background;
     private ToolStripMenuItem _menu_edit;
     private ToolStripMenuItem _menu_edit_undo;
     private ToolStripMenuItem _menu_edit_redo;
