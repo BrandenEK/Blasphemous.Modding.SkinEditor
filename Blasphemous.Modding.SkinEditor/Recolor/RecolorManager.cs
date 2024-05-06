@@ -1,28 +1,25 @@
 ﻿using Blasphemous.Modding.SkinEditor.Extensions;
 using Blasphemous.Modding.SkinEditor.Models;
-using Blasphemous.Modding.SkinEditor.Previewing;
 using Blasphemous.Modding.SkinEditor.Undo;
 using Newtonsoft.Json;
 
-namespace Blasphemous.Modding.SkinEditor.Recoloring;
+namespace Blasphemous.Modding.SkinEditor.Recolor;
 
-public class RecolorHandler : IRecolorHandler
+public class RecolorManager : IManager
 {
-    private readonly ISpritePreviewer _spritePreviewer;
     private readonly Panel _parent;
 
     private readonly IEnumerable<PixelGroup> _groups;
 
     private bool _showingAll;
 
-    public RecolorHandler(ISpritePreviewer spritePreviewer, Panel parent, ToolStripMenuItem allMenu)
+    public RecolorManager(Panel parent)
     {
-        _spritePreviewer = spritePreviewer;
         _parent = parent;
 
         _groups = LoadPixelGroups();
-        _showingAll = (bool)Properties.Settings.Default["view_all"];
-        allMenu.Checked = _showingAll;
+        //_showingAll = (bool)Properties.Settings.Default["view_all"];
+        //allMenu.Checked = _showingAll;
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
@@ -66,7 +63,7 @@ public class RecolorHandler : IRecolorHandler
 
     private void CreateButtons()
     {
-        var previewPixels = _spritePreviewer.GetPixelsInPreview();
+        var previewPixels = Core.PreviewManager.GetPixelsInPreview();
 
         int y = START_OFFSET;
         foreach (var group in _groups)
@@ -160,7 +157,7 @@ public class RecolorHandler : IRecolorHandler
 
         Core.UndoManager.Do(new PixelColorUndoCommand(pixel, btn.BackColor, color));
         Core.TextureManager.SetPixel(pixel, color);
-        _spritePreviewer.UpdatePreview(pixel, color);
+        Core.PreviewManager.UpdatePreview(pixel, color);
 
         UpdateButtonColor(btn, color);
     }

@@ -1,25 +1,21 @@
-using Blasphemous.Modding.SkinEditor.Previewing;
-using Blasphemous.Modding.SkinEditor.Recoloring;
 using Blasphemous.Modding.SkinEditor.Settings;
 
 namespace Blasphemous.Modding.SkinEditor;
 
 public partial class MainForm : Form
 {
-    private readonly RecolorHandler _recolorHandler;
     private readonly ISettingsHandler _settingsHandler;
-    private readonly SpritePreviewer _spritePreviewer;
 
     public MainForm()
     {
         InitializeComponent();
 
-        _spritePreviewer = new SpritePreviewer(_preview_image);
-        _recolorHandler = new RecolorHandler(_spritePreviewer, _buttons, _menu_view_all);
         _settingsHandler = new SettingsHandler();
+    }
 
-        _spritePreviewer.Initialize();
-        _recolorHandler.Initialize();
+    public T FindUI<T>(string name) where T : Control
+    {
+        return (T)Controls.Find(name, true)[0];
     }
 
     private void OnFormOpen(object sender, EventArgs e)
@@ -93,8 +89,8 @@ public partial class MainForm : Form
         string anim = _preview_selector.SelectedItem.ToString() ?? string.Empty;
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
-        _spritePreviewer.ChangePreview(new Bitmap(file));
-        _recolorHandler.RefreshButtonsVisibility();
+        Core.PreviewManager.ChangePreview(new Bitmap(file));
+        Core.RecolorManager.RefreshButtonsVisibility();
     }
 
     private void OnClickMenu_Edit_Undo(object _, EventArgs __) => Core.UndoManager.Undo();
@@ -103,7 +99,7 @@ public partial class MainForm : Form
     private void OnClickMenu_View_Buttons(object _, EventArgs __)
     {
         Logger.Info("Toggling visibility of all buttons");
-        _recolorHandler.ToggleShowingAll();
+        Core.RecolorManager.ToggleShowingAll();
     }
 
     private void OnClickMenu_View_Background(object _, EventArgs __)

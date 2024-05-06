@@ -1,3 +1,5 @@
+using Blasphemous.Modding.SkinEditor.Preview;
+using Blasphemous.Modding.SkinEditor.Recolor;
 using Blasphemous.Modding.SkinEditor.Texture;
 using Blasphemous.Modding.SkinEditor.Undo;
 
@@ -9,16 +11,28 @@ internal static class Core
     static void Main()
     {
         Logger.Show();
+        ApplicationConfiguration.Initialize();
+        var form = new MainForm();
 
+        PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"));
+        RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
+        TextureManager = new TextureManager();
+        UndoManager = new UndoManager();
+
+        PreviewManager.Initialize();
+        RecolorManager.Initialize();
         TextureManager.Initialize();
         UndoManager.Initialize();
 
-        ApplicationConfiguration.Initialize();
-        Application.Run(new MainForm());
+        Application.Run(form);
     }
 
-    public static TextureManager TextureManager { get; private set; } = new();
-    public static UndoManager UndoManager { get; private set; } = new();
+#pragma warning disable CS8618
+    public static PreviewManager PreviewManager { get; private set; }
+    public static RecolorManager RecolorManager { get; private set; }
+    public static TextureManager TextureManager { get; private set; }
+    public static UndoManager UndoManager { get; private set; }
+#pragma warning restore CS8618
 
     public static Version CurrentVersion =>
         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version ?? new(0, 1, 0);
