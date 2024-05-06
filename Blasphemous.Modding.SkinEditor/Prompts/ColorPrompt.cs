@@ -11,10 +11,42 @@ public partial class ColorPrompt : Form
         SelectedColor = initial;
 
         UpdatePreviewColor();
+        UpdatePreviewText();
+        UpdateRgbTexts();
+        UpdateRgbSliders();
     }
 
     private void UpdatePreviewColor()
     {
         _preview_color.BackColor = SelectedColor;
+    }
+
+    private void UpdatePreviewText()
+    {
+        _preview_text.Text = Hex(SelectedColor);
+    }
+
+    private void UpdateRgbTexts()
+    {
+        _r_text.Text = Hex(SelectedColor.R);
+        _g_text.Text = Hex(SelectedColor.G);
+        _b_text.Text = Hex(SelectedColor.B);
+    }
+
+    private void UpdateRgbSliders()
+    {
+        _r_slider.Value = SelectedColor.R;
+        _g_slider.Value = SelectedColor.G;
+        _b_slider.Value = SelectedColor.B;
+    }
+
+    private static string Hex(byte b)
+    {
+        return b.ToString("X2");
+    }
+
+    private static string Hex(Color color)
+    {
+        return $"{Hex(color.R)}{Hex(color.G)}{Hex(color.B)}";
     }
 }
