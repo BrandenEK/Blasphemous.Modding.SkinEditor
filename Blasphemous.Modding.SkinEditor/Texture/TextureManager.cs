@@ -4,21 +4,29 @@ namespace Blasphemous.Modding.SkinEditor.Texture;
 
 public class TextureManager : IManager
 {
-    private Bitmap _texture;
+    private Bitmap? _texture;
 
-    public TextureManager()
+    public void LoadTexture(string path)
     {
-        string path = Path.Combine(Environment.CurrentDirectory, "data", "default.png");
+        _texture?.Dispose();
+
         _texture = new Bitmap(path);
+        OnTextureChanged?.Invoke(_texture);
     }
 
     public void SetPixel(byte pixel, Color color)
     {
+        if (_texture is null)
+            throw new Exception("No texture has been loaded yet");
+
         _texture.SetPixel(pixel, 0, color);
     }
 
     public Color GetPixel(byte pixel)
     {
+        if (_texture is null)
+            throw new Exception("No texture has been loaded yet");
+
         return _texture.GetPixel(pixel, 0);
     }
 
@@ -51,4 +59,7 @@ public class TextureManager : IManager
 
         SetPixel(pc.Pixel, pc.NewColor);
     }
+
+    public delegate void TextureChangeDelegate(Bitmap texture);
+    public event TextureChangeDelegate? OnTextureChanged;
 }
