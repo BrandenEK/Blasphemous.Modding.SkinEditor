@@ -17,7 +17,7 @@ public partial class MainForm : Form
 
         _textureHandler = new TextureHandler();
         _spritePreviewer = new SpritePreviewer(_textureHandler, _right_image);
-        _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _left);
+        _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _left, _menu_view_all);
         _settingsHandler = new SettingsHandler();
     }
 

@@ -13,15 +13,17 @@ public class RecolorHandler : IRecolorHandler
 
     private readonly IEnumerable<PixelGroup> _groups;
 
-    private bool _showingAll = false;
+    private bool _showingAll;
 
-    public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel parent)
+    public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel parent, ToolStripMenuItem allMenu)
     {
         _textureHandler = textureHandler;
         _spritePreviewer = spritePreviewer;
         _parent = parent;
 
         _groups = LoadPixelGroups();
+        _showingAll = (bool)Properties.Settings.Default["view_all"];
+        allMenu.Checked = _showingAll;
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
@@ -34,6 +36,9 @@ public class RecolorHandler : IRecolorHandler
     public void ToggleShowingAll()
     {
         _showingAll = !_showingAll;
+        Properties.Settings.Default.view_all = _showingAll;
+        Properties.Settings.Default.Save();
+
         RefreshButtonsVisibility();
     }
 

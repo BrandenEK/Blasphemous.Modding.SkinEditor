@@ -58,5 +58,17 @@ namespace Blasphemous.Modding.SkinEditor.Properties {
                 this["Maximized"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool view_all {
+            get {
+                return ((bool)(this["view_all"]));
+            }
+            set {
+                this["view_all"] = value;
+            }
+        }
     }
 }
