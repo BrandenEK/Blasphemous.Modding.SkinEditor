@@ -6,7 +6,7 @@ namespace Blasphemous.Modding.SkinEditor;
 
 public partial class MainForm : Form
 {
-    private readonly IRecolorHandler _recolorHandler;
+    private readonly RecolorHandler _recolorHandler;
     private readonly ISettingsHandler _settingsHandler;
     private readonly ISpritePreviewer _spritePreviewer;
     private readonly TextureHandler _textureHandler;
@@ -102,5 +102,10 @@ public partial class MainForm : Form
 
         _spritePreviewer.ChangePreview(new Bitmap(file));
         _recolorHandler.RefreshButtonsVisibility();
+    }
+
+    private void OnClickButtonsBtn(object sender, EventArgs e)
+    {
+        _recolorHandler.ToggleShowingAll();
     }
 }

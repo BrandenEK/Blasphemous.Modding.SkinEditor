@@ -13,6 +13,8 @@ public class RecolorHandler : IRecolorHandler
 
     private readonly IEnumerable<PixelGroup> _groups;
 
+    private bool _showingAll = false;
+
     public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel parent)
     {
         _textureHandler = textureHandler;
@@ -27,6 +29,12 @@ public class RecolorHandler : IRecolorHandler
         string path = Path.Combine(Environment.CurrentDirectory, "data", "pixels.json");
         string json = File.ReadAllText(path);
         return JsonConvert.DeserializeObject<PixelGroup[]>(json) ?? Array.Empty<PixelGroup>();
+    }
+
+    public void ToggleShowingAll()
+    {
+        _showingAll = !_showingAll;
+        RefreshButtonsVisibility();
     }
 
     public void RefreshButtonsVisibility()
@@ -59,7 +67,7 @@ public class RecolorHandler : IRecolorHandler
         int y = START_OFFSET;
         foreach (var group in _groups)
         {
-            if (group.Pixels.Except(previewPixels).Count() == group.Pixels.Length)
+            if (!_showingAll && group.Pixels.Except(previewPixels).Count() == group.Pixels.Length)
                 continue;
 
             CreateLabel(group.Name, _parent, new Point(START_OFFSET, y));
@@ -68,7 +76,7 @@ public class RecolorHandler : IRecolorHandler
             int x = START_OFFSET;
             foreach (var pixel in group.Pixels)
             {
-                if (!previewPixels.Contains(pixel))
+                if (!_showingAll && !previewPixels.Contains(pixel))
                     continue;
 
                 if (x + BUTTON_SIZE > _parent.Width)
