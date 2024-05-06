@@ -55,6 +55,7 @@ public partial class MainForm : Form
         // Resize main ui holder
         UI.Location = ClientRectangle.Location;
         UI.Size = ClientRectangle.Size;
+        UI.Location = new Point(0, 20);
     }
 
     private void LoadAllAnimations()
