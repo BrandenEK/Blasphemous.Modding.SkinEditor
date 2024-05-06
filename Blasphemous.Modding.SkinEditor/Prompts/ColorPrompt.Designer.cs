@@ -1,6 +1,6 @@
 ﻿namespace Blasphemous.Modding.SkinEditor.Prompts;
 
-partial class ColorForm
+partial class ColorPrompt
 {
     /// <summary>
     /// Required designer variable.
@@ -84,7 +84,8 @@ partial class ColorForm
         // _preview_color
         // 
         _preview_color.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-        _preview_color.BackColor = Color.Black;
+        _preview_color.BackColor = Color.Red;
+        _preview_color.BorderStyle = BorderStyle.FixedSingle;
         _preview_color.Location = new Point(10, 10);
         _preview_color.Name = "_preview_color";
         _preview_color.Size = new Size(100, 100);
@@ -98,6 +99,7 @@ partial class ColorForm
         _r_slider.Size = new Size(250, 45);
         _r_slider.TabIndex = 8;
         _r_slider.TabStop = false;
+        _r_slider.Value = 255;
         // 
         // _r_text
         // 
@@ -107,6 +109,7 @@ partial class ColorForm
         _r_text.Name = "_r_text";
         _r_text.Size = new Size(40, 23);
         _r_text.TabIndex = 1;
+        _r_text.Text = "FF";
         _r_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _r_label
@@ -151,6 +154,7 @@ partial class ColorForm
         _preview_text.Name = "_preview_text";
         _preview_text.Size = new Size(100, 35);
         _preview_text.TabIndex = 0;
+        _preview_text.Text = "FF0000";
         _preview_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _r
@@ -196,6 +200,7 @@ partial class ColorForm
         _g_text.Name = "_g_text";
         _g_text.Size = new Size(40, 23);
         _g_text.TabIndex = 2;
+        _g_text.Text = "00";
         _g_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _g_label
@@ -249,6 +254,7 @@ partial class ColorForm
         _b_text.Name = "_b_text";
         _b_text.Size = new Size(40, 23);
         _b_text.TabIndex = 3;
+        _b_text.Text = "00";
         _b_text.TextAlign = HorizontalAlignment.Center;
         // 
         // _b_label

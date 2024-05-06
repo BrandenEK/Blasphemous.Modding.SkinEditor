@@ -116,7 +116,7 @@ public partial class MainForm : Form
         Logger.Warn("Clicking debug button");
 
         //using ColorPrompt cp = new ColorPrompt("Select a color", Color.Red);
-        ColorForm form = new ColorForm();
-        form.ShowDialog();
+        ColorPrompt prompt = new ColorPrompt();
+        prompt.ShowDialog();
     }
 }
