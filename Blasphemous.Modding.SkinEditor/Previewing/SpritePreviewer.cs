@@ -106,6 +106,26 @@ public class SpritePreviewer : ISpritePreviewer
         DisplayPreview(_coloredPreview);
     }
 
+    public IEnumerable<byte> GetPixelsInPreview()
+    {
+        if (_indexedPreview == null)
+            return Enumerable.Empty<byte>();
+
+        List<byte> pixels = new();
+
+        for (int x = 0; x < _indexedPreview.Width; x++)
+        {
+            for (int y = 0; y < _indexedPreview.Height; y++)
+            {
+                Color color = _indexedPreview.GetPixel(x, y);
+                if (color.A > 0 && !pixels.Contains(color.R))
+                    pixels.Add(color.R);
+            }
+        }
+
+        return pixels;
+    }
+
     private int CurrentScale => _coloredPreview == null
         ? -1
         : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);

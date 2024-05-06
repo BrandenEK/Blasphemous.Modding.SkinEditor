@@ -54,15 +54,23 @@ public class RecolorHandler : IRecolorHandler
 
     private void CreateButtons()
     {
+        var previewPixels = _spritePreviewer.GetPixelsInPreview();
+
         int y = START_OFFSET;
         foreach (var group in _groups)
         {
+            if (group.Pixels.Except(previewPixels).Count() == group.Pixels.Length)
+                continue;
+
             CreateLabel(group.Name, _parent, new Point(0, y));
             y += LABEL_SIZE + LABEL_GAP;
 
             int x = START_OFFSET;
             foreach (var pixel in group.Pixels)
             {
+                if (!previewPixels.Contains(pixel))
+                    continue;
+
                 if (x + BUTTON_SIZE > _parent.Width)
                 {
                     x = START_OFFSET;
