@@ -54,9 +54,9 @@ partial class MainForm
         _preview.Controls.Add(_preview_selector);
         _preview.Controls.Add(_preview_image);
         _preview.Dock = DockStyle.Fill;
-        _preview.Location = new Point(300, 24);
+        _preview.Location = new Point(320, 24);
         _preview.Name = "_preview";
-        _preview.Size = new Size(964, 657);
+        _preview.Size = new Size(944, 657);
         _preview.TabIndex = 1;
         // 
         // _preview_selector
@@ -73,19 +73,21 @@ partial class MainForm
         _preview_image.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         _preview_image.Location = new Point(100, 100);
         _preview_image.Name = "_preview_image";
-        _preview_image.Size = new Size(764, 457);
+        _preview_image.Size = new Size(744, 457);
         _preview_image.SizeMode = PictureBoxSizeMode.CenterImage;
         _preview_image.TabIndex = 0;
         _preview_image.TabStop = false;
         // 
         // _buttons
         // 
+        _buttons.AutoScroll = true;
+        _buttons.AutoScrollMargin = new Size(0, 10);
         _buttons.BackColor = Color.Gray;
         _buttons.BorderStyle = BorderStyle.Fixed3D;
         _buttons.Dock = DockStyle.Left;
         _buttons.Location = new Point(0, 24);
         _buttons.Name = "_buttons";
-        _buttons.Size = new Size(300, 657);
+        _buttons.Size = new Size(320, 657);
         _buttons.TabIndex = 0;
         // 
         // _menu

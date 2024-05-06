@@ -72,7 +72,7 @@ public class RecolorManager : IManager
                 if (!_showingAll && !previewPixels.Contains(pixel))
                     continue;
 
-                if (x + BUTTON_SIZE > _parent.Width)
+                if (x + BUTTON_SIZE > _parent.Width - SCROLL_SIZE)
                 {
                     x = START_OFFSET;
                     y += BUTTON_SIZE + BUTTON_GAP;
@@ -91,7 +91,7 @@ public class RecolorManager : IManager
                 Name = name,
                 Parent = parent,
                 Location = location,
-                Size = new Size(parent.Width - START_OFFSET, LABEL_SIZE),
+                Size = new Size(parent.Width - START_OFFSET * 4, LABEL_SIZE),
                 TextAlign = ContentAlignment.TopLeft,
                 Text = name
             };
@@ -219,4 +219,5 @@ public class RecolorManager : IManager
     private const int BUTTON_SIZE = 30;
     private const int BUTTON_GAP = 5;
     private const int GROUP_GAP = 10;
+    private const int SCROLL_SIZE = 30;
 }
