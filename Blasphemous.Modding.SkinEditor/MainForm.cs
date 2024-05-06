@@ -17,7 +17,7 @@ public partial class MainForm : Form
 
         _textureHandler = new TextureHandler();
         _spritePreviewer = new SpritePreviewer(_textureHandler, _right_image);
-        _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _left);
+        _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _left, _menu_view_all);
         _settingsHandler = new SettingsHandler();
     }
 
@@ -33,7 +33,6 @@ public partial class MainForm : Form
 
         // Initialize form ui
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
-        OnFormResized(this, new EventArgs());
 
         // Testing stuff
         LoadAllAnimations();
@@ -48,13 +47,6 @@ public partial class MainForm : Form
         _settingsHandler.Current.Size = WindowState == FormWindowState.Normal ? Size : RestoreBounds.Size;
         _settingsHandler.Current.Maximized = WindowState == FormWindowState.Maximized;
         _settingsHandler.Save();
-    }
-
-    private void OnFormResized(object sender, EventArgs e)
-    {
-        // Resize main ui holder
-        UI.Location = ClientRectangle.Location;
-        UI.Size = ClientRectangle.Size;
     }
 
     private void LoadAllAnimations()
@@ -104,8 +96,14 @@ public partial class MainForm : Form
         _recolorHandler.RefreshButtonsVisibility();
     }
 
-    private void OnClickButtonsBtn(object sender, EventArgs e)
+    private void OnClickMenu_View_Buttons(object _, EventArgs __)
     {
+        Logger.Info("Toggling visibility of all buttons");
         _recolorHandler.ToggleShowingAll();
+    }
+
+    private void OnClickMenu_View_Background(object _, EventArgs __)
+    {
+        Logger.Info("Toggling background style");
     }
 }
