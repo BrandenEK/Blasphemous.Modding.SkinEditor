@@ -40,6 +40,8 @@ public class RecolorManager : IManager
 
     public void RefreshButtonsVisibility()
     {
+        Logger.Info("Refreshing visibility of all buttons");
+
         _parent.Visible = false;
         DeleteButtons();
         CreateButtons();
@@ -50,6 +52,8 @@ public class RecolorManager : IManager
 
     public void RefreshButtonsColor()
     {
+        Logger.Info("Refreshing color of all buttons");
+
         foreach (Control c in _parent.Controls)
         {
             if (c is Button btn)
@@ -155,7 +159,7 @@ public class RecolorManager : IManager
         Color oldColor = btn.BackColor;
         Color newColor = colorDialog.Color;
 
-        Logger.Warn($"Changed pixel {pixel} to {newColor}");
+        Logger.Warn($"Changing pixel {pixel} to {newColor}");
         OnPixelChanged?.Invoke(pixel, oldColor, newColor);
         UpdateButtonColor(btn, newColor);
     }
@@ -176,8 +180,14 @@ public class RecolorManager : IManager
 
     public void Initialize()
     {
+        Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
+    }
+
+    private void OnTextureChanged(Bitmap texture)
+    {
+        RefreshButtonsColor();
     }
 
     private void OnUndo(IUndoCommand command)

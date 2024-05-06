@@ -103,6 +103,26 @@ public class PreviewManager : IManager
         DisplayPreview(_coloredPreview);
     }
 
+    public void UpdatePreview(Bitmap texture)
+    {
+        if (_coloredPreview == null || _indexedPreview == null)
+            return;
+
+        for (int x = 0; x < _coloredPreview.Width; x++)
+        {
+            for (int y = 0; y < _coloredPreview.Height; y++)
+            {
+                Color pixelColor = _indexedPreview.GetPixel(x, y);
+                if (pixelColor.A > 0)
+                {
+                    _coloredPreview.SetPixel(x, y, texture.GetPixel(pixelColor.R, 0));
+                }
+            }
+        }
+
+        DisplayPreview(_coloredPreview);
+    }
+
     public IEnumerable<byte> GetPixelsInPreview()
     {
         if (_indexedPreview == null)
@@ -128,6 +148,7 @@ public class PreviewManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
     }
@@ -135,6 +156,11 @@ public class PreviewManager : IManager
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
         UpdatePreview(pixel, newColor);
+    }
+
+    private void OnTextureChanged(Bitmap texture)
+    {
+        UpdatePreview(texture);
     }
 
     private void OnUndo(IUndoCommand command)
