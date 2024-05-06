@@ -91,18 +91,9 @@ public partial class MainForm : Form
     private void OnClickMenu_Edit_Undo(object _, EventArgs __) => Core.UndoManager.Undo();
     private void OnClickMenu_Edit_Redo(object _, EventArgs __) => Core.UndoManager.Redo();
 
-    private void OnClickMenu_View_Buttons(object _, EventArgs __)
-    {
-        Logger.Info("Toggling visibility of all buttons");
-        Core.RecolorManager.ToggleShowingAll();
-    }
-
-    private void OnClickMenu_View_Background(object _, EventArgs __)
-    {
-        Logger.Info("Toggling background style");
-    }
-
-    private void OnClickMenu_View_Side(object _, EventArgs __)
+    private void OnClickMenu_View_All(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
+    private void OnClickMenu_View_Background(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
+    private void OnClickMenu_View_Side(object sender, EventArgs __)
     {
         Logger.Info("Toggling preview side");
         DockStyle style = _buttons.Dock;
