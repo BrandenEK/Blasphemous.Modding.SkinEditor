@@ -9,18 +9,15 @@ public partial class MainForm : Form
     private readonly RecolorHandler _recolorHandler;
     private readonly ISettingsHandler _settingsHandler;
     private readonly SpritePreviewer _spritePreviewer;
-    private readonly TextureHandler _textureHandler;
 
     public MainForm()
     {
         InitializeComponent();
 
-        _textureHandler = new TextureHandler();
-        _spritePreviewer = new SpritePreviewer(_textureHandler, _preview_image);
-        _recolorHandler = new RecolorHandler(_textureHandler, _spritePreviewer, _buttons, _menu_view_all);
+        _spritePreviewer = new SpritePreviewer(_preview_image);
+        _recolorHandler = new RecolorHandler(_spritePreviewer, _buttons, _menu_view_all);
         _settingsHandler = new SettingsHandler();
 
-        _textureHandler.Initialize();
         _spritePreviewer.Initialize();
         _recolorHandler.Initialize();
     }

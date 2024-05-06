@@ -1,22 +1,17 @@
-﻿
-using Blasphemous.Modding.SkinEditor.Undo;
+﻿using Blasphemous.Modding.SkinEditor.Undo;
 
 namespace Blasphemous.Modding.SkinEditor.Previewing;
 
 public class SpritePreviewer : ISpritePreviewer
 {
-    private readonly TextureHandler _textureHandler;
-
     private readonly PictureBox _pictureBox;
 
     private Bitmap? _indexedPreview;
     private Bitmap? _coloredPreview;
     private int _lastScale = 1;
 
-    public SpritePreviewer(TextureHandler textureHandler, PictureBox pictureBox)
+    public SpritePreviewer(PictureBox pictureBox)
     {
-        _textureHandler = textureHandler;
-
         _pictureBox = pictureBox;
         _pictureBox.SizeChanged += OnPictureResized;
     }
@@ -72,7 +67,7 @@ public class SpritePreviewer : ISpritePreviewer
                 Color pixelColor = preview.GetPixel(x, y);
                 if (pixelColor.A > 0)
                 {
-                    colored.SetPixel(x, y, _textureHandler.GetPixel(pixelColor.R));
+                    colored.SetPixel(x, y, Core.TextureManager.GetPixel(pixelColor.R));
                 }
             }
         }

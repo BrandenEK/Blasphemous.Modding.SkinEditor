@@ -8,7 +8,6 @@ namespace Blasphemous.Modding.SkinEditor.Recoloring;
 
 public class RecolorHandler : IRecolorHandler
 {
-    private readonly TextureHandler _textureHandler;
     private readonly ISpritePreviewer _spritePreviewer;
     private readonly Panel _parent;
 
@@ -16,21 +15,14 @@ public class RecolorHandler : IRecolorHandler
 
     private bool _showingAll;
 
-    public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel parent, ToolStripMenuItem allMenu)
+    public RecolorHandler(ISpritePreviewer spritePreviewer, Panel parent, ToolStripMenuItem allMenu)
     {
-        _textureHandler = textureHandler;
         _spritePreviewer = spritePreviewer;
         _parent = parent;
 
         _groups = LoadPixelGroups();
         _showingAll = (bool)Properties.Settings.Default["view_all"];
         allMenu.Checked = _showingAll;
-    }
-
-    public void Initialize()
-    {
-        Core.UndoManager.OnUndo += OnUndo;
-        Core.UndoManager.OnRedo += OnRedo;
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
@@ -66,7 +58,7 @@ public class RecolorHandler : IRecolorHandler
             if (c is Button btn)
             {
                 byte pixel = byte.Parse(btn.Name);
-                Color color = _textureHandler.GetPixel(pixel);
+                Color color = Core.TextureManager.GetPixel(pixel);
                 UpdateButtonColor(btn, color);
             }
         }
@@ -167,7 +159,7 @@ public class RecolorHandler : IRecolorHandler
         Logger.Warn($"Changed pixel {pixel} to {color}");
 
         Core.UndoManager.Do(new PixelColorUndoCommand(pixel, btn.BackColor, color));
-        _textureHandler.SetPixel(pixel, color);
+        Core.TextureManager.SetPixel(pixel, color);
         _spritePreviewer.UpdatePreview(pixel, color);
 
         UpdateButtonColor(btn, color);
@@ -183,6 +175,14 @@ public class RecolorHandler : IRecolorHandler
     {
         Button btn = (Button)_parent.Controls.Find(pixel.ToString(), false)[0];
         UpdateButtonColor(btn, color);
+    }
+
+    // Event handling
+
+    public void Initialize()
+    {
+        Core.UndoManager.OnUndo += OnUndo;
+        Core.UndoManager.OnRedo += OnRedo;
     }
 
     private void OnUndo(IUndoCommand command)

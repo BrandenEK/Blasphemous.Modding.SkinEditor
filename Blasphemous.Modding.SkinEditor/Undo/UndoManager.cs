@@ -1,7 +1,7 @@
 ﻿
 namespace Blasphemous.Modding.SkinEditor.Undo;
 
-public class UndoManager
+public class UndoManager : IManager
 {
     private readonly List<IUndoCommand> undo = new();
     private readonly List<IUndoCommand> redo = new();
@@ -45,6 +45,8 @@ public class UndoManager
         Logger.Info($"Redoing command: {command}");
         OnRedo?.Invoke(command);
     }
+
+    public void Initialize() { }
 
     public delegate void UndoRedoDelegate(IUndoCommand command);
     public event UndoRedoDelegate? OnUndo;
