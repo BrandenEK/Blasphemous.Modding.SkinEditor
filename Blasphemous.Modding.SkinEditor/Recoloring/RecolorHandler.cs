@@ -9,46 +9,17 @@ public class RecolorHandler : IRecolorHandler
 {
     private readonly TextureHandler _textureHandler;
     private readonly ISpritePreviewer _spritePreviewer;
+    private readonly Panel _parent;
 
-    private readonly Button[] _buttons;
+    private readonly IEnumerable<PixelGroup> _groups;
 
-    public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel buttonParent)
+    public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel parent)
     {
         _textureHandler = textureHandler;
         _spritePreviewer = spritePreviewer;
+        _parent = parent;
 
-        var groups = LoadPixelGroups();
-        _buttons = new Button[groups.Sum(x => x.Pixels.Length)];
-        int currButton = 0;
-
-        int y = START_OFFSET;
-        foreach (var group in groups)
-        {
-            CreateLabel(group.Name, buttonParent, new Point(0, y));
-            y += LABEL_SIZE + LABEL_GAP;
-
-            int x = START_OFFSET;
-            foreach (var pixel in group.Pixels)
-            {
-                if (x + BUTTON_SIZE > buttonParent.Width)
-                {
-                    x = START_OFFSET;
-                    y += BUTTON_SIZE + BUTTON_GAP;
-                }
-
-                _buttons[currButton++] = CreateButton(pixel, buttonParent, new Point(x, y));
-                x += BUTTON_SIZE + BUTTON_GAP;
-            }
-            y += BUTTON_SIZE + GROUP_GAP;
-        }
-
-        foreach (var btn in _buttons)
-        {
-            byte pixel = byte.Parse(btn.Name);
-            UpdateButtonColor(btn, _textureHandler.GetPixel(pixel));
-        }
-
-        Logger.Info("Created all recolor buttons");
+        _groups = LoadPixelGroups();
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
@@ -58,34 +29,91 @@ public class RecolorHandler : IRecolorHandler
         return JsonConvert.DeserializeObject<PixelGroup[]>(json) ?? Array.Empty<PixelGroup>();
     }
 
-    private Label CreateLabel(string name, Panel parent, Point location)
+    public void RefreshButtonsVisibility()
     {
-        return new Label()
-        {
-            Name = name,
-            Parent = parent,
-            Location = location,
-            Size = new Size(parent.Width, LABEL_SIZE),
-            TextAlign = ContentAlignment.TopCenter,
-            Text = name
-        };
+        _parent.Visible = false;
+        DeleteButtons();
+        CreateButtons();
+        _parent.Visible = true;
+
+        RefreshButtonsColor();
     }
 
-    private Button CreateButton(byte pixel, Panel parent, Point location)
+    public void RefreshButtonsColor()
     {
-        var btn = new Button()
+        foreach (Control c in _parent.Controls)
         {
-            Name = pixel.ToString(),
-            Parent = parent,
-            Location = location,
-            Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
-            Font = new Font(parent.Font.FontFamily, 7),
-            TextAlign = ContentAlignment.MiddleCenter,
-            Text = pixel.ToString()
-        };
+            if (c is Button btn)
+            {
+                byte pixel = byte.Parse(btn.Name);
+                Color color = _textureHandler.GetPixel(pixel);
+                UpdateButtonColor(btn, color);
+            }
+        }
+    }
 
-        btn.MouseDown += OnClickColorButton;
-        return btn;
+    private void CreateButtons()
+    {
+        int y = START_OFFSET;
+        foreach (var group in _groups)
+        {
+            CreateLabel(group.Name, _parent, new Point(0, y));
+            y += LABEL_SIZE + LABEL_GAP;
+
+            int x = START_OFFSET;
+            foreach (var pixel in group.Pixels)
+            {
+                if (x + BUTTON_SIZE > _parent.Width)
+                {
+                    x = START_OFFSET;
+                    y += BUTTON_SIZE + BUTTON_GAP;
+                }
+
+                CreateButton(pixel, _parent, new Point(x, y));
+                x += BUTTON_SIZE + BUTTON_GAP;
+            }
+            y += BUTTON_SIZE + GROUP_GAP;
+        }
+
+        Label CreateLabel(string name, Panel parent, Point location)
+        {
+            var lbl = new Label()
+            {
+                Name = name,
+                Parent = parent,
+                Location = location,
+                Size = new Size(parent.Width, LABEL_SIZE),
+                TextAlign = ContentAlignment.TopCenter,
+                Text = name
+            };
+
+            return lbl;
+        }
+
+        Button CreateButton(byte pixel, Panel parent, Point location)
+        {
+            var btn = new Button()
+            {
+                Name = pixel.ToString(),
+                Parent = parent,
+                Location = location,
+                Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
+                Font = new Font(parent.Font.FontFamily, 7),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Text = pixel.ToString()
+            };
+
+            btn.MouseDown += OnClickColorButton;
+            return btn;
+        }
+    }
+
+    private void DeleteButtons()
+    {
+        while (_parent.Controls.Count > 0)
+        {
+            _parent.Controls[0].Dispose();
+        }
     }
 
     private void OnClickColorButton(object? sender, MouseEventArgs e)
@@ -103,19 +131,21 @@ public class RecolorHandler : IRecolorHandler
             SolidColorOnly = true,
         };
 
-        if (colorDialog.ShowDialog() == DialogResult.OK)
-            UpdateButtonColor(btn, colorDialog.Color);
+        if (colorDialog.ShowDialog() != DialogResult.OK)
+            return;
+
+        Logger.Warn($"Changed pixel {btn.Name} to {colorDialog.Color}");
+        UpdateButtonColor(btn, colorDialog.Color);
+
+        byte pixel = byte.Parse(btn.Name);
+        _textureHandler.SetPixel(pixel, colorDialog.Color);
+        _spritePreviewer.UpdatePreview(pixel, colorDialog.Color);
     }
 
     public void UpdateButtonColor(Button btn, Color color)
     {
         btn.BackColor = color;
         btn.ForeColor = color.GetTextColor();
-
-        byte pixel = byte.Parse(btn.Name);
-        _textureHandler.SetPixel(pixel, color);
-        _spritePreviewer.UpdatePreview(pixel, color);
-        Logger.Warn($"Changed pixel {pixel} to {color}");
     }
 
     private const int START_OFFSET = 10;

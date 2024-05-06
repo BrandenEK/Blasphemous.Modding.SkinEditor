@@ -33,11 +33,10 @@ partial class MainForm
         _right = new Panel();
         _right_image = new PictureBox();
         _left = new Panel();
-        _left_selector = new ComboBox();
+        _right_selector = new ComboBox();
         UI.SuspendLayout();
         _right.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_right_image).BeginInit();
-        _left.SuspendLayout();
         SuspendLayout();
         // 
         // UI
@@ -56,6 +55,7 @@ partial class MainForm
         _right.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         _right.BackColor = Color.FromArgb(17, 8, 3);
         _right.BorderStyle = BorderStyle.Fixed3D;
+        _right.Controls.Add(_right_selector);
         _right.Controls.Add(_right_image);
         _right.Location = new Point(300, 0);
         _right.Name = "_right";
@@ -77,20 +77,19 @@ partial class MainForm
         _left.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
         _left.BackColor = Color.Gray;
         _left.BorderStyle = BorderStyle.Fixed3D;
-        _left.Controls.Add(_left_selector);
         _left.Location = new Point(0, 0);
         _left.Name = "_left";
         _left.Size = new Size(300, 650);
         _left.TabIndex = 0;
         // 
-        // _left_selector
+        // _right_selector
         // 
-        _left_selector.FormattingEnabled = true;
-        _left_selector.Location = new Point(86, 577);
-        _left_selector.Name = "_left_selector";
-        _left_selector.Size = new Size(121, 23);
-        _left_selector.TabIndex = 0;
-        _left_selector.SelectedIndexChanged += OnSelectAnim;
+        _right_selector.FormattingEnabled = true;
+        _right_selector.Location = new Point(4, 3);
+        _right_selector.Name = "_right_selector";
+        _right_selector.Size = new Size(121, 23);
+        _right_selector.TabIndex = 0;
+        _right_selector.SelectedIndexChanged += OnSelectAnim;
         // 
         // MainForm
         // 
@@ -108,7 +107,6 @@ partial class MainForm
         UI.ResumeLayout(false);
         _right.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)_right_image).EndInit();
-        _left.ResumeLayout(false);
         ResumeLayout(false);
     }
 
@@ -118,5 +116,5 @@ partial class MainForm
     private Panel _left;
     private Panel _right;
     private PictureBox _right_image;
-    private ComboBox _left_selector;
+    private ComboBox _right_selector;
 }
