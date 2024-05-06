@@ -1,29 +1,25 @@
 ﻿using Blasphemous.Modding.SkinEditor.Extensions;
 using Blasphemous.Modding.SkinEditor.Models;
-using Blasphemous.Modding.SkinEditor.Previewing;
+using Blasphemous.Modding.SkinEditor.Undo;
 using Newtonsoft.Json;
 
-namespace Blasphemous.Modding.SkinEditor.Recoloring;
+namespace Blasphemous.Modding.SkinEditor.Recolor;
 
-public class RecolorHandler : IRecolorHandler
+public class RecolorManager : IManager
 {
-    private readonly TextureHandler _textureHandler;
-    private readonly ISpritePreviewer _spritePreviewer;
     private readonly Panel _parent;
 
     private readonly IEnumerable<PixelGroup> _groups;
 
     private bool _showingAll;
 
-    public RecolorHandler(TextureHandler textureHandler, ISpritePreviewer spritePreviewer, Panel parent, ToolStripMenuItem allMenu)
+    public RecolorManager(Panel parent)
     {
-        _textureHandler = textureHandler;
-        _spritePreviewer = spritePreviewer;
         _parent = parent;
 
         _groups = LoadPixelGroups();
-        _showingAll = (bool)Properties.Settings.Default["view_all"];
-        allMenu.Checked = _showingAll;
+        //_showingAll = (bool)Properties.Settings.Default["view_all"];
+        //allMenu.Checked = _showingAll;
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
@@ -59,7 +55,7 @@ public class RecolorHandler : IRecolorHandler
             if (c is Button btn)
             {
                 byte pixel = byte.Parse(btn.Name);
-                Color color = _textureHandler.GetPixel(pixel);
+                Color color = Core.TextureManager.GetPixel(pixel);
                 UpdateButtonColor(btn, color);
             }
         }
@@ -67,7 +63,7 @@ public class RecolorHandler : IRecolorHandler
 
     private void CreateButtons()
     {
-        var previewPixels = _spritePreviewer.GetPixelsInPreview();
+        var previewPixels = Core.PreviewManager.GetPixelsInPreview();
 
         int y = START_OFFSET;
         foreach (var group in _groups)
@@ -155,18 +151,51 @@ public class RecolorHandler : IRecolorHandler
         if (colorDialog.ShowDialog() != DialogResult.OK)
             return;
 
-        Logger.Warn($"Changed pixel {btn.Name} to {colorDialog.Color}");
-        UpdateButtonColor(btn, colorDialog.Color);
-
         byte pixel = byte.Parse(btn.Name);
-        _textureHandler.SetPixel(pixel, colorDialog.Color);
-        _spritePreviewer.UpdatePreview(pixel, colorDialog.Color);
+        Color color = colorDialog.Color;
+        Logger.Warn($"Changed pixel {pixel} to {color}");
+
+        Core.UndoManager.Do(new PixelColorUndoCommand(pixel, btn.BackColor, color));
+        Core.TextureManager.SetPixel(pixel, color);
+        Core.PreviewManager.UpdatePreview(pixel, color);
+
+        UpdateButtonColor(btn, color);
     }
 
     public void UpdateButtonColor(Button btn, Color color)
     {
         btn.BackColor = color;
         btn.ForeColor = color.GetTextColor();
+    }
+
+    public void UpdateButtonColor(byte pixel, Color color)
+    {
+        Button btn = (Button)_parent.Controls.Find(pixel.ToString(), false)[0];
+        UpdateButtonColor(btn, color);
+    }
+
+    // Event handling
+
+    public void Initialize()
+    {
+        Core.UndoManager.OnUndo += OnUndo;
+        Core.UndoManager.OnRedo += OnRedo;
+    }
+
+    private void OnUndo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdateButtonColor(pc.Pixel, pc.OldColor);
+    }
+
+    private void OnRedo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdateButtonColor(pc.Pixel, pc.NewColor);
     }
 
     private const int START_OFFSET = 10;

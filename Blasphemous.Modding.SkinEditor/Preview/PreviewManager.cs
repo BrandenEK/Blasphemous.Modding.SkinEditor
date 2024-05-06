@@ -1,20 +1,17 @@
-﻿
-namespace Blasphemous.Modding.SkinEditor.Previewing;
+﻿using Blasphemous.Modding.SkinEditor.Undo;
 
-public class SpritePreviewer : ISpritePreviewer
+namespace Blasphemous.Modding.SkinEditor.Preview;
+
+public class PreviewManager : IManager
 {
-    private readonly TextureHandler _textureHandler;
-
     private readonly PictureBox _pictureBox;
 
     private Bitmap? _indexedPreview;
     private Bitmap? _coloredPreview;
     private int _lastScale = 1;
 
-    public SpritePreviewer(TextureHandler textureHandler, PictureBox pictureBox)
+    public PreviewManager(PictureBox pictureBox)
     {
-        _textureHandler = textureHandler;
-
         _pictureBox = pictureBox;
         _pictureBox.SizeChanged += OnPictureResized;
     }
@@ -64,7 +61,7 @@ public class SpritePreviewer : ISpritePreviewer
                 Color pixelColor = preview.GetPixel(x, y);
                 if (pixelColor.A > 0)
                 {
-                    colored.SetPixel(x, y, _textureHandler.GetPixel(pixelColor.R));
+                    colored.SetPixel(x, y, Core.TextureManager.GetPixel(pixelColor.R));
                 }
             }
         }
@@ -124,6 +121,30 @@ public class SpritePreviewer : ISpritePreviewer
         }
 
         return pixels;
+    }
+
+    // Event handling
+
+    public void Initialize()
+    {
+        Core.UndoManager.OnUndo += OnUndo;
+        Core.UndoManager.OnRedo += OnRedo;
+    }
+
+    private void OnUndo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdatePreview(pc.Pixel, pc.OldColor);
+    }
+
+    private void OnRedo(IUndoCommand command)
+    {
+        if (command is not PixelColorUndoCommand pc)
+            return;
+
+        UpdatePreview(pc.Pixel, pc.NewColor);
     }
 
     private int CurrentScale => _coloredPreview == null
