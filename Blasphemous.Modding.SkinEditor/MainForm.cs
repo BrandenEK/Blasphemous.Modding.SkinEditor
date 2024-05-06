@@ -96,6 +96,9 @@ public partial class MainForm : Form
         _recolorHandler.RefreshButtonsVisibility();
     }
 
+    private void OnClickMenu_Edit_Undo(object _, EventArgs __) => Core.UndoManager.Undo();
+    private void OnClickMenu_Edit_Redo(object _, EventArgs __) => Core.UndoManager.Redo();
+
     private void OnClickMenu_View_Buttons(object _, EventArgs __)
     {
         Logger.Info("Toggling visibility of all buttons");

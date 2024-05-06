@@ -115,6 +115,7 @@ partial class MainForm
         _menu_edit_undo.ShortcutKeys = Keys.Control | Keys.Z;
         _menu_edit_undo.Size = new Size(144, 22);
         _menu_edit_undo.Text = "Undo";
+        _menu_edit_undo.Click += OnClickMenu_Edit_Undo;
         // 
         // _menu_edit_redo
         // 

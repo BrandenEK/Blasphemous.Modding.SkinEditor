@@ -20,27 +20,33 @@ public class UndoManager
         redo.Clear();
     }
 
-    public IUndoCommand Undo()
+    public void Undo()
     {
         if (undo.Count == 0)
-            return null;
+            return;
 
         IUndoCommand command = undo[undo.Count - 1];
         undo.RemoveAt(undo.Count - 1);
         redo.Add(command);
-        return command;
+
+        OnUndo?.Invoke(command);
     }
 
-    public IUndoCommand Redo()
+    public void Redo()
     {
         if (redo.Count == 0)
-            return null;
+            return;
 
         IUndoCommand command = redo[redo.Count - 1];
         redo.RemoveAt(redo.Count - 1);
         undo.Add(command);
-        return command;
+
+        OnRedo?.Invoke(command);
     }
+
+    public delegate void UndoRedoDelegate(IUndoCommand command);
+    public event UndoRedoDelegate? OnUndo;
+    public event UndoRedoDelegate? OnRedo;
 
     private const int MAX_STACK_SIZE = 20;
 }
