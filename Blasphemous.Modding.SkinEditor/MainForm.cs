@@ -26,6 +26,10 @@ public partial class MainForm : Form
         // Initialize form ui
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
         Core.TextureManager.LoadTexture(Path.Combine(Environment.CurrentDirectory, "data", "default.png"));
+        Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
+        {
+            _menu_view_all, _menu_view_background, _menu_view_side
+        });
 
         // Testing stuff
         LoadAllAnimations();

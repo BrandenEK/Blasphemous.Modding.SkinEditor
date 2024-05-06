@@ -1,10 +1,23 @@
-﻿
-using Blasphemous.Modding.SkinEditor.Properties;
+﻿using Blasphemous.Modding.SkinEditor.Properties;
 
 namespace Blasphemous.Modding.SkinEditor.Setting;
 
 public class SettingManager : IManager
 {
+    public void LoadAllProperties(IEnumerable<ToolStripMenuItem> menus)
+    {
+        foreach (ToolStripMenuItem menu in menus)
+        {
+            string property = menu.Name[6..];
+            bool status = (bool)Settings.Default[property];
+
+            menu.Checked = status;
+
+            Logger.Info($"Loading property {property} ({status})");
+            OnSettingChanged?.Invoke(property, status);
+        }
+    }
+
     public void SetProperty(ToolStripMenuItem menu)
     {
         string property = menu.Name[6..];
