@@ -29,7 +29,6 @@ partial class MainForm
     private void InitializeComponent()
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-        UI = new Panel();
         _right = new Panel();
         _right_selector = new ComboBox();
         _right_image = new PictureBox();
@@ -42,31 +41,19 @@ partial class MainForm
         _menu_view = new ToolStripMenuItem();
         _menu_view_all = new ToolStripMenuItem();
         _menu_view_back = new ToolStripMenuItem();
-        UI.SuspendLayout();
         _right.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_right_image).BeginInit();
         _menu.SuspendLayout();
         SuspendLayout();
         // 
-        // UI
-        // 
-        UI.BackColor = Color.Fuchsia;
-        UI.Controls.Add(_right);
-        UI.Controls.Add(_left);
-        UI.Dock = DockStyle.Fill;
-        UI.Location = new Point(0, 24);
-        UI.Name = "UI";
-        UI.Size = new Size(1264, 657);
-        UI.TabIndex = 0;
-        // 
         // _right
         // 
-        _right.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         _right.BackColor = Color.FromArgb(17, 8, 3);
         _right.BorderStyle = BorderStyle.Fixed3D;
         _right.Controls.Add(_right_selector);
         _right.Controls.Add(_right_image);
-        _right.Location = new Point(300, 0);
+        _right.Dock = DockStyle.Fill;
+        _right.Location = new Point(300, 24);
         _right.Name = "_right";
         _right.Size = new Size(964, 657);
         _right.TabIndex = 1;
@@ -92,10 +79,10 @@ partial class MainForm
         // 
         // _left
         // 
-        _left.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
         _left.BackColor = Color.Gray;
         _left.BorderStyle = BorderStyle.Fixed3D;
-        _left.Location = new Point(0, 0);
+        _left.Dock = DockStyle.Left;
+        _left.Location = new Point(0, 24);
         _left.Name = "_left";
         _left.Size = new Size(300, 657);
         _left.TabIndex = 0;
@@ -166,7 +153,8 @@ partial class MainForm
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1264, 681);
-        Controls.Add(UI);
+        Controls.Add(_right);
+        Controls.Add(_left);
         Controls.Add(_menu);
         Icon = (Icon)resources.GetObject("$this.Icon");
         MainMenuStrip = _menu;
@@ -175,7 +163,6 @@ partial class MainForm
         Text = "Blasphemous Skin Editor";
         FormClosing += OnFormClose;
         Load += OnFormOpen;
-        UI.ResumeLayout(false);
         _right.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)_right_image).EndInit();
         _menu.ResumeLayout(false);
@@ -185,8 +172,6 @@ partial class MainForm
     }
 
     #endregion
-
-    private Panel UI;
     private Panel _left;
     private Panel _right;
     private PictureBox _right_image;
