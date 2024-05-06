@@ -1,5 +1,6 @@
 ﻿using Blasphemous.Modding.SkinEditor.Extensions;
 using Blasphemous.Modding.SkinEditor.Models;
+using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Undo;
 using Newtonsoft.Json;
 
@@ -132,20 +133,13 @@ public class RecolorManager : IManager
 
         Button btn = (Button)sender;
 
-        using ColorDialog colorDialog = new()
-        {
-            AnyColor = true,
-            Color = btn.BackColor,
-            FullOpen = true,
-            SolidColorOnly = true,
-        };
-
-        if (colorDialog.ShowDialog() != DialogResult.OK)
+        using ColorPrompt prompt = new(btn.BackColor);
+        if (prompt.ShowDialog() != DialogResult.OK)
             return;
 
         byte pixel = byte.Parse(btn.Name);
         Color oldColor = btn.BackColor;
-        Color newColor = colorDialog.Color;
+        Color newColor = prompt.SelectedColor;
 
         Logger.Warn($"Changing pixel {pixel} to {newColor}");
         OnPixelChanged?.Invoke(pixel, oldColor, newColor);
