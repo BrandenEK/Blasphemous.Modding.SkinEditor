@@ -1,6 +1,7 @@
 ﻿using Blasphemous.Modding.SkinEditor.Extensions;
 using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Previewing;
+using Blasphemous.Modding.SkinEditor.Undo;
 using Newtonsoft.Json;
 
 namespace Blasphemous.Modding.SkinEditor.Recoloring;
@@ -155,12 +156,15 @@ public class RecolorHandler : IRecolorHandler
         if (colorDialog.ShowDialog() != DialogResult.OK)
             return;
 
-        Logger.Warn($"Changed pixel {btn.Name} to {colorDialog.Color}");
-        UpdateButtonColor(btn, colorDialog.Color);
-
         byte pixel = byte.Parse(btn.Name);
-        _textureHandler.SetPixel(pixel, colorDialog.Color);
-        _spritePreviewer.UpdatePreview(pixel, colorDialog.Color);
+        Color color = colorDialog.Color;
+        Logger.Warn($"Changed pixel {pixel} to {color}");
+
+        Core.UndoManager.Do(new PixelColorUndoCommand(pixel, btn.BackColor, color));
+        _textureHandler.SetPixel(pixel, color);
+        _spritePreviewer.UpdatePreview(pixel, color);
+
+        UpdateButtonColor(btn, color);
     }
 
     public void UpdateButtonColor(Button btn, Color color)
