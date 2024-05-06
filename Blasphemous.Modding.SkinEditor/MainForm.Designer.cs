@@ -30,6 +30,7 @@ partial class MainForm
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         _preview = new Panel();
+        _preview_debug = new Button();
         _preview_selector = new ComboBox();
         _preview_image = new PictureBox();
         _buttons = new Panel();
@@ -42,7 +43,11 @@ partial class MainForm
         _menu_view_all = new ToolStripMenuItem();
         _menu_view_background = new ToolStripMenuItem();
         _menu_view_side = new ToolStripMenuItem();
-        _preview_debug = new Button();
+        _menu_file_new = new ToolStripMenuItem();
+        _menu_file_open = new ToolStripMenuItem();
+        _menu_file_sep = new ToolStripSeparator();
+        _menu_file_save = new ToolStripMenuItem();
+        _menu_file_saveas = new ToolStripMenuItem();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
         _menu.SuspendLayout();
@@ -60,6 +65,17 @@ partial class MainForm
         _preview.Name = "_preview";
         _preview.Size = new Size(944, 657);
         _preview.TabIndex = 1;
+        // 
+        // _preview_debug
+        // 
+        _preview_debug.AutoSize = true;
+        _preview_debug.Location = new Point(131, 3);
+        _preview_debug.Name = "_preview_debug";
+        _preview_debug.Size = new Size(91, 25);
+        _preview_debug.TabIndex = 1;
+        _preview_debug.Text = "Debug button";
+        _preview_debug.UseVisualStyleBackColor = true;
+        _preview_debug.Click += OnClickDebug;
         // 
         // _preview_selector
         // 
@@ -103,6 +119,7 @@ partial class MainForm
         // 
         // _menu_file
         // 
+        _menu_file.DropDownItems.AddRange(new ToolStripItem[] { _menu_file_new, _menu_file_open, _menu_file_sep, _menu_file_save, _menu_file_saveas });
         _menu_file.Name = "_menu_file";
         _menu_file.Size = new Size(37, 20);
         _menu_file.Text = "File";
@@ -118,7 +135,7 @@ partial class MainForm
         // 
         _menu_edit_undo.Name = "_menu_edit_undo";
         _menu_edit_undo.ShortcutKeys = Keys.Control | Keys.Z;
-        _menu_edit_undo.Size = new Size(144, 22);
+        _menu_edit_undo.Size = new Size(180, 22);
         _menu_edit_undo.Text = "Undo";
         _menu_edit_undo.Click += OnClickMenu_Edit_Undo;
         // 
@@ -126,7 +143,7 @@ partial class MainForm
         // 
         _menu_edit_redo.Name = "_menu_edit_redo";
         _menu_edit_redo.ShortcutKeys = Keys.Control | Keys.Y;
-        _menu_edit_redo.Size = new Size(144, 22);
+        _menu_edit_redo.Size = new Size(180, 22);
         _menu_edit_redo.Text = "Redo";
         _menu_edit_redo.Click += OnClickMenu_Edit_Redo;
         // 
@@ -164,16 +181,38 @@ partial class MainForm
         _menu_view_side.Text = "Preview on left side";
         _menu_view_side.Click += OnClickMenu_View_Side;
         // 
-        // _preview_debug
+        // _menu_file_new
         // 
-        _preview_debug.AutoSize = true;
-        _preview_debug.Location = new Point(131, 3);
-        _preview_debug.Name = "_preview_debug";
-        _preview_debug.Size = new Size(91, 25);
-        _preview_debug.TabIndex = 1;
-        _preview_debug.Text = "Debug button";
-        _preview_debug.UseVisualStyleBackColor = true;
-        _preview_debug.Click += OnClickDebug;
+        _menu_file_new.Name = "_menu_file_new";
+        _menu_file_new.ShortcutKeys = Keys.Control | Keys.N;
+        _menu_file_new.Size = new Size(184, 22);
+        _menu_file_new.Text = "New";
+        // 
+        // _menu_file_open
+        // 
+        _menu_file_open.Name = "_menu_file_open";
+        _menu_file_open.ShortcutKeys = Keys.Control | Keys.O;
+        _menu_file_open.Size = new Size(184, 22);
+        _menu_file_open.Text = "Open";
+        // 
+        // _menu_file_sep
+        // 
+        _menu_file_sep.Name = "_menu_file_sep";
+        _menu_file_sep.Size = new Size(181, 6);
+        // 
+        // _menu_file_save
+        // 
+        _menu_file_save.Name = "_menu_file_save";
+        _menu_file_save.ShortcutKeys = Keys.Control | Keys.S;
+        _menu_file_save.Size = new Size(184, 22);
+        _menu_file_save.Text = "Save";
+        // 
+        // _menu_file_saveas
+        // 
+        _menu_file_saveas.Name = "_menu_file_saveas";
+        _menu_file_saveas.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
+        _menu_file_saveas.Size = new Size(184, 22);
+        _menu_file_saveas.Text = "Save as";
         // 
         // MainForm
         // 
@@ -214,4 +253,9 @@ partial class MainForm
     private ToolStripMenuItem _menu_file;
     private ToolStripMenuItem _menu_view_side;
     private Button _preview_debug;
+    private ToolStripMenuItem _menu_file_new;
+    private ToolStripMenuItem _menu_file_open;
+    private ToolStripSeparator _menu_file_sep;
+    private ToolStripMenuItem _menu_file_save;
+    private ToolStripMenuItem _menu_file_saveas;
 }
