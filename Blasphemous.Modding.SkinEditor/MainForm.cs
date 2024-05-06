@@ -23,6 +23,9 @@ public partial class MainForm : Form
         Location = Settings.Default.Location;
         Size = Settings.Default.Size;
 
+        // Register events
+        Core.SettingManager.OnSettingChanged += OnSettingChanged;
+
         // Initialize form ui
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
         Core.TextureManager.LoadTexture(Path.Combine(Environment.CurrentDirectory, "data", "default.png"));
@@ -44,6 +47,14 @@ public partial class MainForm : Form
         Settings.Default.Size = WindowState == FormWindowState.Normal ? Size : RestoreBounds.Size;
         Settings.Default.Maximized = WindowState == FormWindowState.Maximized;
         Settings.Default.Save();
+    }
+
+    private void OnSettingChanged(string property, bool status)
+    {
+        if (property != "view_side")
+            return;
+
+        _buttons.Dock = status ? DockStyle.Right : DockStyle.Left;
     }
 
     private void LoadAllAnimations()
@@ -97,10 +108,5 @@ public partial class MainForm : Form
 
     private void OnClickMenu_View_All(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
     private void OnClickMenu_View_Background(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
-    private void OnClickMenu_View_Side(object sender, EventArgs __)
-    {
-        Logger.Info("Toggling preview side");
-        DockStyle style = _buttons.Dock;
-        _buttons.Dock = style == DockStyle.Left ? DockStyle.Right : DockStyle.Left;
-    }
+    private void OnClickMenu_View_Side(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
 }

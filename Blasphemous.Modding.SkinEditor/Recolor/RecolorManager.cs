@@ -16,10 +16,7 @@ public class RecolorManager : IManager
     public RecolorManager(Panel parent)
     {
         _parent = parent;
-
         _groups = LoadPixelGroups();
-        //_showingAll = (bool)Properties.Settings.Default["view_all"];
-        //allMenu.Checked = _showingAll;
     }
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
