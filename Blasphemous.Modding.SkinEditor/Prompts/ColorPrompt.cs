@@ -40,6 +40,40 @@ public partial class ColorPrompt : Form
         _b_slider.Value = SelectedColor.B;
     }
 
+    private void OnPreviewTextChanged(object _, EventArgs __)
+    {
+        string rgb = _preview_text.Text.PadLeft(6, '0');
+        SelectedColor = ColorTranslator.FromHtml($"#{rgb}");
+
+        UpdatePreviewColor();
+        UpdateRgbTexts();
+        UpdateRgbSliders();
+    }
+
+    private void OnRgbTextChanged(object _, EventArgs __)
+    {
+        string r = _r_text.Text.PadLeft(2, '0');
+        string g = _g_text.Text.PadLeft(2, '0');
+        string b = _b_text.Text.PadLeft(2, '0');
+        SelectedColor = ColorTranslator.FromHtml($"#{r}{g}{b}");
+
+        UpdatePreviewColor();
+        UpdatePreviewText();
+        UpdateRgbSliders();
+    }
+
+    private void OnRgbSliderChanged(object _, EventArgs __)
+    {
+        int r = _r_slider.Value;
+        int g = _g_slider.Value;
+        int b = _b_slider.Value;
+        SelectedColor = Color.FromArgb(r, g, b);
+
+        UpdatePreviewColor();
+        UpdatePreviewText();
+        UpdateRgbTexts();
+    }
+
     private static string Hex(byte b)
     {
         return b.ToString("X2");

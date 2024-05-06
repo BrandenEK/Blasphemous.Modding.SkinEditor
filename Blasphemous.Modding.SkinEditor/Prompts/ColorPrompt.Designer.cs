@@ -100,6 +100,7 @@ partial class ColorPrompt
         _r_slider.TabIndex = 8;
         _r_slider.TabStop = false;
         _r_slider.Value = 255;
+        _r_slider.ValueChanged += OnRgbSliderChanged;
         // 
         // _r_text
         // 
@@ -111,6 +112,7 @@ partial class ColorPrompt
         _r_text.TabIndex = 1;
         _r_text.Text = "FF";
         _r_text.TextAlign = HorizontalAlignment.Center;
+        _r_text.TextChanged += OnRgbTextChanged;
         // 
         // _r_label
         // 
@@ -156,6 +158,7 @@ partial class ColorPrompt
         _preview_text.TabIndex = 0;
         _preview_text.Text = "FF0000";
         _preview_text.TextAlign = HorizontalAlignment.Center;
+        _preview_text.TextChanged += OnPreviewTextChanged;
         // 
         // _r
         // 
@@ -191,6 +194,7 @@ partial class ColorPrompt
         _g_slider.Size = new Size(250, 45);
         _g_slider.TabIndex = 8;
         _g_slider.TabStop = false;
+        _g_slider.ValueChanged += OnRgbSliderChanged;
         // 
         // _g_text
         // 
@@ -202,6 +206,7 @@ partial class ColorPrompt
         _g_text.TabIndex = 2;
         _g_text.Text = "00";
         _g_text.TextAlign = HorizontalAlignment.Center;
+        _g_text.TextChanged += OnRgbTextChanged;
         // 
         // _g_label
         // 
@@ -245,6 +250,7 @@ partial class ColorPrompt
         _b_slider.Size = new Size(250, 45);
         _b_slider.TabIndex = 8;
         _b_slider.TabStop = false;
+        _b_slider.ValueChanged += OnRgbSliderChanged;
         // 
         // _b_text
         // 
@@ -256,6 +262,7 @@ partial class ColorPrompt
         _b_text.TabIndex = 3;
         _b_text.Text = "00";
         _b_text.TextAlign = HorizontalAlignment.Center;
+        _b_text.TextChanged += OnRgbTextChanged;
         // 
         // _b_label
         // 
@@ -267,7 +274,7 @@ partial class ColorPrompt
         _b_label.Text = "B:";
         _b_label.TextAlign = ContentAlignment.MiddleRight;
         // 
-        // ColorForm
+        // ColorPrompt
         // 
         AcceptButton = _buttons_confirm;
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -282,7 +289,7 @@ partial class ColorPrompt
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         MinimizeBox = false;
-        Name = "ColorForm";
+        Name = "ColorPrompt";
         ShowIcon = false;
         ShowInTaskbar = false;
         StartPosition = FormStartPosition.CenterParent;
