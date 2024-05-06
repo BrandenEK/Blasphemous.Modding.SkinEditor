@@ -33,7 +33,6 @@ public partial class MainForm : Form
 
         // Initialize form ui
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
-        OnFormResized(this, new EventArgs());
 
         // Testing stuff
         LoadAllAnimations();
@@ -48,14 +47,6 @@ public partial class MainForm : Form
         _settingsHandler.Current.Size = WindowState == FormWindowState.Normal ? Size : RestoreBounds.Size;
         _settingsHandler.Current.Maximized = WindowState == FormWindowState.Maximized;
         _settingsHandler.Save();
-    }
-
-    private void OnFormResized(object sender, EventArgs e)
-    {
-        // Resize main ui holder
-        UI.Location = ClientRectangle.Location;
-        UI.Size = ClientRectangle.Size;
-        UI.Location = new Point(0, 20);
     }
 
     private void LoadAllAnimations()

@@ -51,13 +51,13 @@ partial class MainForm
         // 
         // UI
         // 
-        UI.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         UI.BackColor = Color.Fuchsia;
         UI.Controls.Add(_right);
         UI.Controls.Add(_left);
-        UI.Location = new Point(30, 15);
+        UI.Dock = DockStyle.Fill;
+        UI.Location = new Point(0, 24);
         UI.Name = "UI";
-        UI.Size = new Size(1200, 650);
+        UI.Size = new Size(1264, 657);
         UI.TabIndex = 0;
         // 
         // _right
@@ -70,7 +70,7 @@ partial class MainForm
         _right.Controls.Add(_right_image);
         _right.Location = new Point(300, 0);
         _right.Name = "_right";
-        _right.Size = new Size(900, 650);
+        _right.Size = new Size(964, 657);
         _right.TabIndex = 1;
         // 
         // _right_buttonsBtn
@@ -98,7 +98,7 @@ partial class MainForm
         _right_image.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         _right_image.Location = new Point(100, 100);
         _right_image.Name = "_right_image";
-        _right_image.Size = new Size(700, 450);
+        _right_image.Size = new Size(764, 457);
         _right_image.SizeMode = PictureBoxSizeMode.CenterImage;
         _right_image.TabIndex = 0;
         _right_image.TabStop = false;
@@ -110,7 +110,7 @@ partial class MainForm
         _left.BorderStyle = BorderStyle.Fixed3D;
         _left.Location = new Point(0, 0);
         _left.Name = "_left";
-        _left.Size = new Size(300, 650);
+        _left.Size = new Size(300, 657);
         _left.TabIndex = 0;
         // 
         // _menu
@@ -187,7 +187,6 @@ partial class MainForm
         Text = "Blasphemous Skin Editor";
         FormClosing += OnFormClose;
         Load += OnFormOpen;
-        SizeChanged += OnFormResized;
         UI.ResumeLayout(false);
         _right.ResumeLayout(false);
         _right.PerformLayout();
