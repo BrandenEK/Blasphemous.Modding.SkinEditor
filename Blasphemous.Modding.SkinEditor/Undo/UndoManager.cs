@@ -29,6 +29,7 @@ public class UndoManager
         undo.RemoveAt(undo.Count - 1);
         redo.Add(command);
 
+        Logger.Info($"Undoing command: {command}");
         OnUndo?.Invoke(command);
     }
 
@@ -41,6 +42,7 @@ public class UndoManager
         redo.RemoveAt(redo.Count - 1);
         undo.Add(command);
 
+        Logger.Info($"Redoing command: {command}");
         OnRedo?.Invoke(command);
     }
 

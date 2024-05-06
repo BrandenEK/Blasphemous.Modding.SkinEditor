@@ -124,6 +124,7 @@ partial class MainForm
         _menu_edit_redo.ShortcutKeys = Keys.Control | Keys.Y;
         _menu_edit_redo.Size = new Size(144, 22);
         _menu_edit_redo.Text = "Redo";
+        _menu_edit_redo.Click += OnClickMenu_Edit_Redo;
         // 
         // _menu_view
         // 
