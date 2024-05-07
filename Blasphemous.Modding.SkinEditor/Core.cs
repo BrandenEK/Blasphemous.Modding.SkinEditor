@@ -23,11 +23,12 @@ internal static class Core
         TextureManager = new TextureManager();
         UndoManager = new UndoManager();
 
-        PreviewManager.Initialize();
-        RecolorManager.Initialize();
+        // Initialize them in a certain order
         SaveManager.Initialize();
         SettingManager.Initialize();
         TextureManager.Initialize();
+        PreviewManager.Initialize();
+        RecolorManager.Initialize();
         UndoManager.Initialize();
 
         Application.Run(form);

@@ -6,11 +6,18 @@ public class SaveManager : IManager
     public void New()
     {
         Logger.Warn("Creating new skin");
+
+        OnNewSkin?.Invoke();
     }
 
     public void Open()
     {
         Logger.Warn("Opening existing skin");
+
+        // Prompt for file path
+        string path = Path.Combine(Environment.CurrentDirectory, "data", "test.png");
+
+        OnOpenSkin?.Invoke(path);
     }
 
     public void Save()
@@ -29,4 +36,9 @@ public class SaveManager : IManager
     {
         
     }
+
+    public delegate void NewSkinDelegate();
+    public event NewSkinDelegate? OnNewSkin;
+    public delegate void OpenSkinDelegate(string path);
+    public event OpenSkinDelegate? OnOpenSkin;
 }

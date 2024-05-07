@@ -36,6 +36,7 @@ public class TextureManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.SaveManager.OnNewSkin += OnNewSkin;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
     }
@@ -43,6 +44,11 @@ public class TextureManager : IManager
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
         SetPixel(pixel, newColor);
+    }
+
+    private void OnNewSkin()
+    {
+        LoadTexture(DEFAULT_TEXTURE_PATH);
     }
 
     private void OnUndo(IUndoCommand command)
@@ -63,4 +69,6 @@ public class TextureManager : IManager
 
     public delegate void TextureChangeDelegate(Bitmap texture);
     public event TextureChangeDelegate? OnTextureChanged;
+
+    private readonly string DEFAULT_TEXTURE_PATH = Path.Combine(Environment.CurrentDirectory, "data", "default.png");
 }

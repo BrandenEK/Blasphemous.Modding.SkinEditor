@@ -28,7 +28,6 @@ public partial class MainForm : Form
 
         // Initialize form ui
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
-        Core.TextureManager.LoadTexture(Path.Combine(Environment.CurrentDirectory, "data", "default.png"));
         Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
         {
             _menu_view_all, _menu_view_background, _menu_view_side
@@ -36,6 +35,9 @@ public partial class MainForm : Form
 
         // Testing stuff
         LoadAllAnimations();
+
+        // Start process
+        Core.SaveManager.New();
     }
 
     private void OnFormClose(object sender, FormClosingEventArgs e)
@@ -65,7 +67,7 @@ public partial class MainForm : Form
             _preview_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
         }
 
-        _preview_selector.SelectedItem = "idle";
+        //_preview_selector.SelectedItem = "idle";
     }
 
     //private void Test()

@@ -164,6 +164,7 @@ public class PreviewManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.SaveManager.OnNewSkin += OnNewSkin;
         Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
@@ -173,6 +174,14 @@ public class PreviewManager : IManager
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
         UpdatePreview(pixel, newColor);
+    }
+
+    private void OnNewSkin()
+    {
+        // Should not hardcode file path here
+        // Also need to set text in selector
+        string file = Path.Combine(Environment.CurrentDirectory, "anim", "idle.png");
+        ChangePreview(new Bitmap(file));
     }
 
     private void OnSettingChanged(string property, bool status)
