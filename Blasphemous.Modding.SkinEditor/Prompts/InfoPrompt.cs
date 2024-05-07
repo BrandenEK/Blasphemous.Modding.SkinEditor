@@ -29,21 +29,17 @@ public partial class InfoPrompt : Form
 
     private void ValidateInfo()
     {
-        bool isValid = true;
+        bool idValid = !string.IsNullOrEmpty(_id_text.Text) && _id_text.Text.StartsWith("PENITENT_");
+        bool nameValid = !string.IsNullOrEmpty(_name_text.Text);
+        bool authorValid = !string.IsNullOrEmpty(_author_text.Text);
+        bool versionValid = !string.IsNullOrEmpty(_version_text.Text) && Version.TryParse(_version_text.Text, out _);
 
-        if (string.IsNullOrEmpty(_id_text.Text) || !_id_text.Text.StartsWith("PENITENT_"))
-            isValid = false;
+        _id_text.BackColor = idValid ? SystemColors.Window : SystemColors.Info;
+        _name_text.BackColor = nameValid ? SystemColors.Window : SystemColors.Info;
+        _author_text.BackColor = authorValid ? SystemColors.Window : SystemColors.Info;
+        _version_text.BackColor = versionValid ? SystemColors.Window : SystemColors.Info;
 
-        if (string.IsNullOrEmpty(_name_text.Text))
-            isValid = false;
-
-        if (string.IsNullOrEmpty(_author_text.Text))
-            isValid = false;
-
-        if (string.IsNullOrEmpty(_version_text.Text) || !Version.TryParse(_version_text.Text, out _))
-            isValid = false;
-
-        _buttons_confirm.Enabled = isValid;
+        _buttons_confirm.Enabled = idValid && nameValid && authorValid && versionValid;
     }
 
     private void OnInfoTextChanged(object _, EventArgs __)
