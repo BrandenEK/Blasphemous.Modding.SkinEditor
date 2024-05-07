@@ -7,6 +7,7 @@ public class SaveManager : IManager
     private readonly Label _idLabel;
 
     private SkinInfo? _currentSkin;
+    private bool _isSaved;
 
     public SaveManager(Label idLabel)
     {
@@ -15,9 +16,10 @@ public class SaveManager : IManager
 
     private void UpdateIdLabel()
     {
-        string text = _currentSkin?.Id ?? "Unsaved skin";
+        string text = (_currentSkin?.Id ?? "Unsaved skin") + (_isSaved ? string.Empty : " *");
+        Font font = new(_idLabel.Font, _isSaved ? FontStyle.Regular : FontStyle.Italic);
 
-        // Display italics with star if unsaved
+        _idLabel.Font = font;
         _idLabel.Text = text;
     }
 
@@ -25,7 +27,9 @@ public class SaveManager : IManager
     {
         Logger.Warn("Creating new skin");
 
+        _isSaved = false;
         UpdateIdLabel();
+        
         OnNewSkin?.Invoke();
     }
 
@@ -36,7 +40,9 @@ public class SaveManager : IManager
         // Prompt for file path
         string path = Path.Combine(Environment.CurrentDirectory, "data", "test.png");
 
+        _isSaved = true;
         UpdateIdLabel();
+        
         OnOpenSkin?.Invoke(path);
     }
 
@@ -44,6 +50,7 @@ public class SaveManager : IManager
     {
         Logger.Warn("Saving current skin");
 
+        _isSaved = true;
         UpdateIdLabel();
     }
 
@@ -51,6 +58,7 @@ public class SaveManager : IManager
     {
         Logger.Warn("Saving to different skin");
 
+        _isSaved = true;
         UpdateIdLabel();
     }
 
