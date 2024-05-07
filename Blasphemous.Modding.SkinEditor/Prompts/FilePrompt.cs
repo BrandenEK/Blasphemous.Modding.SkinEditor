@@ -12,9 +12,9 @@ public partial class FilePrompt : Form
         InitializeComponent();
         _buttons_confirm.Enabled = false;
 
-        int idx = 0;
+        int idx = 1;
         string path = Path.Combine(Environment.CurrentDirectory, "skins");
-        foreach (string folder in Directory.GetDirectories(path))
+        foreach (string folder in Directory.GetDirectories(path).Reverse())
         {
             bool allFilesExist =
                 File.Exists(Path.Combine(folder, "texture.png")) &&
@@ -27,7 +27,6 @@ public partial class FilePrompt : Form
                 Logger.Error($"{folder} is missing skin files");
         }
 
-        _main_list_inner.BackColor = GetAlternateColor(idx, false);
         if (idx > 0)
             _main_list_label.Visible = false;
     }
