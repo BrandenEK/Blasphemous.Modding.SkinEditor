@@ -3,6 +3,8 @@ namespace Blasphemous.Modding.SkinEditor.Prompts;
 
 public partial class FilePrompt : Form
 {
+    public string SelectedFile => _selectedRow?.Name ?? throw new Exception("Selected row was null");
+
     private Control? _selectedRow;
 
     public FilePrompt()
@@ -10,15 +12,23 @@ public partial class FilePrompt : Form
         InitializeComponent();
         _buttons_confirm.Enabled = false;
 
-        int amount = 4;
-
-        for (int i = 0; i < amount; i++)
+        int idx = 0;
+        string path = Path.Combine(Environment.CurrentDirectory, "skins");
+        foreach (string folder in Directory.GetDirectories(path))
         {
-            CreateFileRow("PENITENT_" + i, i);
+            bool allFilesExist =
+                File.Exists(Path.Combine(folder, "texture.png")) &&
+                File.Exists(Path.Combine(folder, "preview.png")) &&
+                File.Exists(Path.Combine(folder, "info.txt"));
+
+            if (allFilesExist)
+                CreateFileRow(folder[(folder.LastIndexOf('\\') + 1)..], idx++);
+            else
+                Logger.Error($"{folder} is missing skin files");
         }
 
-        _main_list_inner.BackColor = GetAlternateColor(amount, false);
-        if (amount > 0)
+        _main_list_inner.BackColor = GetAlternateColor(idx, false);
+        if (idx > 0)
             _main_list_label.Visible = false;
     }
 
@@ -48,31 +58,13 @@ public partial class FilePrompt : Form
         return panel;
     }
 
-    private void UpdatePreviewImage()
+    private void UpdatePreviewImage(Control row)
     {
+        Logger.Warn($"Updating import preview for {row.Name}");
+        Bitmap preview = new(Path.Combine(Environment.CurrentDirectory, "skins", row.Name, "preview.png"));
+
         _main_preview.Image?.Dispose();
-
-        using Bitmap texture = new(Path.Combine(Environment.CurrentDirectory, "data", "default.png"));
-        Bitmap preview = new(Path.Combine(Environment.CurrentDirectory, "data", "preview.png"));
-        
-        _main_preview.Image = ColorPreview(preview, texture);
-    }
-
-    private Bitmap ColorPreview(Bitmap preview, Bitmap texture)
-    {
-        for (int i = 0; i < preview.Width; i++)
-        {
-            for (int j = 0; j < preview.Height; j++)
-            {
-                Color pixel = preview.GetPixel(i, j);
-                if (pixel.R != pixel.G || pixel.R != pixel.B)
-                    continue;
-
-                preview.SetPixel(i, j, texture.GetPixel(pixel.R, 0));
-            }
-        }
-
-        return preview;
+        _main_preview.Image = preview;
     }
 
     private void SelectRow(Control row)
@@ -86,7 +78,7 @@ public partial class FilePrompt : Form
         row.BackColor = GetAlternateColor(idx, true);
         _selectedRow = row;
         
-        UpdatePreviewImage();
+        UpdatePreviewImage(row);
     }
 
     private void DeselectCurrentRow()
