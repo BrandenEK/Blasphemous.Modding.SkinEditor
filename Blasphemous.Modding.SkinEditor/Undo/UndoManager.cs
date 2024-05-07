@@ -8,6 +8,7 @@ public class UndoManager : IManager
 
     public void Reset()
     {
+        Logger.Info("Clearing all undo and redo commands");
         undo.Clear();
         redo.Clear();
     }

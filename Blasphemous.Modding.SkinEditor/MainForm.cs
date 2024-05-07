@@ -43,6 +43,12 @@ public partial class MainForm : Form
 
     private void OnFormClose(object sender, FormClosingEventArgs e)
     {
+        if (!Core.SaveManager.CheckForUnsavedProgress())
+        {
+            e.Cancel = true;
+            return;
+        }
+
         Logger.Info("Closing editor");
 
         // Save window settings

@@ -39,9 +39,20 @@ public class SaveManager : IManager
         UpdateIdLabel();
     }
 
+    public bool CheckForUnsavedProgress()
+    {
+        if (_unsavedChanges == 0)
+            return true;
+
+        return MessageBox.Show("You will lose unsaved progress, are you sure you want to continue?",
+            "Unsaved changes",
+            MessageBoxButtons.YesNo) == DialogResult.Yes;
+    }
+
     public void New()
     {
-        // Check for unsaved progress
+        if (!CheckForUnsavedProgress())
+            return;
 
         Logger.Warn("Creating new skin");
 
@@ -53,7 +64,8 @@ public class SaveManager : IManager
 
     public void Open()
     {
-        // Check for unsaved progress
+        if (!CheckForUnsavedProgress())
+            return;
 
         Logger.Warn("Opening existing skin");
 
