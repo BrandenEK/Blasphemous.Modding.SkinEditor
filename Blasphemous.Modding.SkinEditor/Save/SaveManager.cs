@@ -39,6 +39,7 @@ public class SaveManager : IManager
 
         // Prompt for file path
         string path = Path.Combine(Environment.CurrentDirectory, "data", "test.png");
+        _currentSkin = new SkinInfo("PENITENT_BACKER", "Backer skin", "TGK", "1.0.0");
 
         _isSaved = true;
         UpdateIdLabel();
@@ -48,6 +49,12 @@ public class SaveManager : IManager
 
     public void Save()
     {
+        if (_currentSkin is null)
+        {
+            SaveAs();
+            return;
+        }
+
         Logger.Warn("Saving current skin");
 
         _isSaved = true;
@@ -56,7 +63,7 @@ public class SaveManager : IManager
 
     public void SaveAs()
     {
-        Logger.Warn("Saving to different skin");
+        Logger.Warn("Saving new skin");
 
         _isSaved = true;
         UpdateIdLabel();
