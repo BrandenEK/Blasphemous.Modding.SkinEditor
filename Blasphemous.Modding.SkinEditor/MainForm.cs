@@ -1,3 +1,4 @@
+using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Properties;
 
 namespace Blasphemous.Modding.SkinEditor;
@@ -120,5 +121,8 @@ public partial class MainForm : Form
     private void OnClickDebug(object sender, EventArgs e)
     {
         Logger.Warn("Clicking debug button");
+
+        using InfoPrompt prompt = new();
+        prompt.ShowDialog();
     }
 }
