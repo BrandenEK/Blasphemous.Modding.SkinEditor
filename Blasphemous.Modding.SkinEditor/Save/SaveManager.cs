@@ -96,14 +96,25 @@ public class SaveManager : IManager
         _currentSkin = info;
         ResetUnsavedAmount();
 
-        UpdateIdLabel();
-
         OnOpenSkin?.Invoke(path);
     }
 
     public void Modify()
     {
+        if (_currentSkin is null)
+            return;
+
+        using InfoPrompt prompt = new(_currentSkin, true);
+        if (prompt.ShowDialog() != DialogResult.OK)
+            return;
+
+        SkinInfo info = prompt.SelectedInfo;
         Logger.Warn("Modifying current skin");
+
+        OnModifySkin?.Invoke(_currentSkin, info);
+
+        _currentSkin = info;
+        ChangeUnsavedAmount(1);
     }
 
     public void Save()
@@ -121,8 +132,6 @@ public class SaveManager : IManager
         SaveSkinInfo(_currentSkin);
 
         ResetUnsavedAmount();
-
-        UpdateIdLabel();
     }
 
     public void SaveAs()
@@ -137,8 +146,6 @@ public class SaveManager : IManager
 
         _currentSkin = info;
         ResetUnsavedAmount();
-
-        UpdateIdLabel();
     }
 
     private void SaveSkinInfo(SkinInfo info)
@@ -193,6 +200,8 @@ public class SaveManager : IManager
     public event NewSkinDelegate? OnNewSkin;
     public delegate void OpenSkinDelegate(string path);
     public event OpenSkinDelegate? OnOpenSkin;
+    public delegate void ModifySkinDelegate(SkinInfo oldInfo, SkinInfo newInfo);
+    public event ModifySkinDelegate? OnModifySkin;
     public delegate void SaveSkinDelegate(string path);
     public event SaveSkinDelegate? OnSaveSkin;
 }
