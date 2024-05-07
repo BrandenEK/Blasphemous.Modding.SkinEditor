@@ -123,6 +123,10 @@ public partial class MainForm : Form
         Logger.Warn("Clicking debug button");
 
         using InfoPrompt prompt = new(null, false);
-        prompt.ShowDialog();
+        
+        if (prompt.ShowDialog() == DialogResult.OK)
+        {
+            Logger.Error("Got info: " + prompt.SelectedInfo);
+        }
     }
 }

@@ -4,25 +4,23 @@ namespace Blasphemous.Modding.SkinEditor.Prompts;
 
 public partial class InfoPrompt : Form
 {
-    public SkinInfo? SelectedInfo { get; set; } //not nullable by end
+    public SkinInfo SelectedInfo => new(_id_text.Text, _name_text.Text, _author_text.Text, _version_text.Text);
 
     public InfoPrompt(SkinInfo? initial, bool lockId)
     {
         InitializeComponent();
         _id_text.Enabled = !lockId;
 
-        Logger.Info($"Opening info prompt with {initial}");
-        SelectedInfo = initial;
-
-        UpdateAllText();
+        Logger.Info($"Opening info prompt with {initial?.Id ?? "empty"}");
+        UpdateAllText(initial);
     }
 
-    private void UpdateAllText()
+    private void UpdateAllText(SkinInfo? info)
     {
-        _id_text.Text = SelectedInfo?.Id ?? string.Empty;
-        _name_text.Text = SelectedInfo?.Name ?? string.Empty;
-        _author_text.Text = SelectedInfo?.Author ?? string.Empty;
-        _version_text.Text = SelectedInfo?.Version ?? string.Empty;
+        _id_text.Text = info?.Id ?? string.Empty;
+        _name_text.Text = info?.Name ?? string.Empty;
+        _author_text.Text = info?.Author ?? string.Empty;
+        _version_text.Text = info?.Version ?? string.Empty;
 
         ValidateInfo();
     }
@@ -39,7 +37,7 @@ public partial class InfoPrompt : Form
         _author_text.BackColor = authorValid ? SystemColors.Window : SystemColors.Info;
         _version_text.BackColor = versionValid ? SystemColors.Window : SystemColors.Info;
 
-        _buttons_confirm.Enabled = idValid && nameValid && authorValid && versionValid;
+        _buttons_confirm.Enabled = (idValid || !_id_text.Enabled) && nameValid && authorValid && versionValid;
     }
 
     private void OnInfoTextChanged(object _, EventArgs __)
