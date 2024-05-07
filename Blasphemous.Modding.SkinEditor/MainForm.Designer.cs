@@ -99,7 +99,6 @@ partial class MainForm
         _info_selector.Name = "_info_selector";
         _info_selector.Size = new Size(121, 29);
         _info_selector.TabIndex = 0;
-        _info_selector.SelectedIndexChanged += OnSelectAnim;
         // 
         // _buttons
         // 
