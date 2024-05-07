@@ -1,4 +1,6 @@
 ﻿
+using Blasphemous.Modding.SkinEditor.Models;
+
 namespace Blasphemous.Modding.SkinEditor.Undo;
 
 public abstract record BaseUndoCommand
@@ -7,3 +9,5 @@ public abstract record BaseUndoCommand
 }
 
 public record PixelColorUndoCommand(byte Pixel, Color OldColor, Color NewColor) : BaseUndoCommand;
+
+public record ModifySkinUndoCommand(SkinInfo OldInfo, SkinInfo NewInfo) : BaseUndoCommand;

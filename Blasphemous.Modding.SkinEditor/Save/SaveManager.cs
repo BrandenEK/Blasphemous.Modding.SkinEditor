@@ -37,7 +37,7 @@ public class SaveManager : IManager
 
     private void ChangeUnsavedAmount(int amount)
     {
-        _unsavedChanges = Math.Max(_unsavedChanges + amount, 0);
+        _unsavedChanges += amount;
         UpdateIdLabel();
 
         Logger.Info($"There are now {_unsavedChanges} unsaved changes");
@@ -188,11 +188,21 @@ public class SaveManager : IManager
 
     private void OnUndo(BaseUndoCommand command)
     {
+        if (command is ModifySkinUndoCommand ms)
+        {
+            _currentSkin = ms.OldInfo;
+        }
+
         ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? -1 : 1);
     }
 
     private void OnRedo(BaseUndoCommand command)
     {
+        if (command is ModifySkinUndoCommand ms)
+        {
+            _currentSkin = ms.NewInfo;
+        }
+
         ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? 1 : -1);
     }
 

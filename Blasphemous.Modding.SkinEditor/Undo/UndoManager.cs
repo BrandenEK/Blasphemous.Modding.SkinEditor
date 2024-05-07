@@ -1,4 +1,5 @@
-﻿
+﻿using Blasphemous.Modding.SkinEditor.Models;
+
 namespace Blasphemous.Modding.SkinEditor.Undo;
 
 public class UndoManager : IManager
@@ -54,6 +55,7 @@ public class UndoManager : IManager
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
         Core.SaveManager.OnNewSkin += OnNewSkin;
         Core.SaveManager.OnOpenSkin += OnOpenSkin;
+        Core.SaveManager.OnModifySkin += OnModifySkin;
     }
 
     private void OnNewSkin()
@@ -64,6 +66,11 @@ public class UndoManager : IManager
     private void OnOpenSkin(string path)
     {
         Reset();
+    }
+
+    private void OnModifySkin(SkinInfo oldInfo, SkinInfo newInfo)
+    {
+        Do(new ModifySkinUndoCommand(oldInfo, newInfo));
     }
 
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
