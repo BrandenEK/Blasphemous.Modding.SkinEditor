@@ -1,4 +1,3 @@
-using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Properties;
 
 namespace Blasphemous.Modding.SkinEditor;
@@ -8,6 +7,10 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+
+#if !DEBUG
+        _preview_debug.Visible = false;
+#endif
     }
 
     public T FindUI<T>(string name) where T : Control
@@ -127,9 +130,5 @@ public partial class MainForm : Form
     private void OnClickDebug(object sender, EventArgs e)
     {
         Logger.Warn("Clicking debug button");
-
-        using FilePrompt prompt = new();
-        if (prompt.ShowDialog() == DialogResult.OK)
-            Logger.Error("Confirmed file dialog");
     }
 }

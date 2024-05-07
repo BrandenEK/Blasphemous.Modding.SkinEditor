@@ -34,8 +34,8 @@ partial class FilePrompt
         _main = new Panel();
         _main_list_outer = new Panel();
         _main_list_inner = new Panel();
-        _main_preview = new PictureBox();
         _main_list_label = new Label();
+        _main_preview = new PictureBox();
         _buttons.SuspendLayout();
         _main.SuspendLayout();
         _main_list_outer.SuspendLayout();
@@ -113,17 +113,6 @@ partial class FilePrompt
         _main_list_inner.Size = new Size(298, 416);
         _main_list_inner.TabIndex = 0;
         // 
-        // _main_preview
-        // 
-        _main_preview.BackColor = Color.FromArgb(17, 8, 3);
-        _main_preview.BorderStyle = BorderStyle.Fixed3D;
-        _main_preview.Location = new Point(12, 12);
-        _main_preview.Name = "_main_preview";
-        _main_preview.Size = new Size(564, 422);
-        _main_preview.SizeMode = PictureBoxSizeMode.StretchImage;
-        _main_preview.TabIndex = 0;
-        _main_preview.TabStop = false;
-        // 
         // _main_list_label
         // 
         _main_list_label.Dock = DockStyle.Fill;
@@ -134,6 +123,17 @@ partial class FilePrompt
         _main_list_label.TabIndex = 0;
         _main_list_label.Text = "The skins folder is empty...";
         _main_list_label.TextAlign = ContentAlignment.MiddleCenter;
+        // 
+        // _main_preview
+        // 
+        _main_preview.BackColor = Color.FromArgb(17, 8, 3);
+        _main_preview.BorderStyle = BorderStyle.Fixed3D;
+        _main_preview.Location = new Point(12, 12);
+        _main_preview.Name = "_main_preview";
+        _main_preview.Size = new Size(564, 422);
+        _main_preview.SizeMode = PictureBoxSizeMode.StretchImage;
+        _main_preview.TabIndex = 0;
+        _main_preview.TabStop = false;
         // 
         // FilePrompt
         // 

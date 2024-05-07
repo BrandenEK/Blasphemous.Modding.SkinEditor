@@ -50,9 +50,18 @@ public partial class FilePrompt : Form
             Dock = DockStyle.Fill,
             Font = new Font(panel.Font.FontFamily, 12),
             TextAlign = ContentAlignment.MiddleLeft,
-            Text = FormatName(name),
+            Text = name,
         };
         label.Click += OnClickRow;
+
+        bool resized = false;
+        while (label.PreferredWidth > panel.Width - 30)
+        {
+            label.Text = label.Text[..^1];
+            resized = true;
+        }
+        if (resized)
+            label.Text += "...";
 
         return panel;
     }
@@ -106,17 +115,4 @@ public partial class FilePrompt : Form
             ? idx % 2 == 0 ? SystemColors.InactiveCaption : SystemColors.ActiveCaption
             : idx % 2 == 0 ? SystemColors.ControlDark : SystemColors.ControlDarkDark;
     }
-
-    private static string FormatName(string name)
-    {
-        if (string.IsNullOrEmpty(name))
-            return string.Empty;
-
-        if (name.Length <= DISPLAY_LENGTH)
-            return name;
-
-        return $"{name[..(DISPLAY_LENGTH - 1)]}...";
-    }
-
-    private const int DISPLAY_LENGTH = 24;
 }
