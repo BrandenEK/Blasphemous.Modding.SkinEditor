@@ -16,7 +16,7 @@ internal static class Core
         ApplicationConfiguration.Initialize();
         var form = new MainForm();
 
-        PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"));
+        PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
         RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
         SaveManager = new SaveManager(form.FindUI<Label>("_info_header"), form.FindMenu("_menu_file_modify"));
         SettingManager = new SettingManager();

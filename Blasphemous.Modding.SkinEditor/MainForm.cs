@@ -51,9 +51,6 @@ public partial class MainForm : Form
             _menu_view_all, _menu_view_background, _menu_view_side
         });
 
-        // Testing stuff
-        LoadAllAnimations();
-
         // Start process
         Core.SaveManager.New();
     }
@@ -83,17 +80,6 @@ public partial class MainForm : Form
         _buttons.Dock = status ? DockStyle.Right : DockStyle.Left;
     }
 
-    private void LoadAllAnimations()
-    {
-        foreach (string file in Directory.EnumerateFiles(Path.Combine(Environment.CurrentDirectory, "anim")))
-        {
-            Logger.Error($"Loaded anim: {file}");
-            _info_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
-        }
-
-        //_preview_selector.SelectedItem = "idle";
-    }
-
     //private void Test()
     //{
     //    Bitmap parry = Preview("penitent_parry_failed.png", new Point(0, 185), new Size(68, 71));
@@ -120,14 +106,6 @@ public partial class MainForm : Form
     //        return cropped;// Scale(cropped, Math.Min(xScale, yScale));
     //    }
     //}
-
-    private void OnSelectAnim(object sender, EventArgs e)
-    {
-        string anim = _info_selector.SelectedItem.ToString() ?? string.Empty;
-        string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
-
-        Core.PreviewManager.ChangePreview(new Bitmap(file));
-    }
 
     private void OnClickMenu_File_New(object _, EventArgs __) => Core.SaveManager.New();
     private void OnClickMenu_File_Open(object _, EventArgs __) => Core.SaveManager.Open();

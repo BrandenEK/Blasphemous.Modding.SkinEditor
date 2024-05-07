@@ -93,12 +93,13 @@ partial class MainForm
         // _info_selector
         // 
         _info_selector.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        _info_selector.DropDownStyle = ComboBoxStyle.DropDownList;
+        _info_selector.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
         _info_selector.FormattingEnabled = true;
-        _info_selector.Location = new Point(816, 4);
+        _info_selector.Location = new Point(816, 3);
         _info_selector.Name = "_info_selector";
-        _info_selector.Size = new Size(121, 23);
+        _info_selector.Size = new Size(121, 29);
         _info_selector.TabIndex = 0;
-        _info_selector.SelectedIndexChanged += OnSelectAnim;
         // 
         // _buttons
         // 

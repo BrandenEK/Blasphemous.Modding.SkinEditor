@@ -6,6 +6,7 @@ namespace Blasphemous.Modding.SkinEditor.Preview;
 public class PreviewManager : IManager
 {
     private readonly PictureBox _pictureBox;
+    private readonly ComboBox _selector;
 
     private Bitmap? _indexedPreview;
     private Bitmap? _coloredPreview;
@@ -15,27 +16,45 @@ public class PreviewManager : IManager
         ? -1
         : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
 
-    public PreviewManager(PictureBox pictureBox)
+    public PreviewManager(PictureBox pictureBox, ComboBox selector)
     {
+        LoadAllAnimations(selector);
+
         _pictureBox = pictureBox;
         _pictureBox.SizeChanged += OnPictureResized;
+        _selector = selector;
+        _selector.SelectedIndexChanged += OnSelectionChanged;
     }
 
     private void LoadFirstPreview()
     {
-        // Should not hardcode file path here
-        // Also need to set text in selector
-        string file = Path.Combine(Environment.CurrentDirectory, "anim", "idle.png");
-        ChangePreview(new Bitmap(file));
+        ChangePreview(FIRST_ANIM, true);
     }
 
-    private void OnPictureResized(object? sender, EventArgs e)
+    private void LoadAllAnimations(ComboBox selector)
+    {
+        foreach (string file in Directory.EnumerateFiles(Path.Combine(Environment.CurrentDirectory, "anim")))
+        {
+            string name = file[(file.LastIndexOf('\\') + 1)..^4];
+            Logger.Info($"Loaded anim: {name}");
+            selector.Items.Add(name);
+        }
+
+        selector.SelectedItem = FIRST_ANIM;
+    }
+
+    private void OnPictureResized(object? _, EventArgs __)
     {
         if (_coloredPreview == null || _pictureBox.Image == null || _lastScale == CurrentScale)
             return;
 
         Logger.Warn("Resizing preview image");
         DisplayPreview(_coloredPreview);
+    }
+
+    private void OnSelectionChanged(object? _, EventArgs __)
+    {
+        ChangePreview(_selector.SelectedItem.ToString()!, false);
     }
 
     private void SetBackgroundColor(bool dark)
@@ -90,6 +109,15 @@ public class PreviewManager : IManager
         }
 
         return colored;
+    }
+
+    public void ChangePreview(string name, bool updateSelector)
+    {
+        string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{name}.png");
+        ChangePreview(new Bitmap(file));
+
+        if (updateSelector)
+            _selector.SelectedItem = name;
     }
 
     public void ChangePreview(Bitmap preview)
@@ -253,4 +281,6 @@ public class PreviewManager : IManager
 
     public delegate void PreviewChangeDelegate();
     public event PreviewChangeDelegate? OnPreviewChanged;
+
+    private const string FIRST_ANIM = "idle";
 }
