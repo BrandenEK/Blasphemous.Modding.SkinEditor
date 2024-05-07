@@ -52,6 +52,43 @@ public partial class InfoPrompt : Form
         _version_text.BackColor = (reason & InvalidInfoReason.VersionInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
 
         _buttons_confirm.Enabled = reason == InvalidInfoReason.None;
+        SetToolTip(reason);
+    }
+
+    private void SetToolTip(InvalidInfoReason reason)
+    {
+        if (reason == InvalidInfoReason.None)
+        {
+            _tooltip.RemoveAll();
+            return;
+        }
+
+        _tooltip.SetToolTip(_id_label, reason switch
+        {
+            var _ when reason.HasFlag(InvalidInfoReason.IdEmpty) => "Id must not be blank",
+            var _ when reason.HasFlag(InvalidInfoReason.IdPenitent) => "Id must begin with 'PENITENT_'",
+            var _ when reason.HasFlag(InvalidInfoReason.IdCharacters) => "Id must not contain invalid characters",
+            _ => string.Empty
+        });
+
+        _tooltip.SetToolTip(_name_label, reason switch
+        {
+            var _ when reason.HasFlag(InvalidInfoReason.NameEmpty) => "Name must not be blank",
+            _ => string.Empty
+        });
+
+        _tooltip.SetToolTip(_author_label, reason switch
+        {
+            var _ when reason.HasFlag(InvalidInfoReason.AuthorEmpty) => "Author must not be blank",
+            _ => string.Empty
+        });
+
+        _tooltip.SetToolTip(_version_label, reason switch
+        {
+            var _ when reason.HasFlag(InvalidInfoReason.VersionEmpty) => "Version must not be blank",
+            var _ when reason.HasFlag(InvalidInfoReason.VersionParse) => "Version must be valid",
+            _ => string.Empty
+        });
     }
 
     [Flags]

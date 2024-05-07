@@ -28,6 +28,7 @@ partial class InfoPrompt
     /// </summary>
     private void InitializeComponent()
     {
+        components = new System.ComponentModel.Container();
         _buttons = new Panel();
         _buttons_cancel = new Button();
         _buttons_confirm = new Button();
@@ -43,6 +44,7 @@ partial class InfoPrompt
         _version = new Panel();
         _version_text = new TextBox();
         _version_label = new Label();
+        _tooltip = new ToolTip(components);
         _buttons.SuspendLayout();
         _id.SuspendLayout();
         _name.SuspendLayout();
@@ -230,6 +232,12 @@ partial class InfoPrompt
         _version_label.Text = "Skin Version:";
         _version_label.TextAlign = ContentAlignment.TopCenter;
         // 
+        // _tooltip
+        // 
+        _tooltip.AutoPopDelay = 5000;
+        _tooltip.InitialDelay = 100;
+        _tooltip.ReshowDelay = 100;
+        // 
         // InfoPrompt
         // 
         AcceptButton = _buttons_confirm;
@@ -281,4 +289,5 @@ partial class InfoPrompt
     private Panel _version;
     private TextBox _version_text;
     private Label _version_label;
+    private ToolTip _tooltip;
 }
