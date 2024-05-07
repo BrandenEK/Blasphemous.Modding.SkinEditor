@@ -106,6 +106,7 @@ partial class FilePrompt
         _main_preview.Location = new Point(12, 12);
         _main_preview.Name = "_main_preview";
         _main_preview.Size = new Size(564, 422);
+        _main_preview.SizeMode = PictureBoxSizeMode.StretchImage;
         _main_preview.TabIndex = 0;
         _main_preview.TabStop = false;
         // 

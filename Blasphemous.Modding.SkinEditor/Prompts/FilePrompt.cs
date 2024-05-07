@@ -42,15 +42,45 @@ public partial class FilePrompt : Form
         return panel;
     }
 
+    private void UpdatePreviewImage()
+    {
+        _main_preview.Image?.Dispose();
+
+        using Bitmap texture = new(Path.Combine(Environment.CurrentDirectory, "data", "default.png"));
+        Bitmap preview = new(Path.Combine(Environment.CurrentDirectory, "data", "preview.png"));
+        
+        _main_preview.Image = ColorPreview(preview, texture);
+    }
+
+    private Bitmap ColorPreview(Bitmap preview, Bitmap texture)
+    {
+        for (int i = 0; i < preview.Width; i++)
+        {
+            for (int j = 0; j < preview.Height; j++)
+            {
+                Color pixel = preview.GetPixel(i, j);
+                if (pixel.R != pixel.G || pixel.R != pixel.B)
+                    continue;
+
+                preview.SetPixel(i, j, texture.GetPixel(pixel.R, 0));
+            }
+        }
+
+        return preview;
+    }
+
     private void SelectRow(Control row)
     {
+        if (_selectedRow == row)
+            return;
+
         DeselectCurrentRow();
 
         int idx = _main_list.Controls.GetChildIndex(row);
         row.BackColor = GetAlternateColor(idx, true);
         _selectedRow = row;
         
-        // Update preview
+        UpdatePreviewImage();
     }
 
     private void DeselectCurrentRow()
