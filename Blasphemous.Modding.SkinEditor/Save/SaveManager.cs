@@ -27,6 +27,7 @@ public class SaveManager : IManager
 
         _idLabel.Font = font;
         _idLabel.Text = text;
+        _idLabel.Width = _idLabel.PreferredWidth;
     }
 
     private void ChangeUnsavedAmount(int amount)
@@ -60,7 +61,7 @@ public class SaveManager : IManager
 
         _currentSkin = null;
         ResetUnsavedAmount();
-        
+
         OnNewSkin?.Invoke();
     }
 
@@ -69,16 +70,25 @@ public class SaveManager : IManager
         if (!CheckForUnsavedProgress())
             return;
 
-        Logger.Warn("Opening existing skin");
+        using FilePrompt prompt = new();
+        if (prompt.ShowDialog() != DialogResult.OK)
+            return;
 
-        // Prompt for file path
-        string path = Path.Combine(Environment.CurrentDirectory, "data", "test.png");
+        string path = Path.Combine(Environment.CurrentDirectory, "skins", prompt.SelectedFile);
+        Logger.Warn($"Opening existing skin from {path}");
+        SkinInfo? info = LoadSkinInfo(path);
 
-        _currentSkin = new SkinInfo("PENITENT_BACKER", "Backer skin", "TGK", "1.0.0");
+        if (info == null)
+        {
+            Logger.Error($"Failed to open skin at {path}");
+            return;
+        }
+
+        _currentSkin = info;
         ResetUnsavedAmount();
 
         UpdateIdLabel();
-        
+
         OnOpenSkin?.Invoke(path);
     }
 
@@ -132,6 +142,12 @@ public class SaveManager : IManager
 
         // Save everything else
         OnSaveSkin?.Invoke(path);
+    }
+
+    private SkinInfo? LoadSkinInfo(string path)
+    {
+        string json = File.ReadAllText(Path.Combine(path, "info.txt"));
+        return JsonConvert.DeserializeObject<SkinInfo>(json);
     }
 
     // Event handling

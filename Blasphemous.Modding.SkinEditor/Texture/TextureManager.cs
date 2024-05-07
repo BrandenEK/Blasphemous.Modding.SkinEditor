@@ -65,7 +65,7 @@ public class TextureManager : IManager
 
     private void OnOpenSkin(string path)
     {
-        LoadTexture(path);
+        LoadTexture(Path.Combine(path, "texture.png"));
     }
 
     private void OnSaveSkin(string path)

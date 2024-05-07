@@ -7,6 +7,10 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+
+#if !DEBUG
+        _preview_debug.Visible = false;
+#endif
     }
 
     public T FindUI<T>(string name) where T : Control
