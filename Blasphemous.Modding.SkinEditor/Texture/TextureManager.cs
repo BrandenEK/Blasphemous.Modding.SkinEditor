@@ -6,6 +6,15 @@ public class TextureManager : IManager
 {
     private Bitmap? _texture;
 
+    public void SaveTexture(string path)
+    {
+        if (_texture is null)
+            throw new Exception("No texture has been loaded yet");
+
+        Logger.Info($"Saving current texture to {path}");
+        _texture.Save(path);
+    }
+
     public void LoadTexture(string path)
     {
         _texture?.Dispose();

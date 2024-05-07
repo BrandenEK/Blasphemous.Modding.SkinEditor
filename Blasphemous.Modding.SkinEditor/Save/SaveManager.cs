@@ -1,6 +1,8 @@
 ﻿using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Undo;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Blasphemous.Modding.SkinEditor.Save;
 
@@ -92,7 +94,7 @@ public class SaveManager : IManager
         }
 
         Logger.Warn("Saving current skin");
-        // Save to file
+        SaveSkinInfo(_currentSkin);
 
         ResetUnsavedAmount();
 
@@ -107,12 +109,29 @@ public class SaveManager : IManager
 
         SkinInfo info = prompt.SelectedInfo;
         Logger.Warn($"Saving skin as {info.Id}");
-        // Save to file
-        
+        SaveSkinInfo(info);
+
         _currentSkin = info;
         ResetUnsavedAmount();
 
         UpdateIdLabel();
+    }
+
+    private void SaveSkinInfo(SkinInfo info)
+    {
+        // Get and create skin directory
+        string path = Path.Combine(Environment.CurrentDirectory, "skins", info.Id);
+        Directory.CreateDirectory(path);
+
+        // Save info file
+        File.WriteAllText(Path.Combine(path, "info.txt"), JsonConvert.SerializeObject(info, new JsonSerializerSettings()
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            Formatting = Formatting.Indented
+        }));
+
+        // Save everything else
+        OnSaveSkin?.Invoke(path);
     }
 
     // Event handling
@@ -144,4 +163,6 @@ public class SaveManager : IManager
     public event NewSkinDelegate? OnNewSkin;
     public delegate void OpenSkinDelegate(string path);
     public event OpenSkinDelegate? OnOpenSkin;
+    public delegate void SaveSkinDelegate(string path);
+    public event SaveSkinDelegate? OnSaveSkin;
 }
