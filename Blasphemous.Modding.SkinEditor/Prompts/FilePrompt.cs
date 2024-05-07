@@ -3,11 +3,13 @@ namespace Blasphemous.Modding.SkinEditor.Prompts;
 
 public partial class FilePrompt : Form
 {
+    private Control? _selectedRow;
+
     public FilePrompt()
     {
         InitializeComponent();
 
-        for (int i = 15; i >= 0; i--)
+        for (int i = 0; i < 15; i++)
         {
             CreateFileRow("PENITENT_" + i, i);
         }
@@ -19,10 +21,11 @@ public partial class FilePrompt : Form
         {
             Name = name,
             Parent = _main_list,
-            BackColor = idx % 2 == 0 ? SystemColors.ControlDark : SystemColors.ControlDarkDark,
+            BackColor = GetAlternateColor(idx, false),
             Size = new Size(100, 40),
             Dock = DockStyle.Top,
         };
+        panel.Click += OnClickRow;
 
         Label label = new()
         {
@@ -33,8 +36,44 @@ public partial class FilePrompt : Form
             TextAlign = ContentAlignment.MiddleLeft,
             Text = name,
         };
+        label.Click += OnClickRow;
 
-        // backcolor later
         return panel;
+    }
+
+    private void SelectRow(Control row)
+    {
+        DeselectCurrentRow();
+
+        int idx = _main_list.Controls.GetChildIndex(row);
+        row.BackColor = GetAlternateColor(idx, true);
+        _selectedRow = row;
+        
+        // Update preview
+    }
+
+    private void DeselectCurrentRow()
+    {
+        if (_selectedRow is null)
+            return;
+
+        int idx = _main_list.Controls.GetChildIndex(_selectedRow);
+        _selectedRow.BackColor = GetAlternateColor(idx, false);
+        _selectedRow = null;
+    }
+
+    private void OnClickRow(object? sender, EventArgs _)
+    {
+        if (sender is null)
+            return;
+
+        SelectRow(sender is Panel p ? p : ((Label)sender).Parent);
+    }
+
+    private Color GetAlternateColor(int idx, bool selected)
+    {
+        return selected
+            ? idx % 2 == 0 ? SystemColors.InactiveCaption : SystemColors.ActiveCaption
+            : idx % 2 == 0 ? SystemColors.ControlDark : SystemColors.ControlDarkDark;
     }
 }
