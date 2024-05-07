@@ -98,6 +98,11 @@ public class SaveManager : IManager
         OnOpenSkin?.Invoke(path);
     }
 
+    public void Modify()
+    {
+        Logger.Warn("Modifying current skin");
+    }
+
     public void Save()
     {
         if (IsSaved)

@@ -117,6 +117,7 @@ public partial class MainForm : Form
 
     private void OnClickMenu_File_New(object _, EventArgs __) => Core.SaveManager.New();
     private void OnClickMenu_File_Open(object _, EventArgs __) => Core.SaveManager.Open();
+    private void OnClickMenu_File_Modify(object _, EventArgs __) => Core.SaveManager.Modify();
     private void OnClickMenu_File_Save(object _, EventArgs __) => Core.SaveManager.Save();
     private void OnClickMenu_File_SaveAs(object _, EventArgs __) => Core.SaveManager.SaveAs();
 
