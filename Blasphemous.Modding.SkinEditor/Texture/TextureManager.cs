@@ -1,10 +1,20 @@
 ﻿using Blasphemous.Modding.SkinEditor.Undo;
+using System.Drawing.Imaging;
 
 namespace Blasphemous.Modding.SkinEditor.Texture;
 
 public class TextureManager : IManager
 {
     private Bitmap? _texture;
+
+    public void SaveTexture(string path)
+    {
+        if (_texture is null)
+            throw new Exception("No texture has been loaded yet");
+
+        Logger.Info($"Saving current texture to {path}");
+        _texture.Save(path, ImageFormat.Png);
+    }
 
     public void LoadTexture(string path)
     {
@@ -36,6 +46,9 @@ public class TextureManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.SaveManager.OnNewSkin += OnNewSkin;
+        Core.SaveManager.OnOpenSkin += OnOpenSkin;
+        Core.SaveManager.OnSaveSkin += OnSaveSkin;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
     }
@@ -43,6 +56,21 @@ public class TextureManager : IManager
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
         SetPixel(pixel, newColor);
+    }
+
+    private void OnNewSkin()
+    {
+        LoadTexture(DEFAULT_TEXTURE_PATH);
+    }
+
+    private void OnOpenSkin(string path)
+    {
+        LoadTexture(path);
+    }
+
+    private void OnSaveSkin(string path)
+    {
+        SaveTexture(Path.Combine(path, "texture.png"));
     }
 
     private void OnUndo(IUndoCommand command)
@@ -63,4 +91,6 @@ public class TextureManager : IManager
 
     public delegate void TextureChangeDelegate(Bitmap texture);
     public event TextureChangeDelegate? OnTextureChanged;
+
+    private readonly string DEFAULT_TEXTURE_PATH = Path.Combine(Environment.CurrentDirectory, "data", "default.png");
 }

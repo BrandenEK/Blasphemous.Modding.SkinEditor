@@ -65,7 +65,7 @@ partial class ColorPrompt
         _buttons_confirm.Location = new Point(166, 6);
         _buttons_confirm.Name = "_buttons_confirm";
         _buttons_confirm.Size = new Size(75, 25);
-        _buttons_confirm.TabIndex = 4;
+        _buttons_confirm.TabIndex = 0;
         _buttons_confirm.Text = "Confirm";
         _buttons_confirm.UseVisualStyleBackColor = true;
         // 
@@ -77,7 +77,7 @@ partial class ColorPrompt
         _buttons_cancel.Location = new Point(247, 6);
         _buttons_cancel.Name = "_buttons_cancel";
         _buttons_cancel.Size = new Size(75, 25);
-        _buttons_cancel.TabIndex = 5;
+        _buttons_cancel.TabIndex = 1;
         _buttons_cancel.Text = "Cancel";
         _buttons_cancel.UseVisualStyleBackColor = true;
         // 
@@ -89,7 +89,7 @@ partial class ColorPrompt
         _preview_color.Location = new Point(10, 10);
         _preview_color.Name = "_preview_color";
         _preview_color.Size = new Size(100, 100);
-        _preview_color.TabIndex = 8;
+        _preview_color.TabIndex = 0;
         // 
         // _r_slider
         // 
@@ -97,7 +97,7 @@ partial class ColorPrompt
         _r_slider.Maximum = 255;
         _r_slider.Name = "_r_slider";
         _r_slider.Size = new Size(250, 45);
-        _r_slider.TabIndex = 8;
+        _r_slider.TabIndex = 0;
         _r_slider.TabStop = false;
         _r_slider.Value = 255;
         _r_slider.ValueChanged += OnRgbSliderChanged;
@@ -120,7 +120,7 @@ partial class ColorPrompt
         _r_label.Location = new Point(10, 0);
         _r_label.Name = "_r_label";
         _r_label.Size = new Size(17, 15);
-        _r_label.TabIndex = 8;
+        _r_label.TabIndex = 0;
         _r_label.Text = "R:";
         _r_label.TextAlign = ContentAlignment.MiddleRight;
         // 
@@ -134,7 +134,7 @@ partial class ColorPrompt
         _preview.Location = new Point(0, 0);
         _preview.Name = "_preview";
         _preview.Size = new Size(334, 120);
-        _preview.TabIndex = 8;
+        _preview.TabIndex = 0;
         // 
         // _preview_label
         // 
@@ -143,7 +143,7 @@ partial class ColorPrompt
         _preview_label.Location = new Point(150, 40);
         _preview_label.Name = "_preview_label";
         _preview_label.Size = new Size(33, 37);
-        _preview_label.TabIndex = 8;
+        _preview_label.TabIndex = 0;
         _preview_label.Text = "#";
         _preview_label.TextAlign = ContentAlignment.MiddleRight;
         // 
@@ -155,7 +155,7 @@ partial class ColorPrompt
         _preview_text.MaxLength = 6;
         _preview_text.Name = "_preview_text";
         _preview_text.Size = new Size(100, 35);
-        _preview_text.TabIndex = 0;
+        _preview_text.TabIndex = 1;
         _preview_text.Text = "FF0000";
         _preview_text.TextAlign = HorizontalAlignment.Center;
         _preview_text.TextChanged += OnPreviewTextChanged;
@@ -171,7 +171,7 @@ partial class ColorPrompt
         _r.Location = new Point(0, 120);
         _r.Name = "_r";
         _r.Size = new Size(334, 48);
-        _r.TabIndex = 8;
+        _r.TabIndex = 1;
         // 
         // _g
         // 
@@ -184,7 +184,7 @@ partial class ColorPrompt
         _g.Location = new Point(0, 168);
         _g.Name = "_g";
         _g.Size = new Size(334, 48);
-        _g.TabIndex = 8;
+        _g.TabIndex = 2;
         // 
         // _g_slider
         // 
@@ -192,7 +192,7 @@ partial class ColorPrompt
         _g_slider.Maximum = 255;
         _g_slider.Name = "_g_slider";
         _g_slider.Size = new Size(250, 45);
-        _g_slider.TabIndex = 8;
+        _g_slider.TabIndex = 0;
         _g_slider.TabStop = false;
         _g_slider.ValueChanged += OnRgbSliderChanged;
         // 
@@ -203,7 +203,7 @@ partial class ColorPrompt
         _g_text.MaxLength = 2;
         _g_text.Name = "_g_text";
         _g_text.Size = new Size(40, 23);
-        _g_text.TabIndex = 2;
+        _g_text.TabIndex = 1;
         _g_text.Text = "00";
         _g_text.TextAlign = HorizontalAlignment.Center;
         _g_text.TextChanged += OnRgbTextChanged;
@@ -214,7 +214,7 @@ partial class ColorPrompt
         _g_label.Location = new Point(10, 0);
         _g_label.Name = "_g_label";
         _g_label.Size = new Size(18, 15);
-        _g_label.TabIndex = 8;
+        _g_label.TabIndex = 0;
         _g_label.Text = "G:";
         _g_label.TextAlign = ContentAlignment.MiddleRight;
         // 
@@ -227,7 +227,7 @@ partial class ColorPrompt
         _buttons.Location = new Point(0, 264);
         _buttons.Name = "_buttons";
         _buttons.Size = new Size(334, 34);
-        _buttons.TabIndex = 8;
+        _buttons.TabIndex = 4;
         // 
         // _b
         // 
@@ -240,7 +240,7 @@ partial class ColorPrompt
         _b.Location = new Point(0, 216);
         _b.Name = "_b";
         _b.Size = new Size(334, 48);
-        _b.TabIndex = 8;
+        _b.TabIndex = 3;
         // 
         // _b_slider
         // 
@@ -248,7 +248,7 @@ partial class ColorPrompt
         _b_slider.Maximum = 255;
         _b_slider.Name = "_b_slider";
         _b_slider.Size = new Size(250, 45);
-        _b_slider.TabIndex = 8;
+        _b_slider.TabIndex = 0;
         _b_slider.TabStop = false;
         _b_slider.ValueChanged += OnRgbSliderChanged;
         // 
@@ -259,7 +259,7 @@ partial class ColorPrompt
         _b_text.MaxLength = 2;
         _b_text.Name = "_b_text";
         _b_text.Size = new Size(40, 23);
-        _b_text.TabIndex = 3;
+        _b_text.TabIndex = 1;
         _b_text.Text = "00";
         _b_text.TextAlign = HorizontalAlignment.Center;
         _b_text.TextChanged += OnRgbTextChanged;
@@ -270,7 +270,7 @@ partial class ColorPrompt
         _b_label.Location = new Point(10, 0);
         _b_label.Name = "_b_label";
         _b_label.Size = new Size(17, 15);
-        _b_label.TabIndex = 8;
+        _b_label.TabIndex = 0;
         _b_label.Text = "B:";
         _b_label.TextAlign = ContentAlignment.MiddleRight;
         // 

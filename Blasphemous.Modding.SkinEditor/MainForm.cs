@@ -28,7 +28,6 @@ public partial class MainForm : Form
 
         // Initialize form ui
         Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
-        Core.TextureManager.LoadTexture(Path.Combine(Environment.CurrentDirectory, "data", "default.png"));
         Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
         {
             _menu_view_all, _menu_view_background, _menu_view_side
@@ -36,10 +35,19 @@ public partial class MainForm : Form
 
         // Testing stuff
         LoadAllAnimations();
+
+        // Start process
+        Core.SaveManager.New();
     }
 
     private void OnFormClose(object sender, FormClosingEventArgs e)
     {
+        if (!Core.SaveManager.CheckForUnsavedProgress())
+        {
+            e.Cancel = true;
+            return;
+        }
+
         Logger.Info("Closing editor");
 
         // Save window settings
@@ -49,7 +57,7 @@ public partial class MainForm : Form
         Settings.Default.Save();
     }
 
-    private void OnSettingChanged(string property, bool status)
+    private void OnSettingChanged(string property, bool status, bool onLoad)
     {
         if (property != "view_side")
             return;
@@ -62,10 +70,10 @@ public partial class MainForm : Form
         foreach (string file in Directory.EnumerateFiles(Path.Combine(Environment.CurrentDirectory, "anim")))
         {
             Logger.Error($"Loaded anim: {file}");
-            _preview_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
+            _info_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
         }
 
-        _preview_selector.SelectedItem = "idle";
+        //_preview_selector.SelectedItem = "idle";
     }
 
     //private void Test()
@@ -97,11 +105,16 @@ public partial class MainForm : Form
 
     private void OnSelectAnim(object sender, EventArgs e)
     {
-        string anim = _preview_selector.SelectedItem.ToString() ?? string.Empty;
+        string anim = _info_selector.SelectedItem.ToString() ?? string.Empty;
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
         Core.PreviewManager.ChangePreview(new Bitmap(file));
     }
+
+    private void OnClickMenu_File_New(object _, EventArgs __) => Core.SaveManager.New();
+    private void OnClickMenu_File_Open(object _, EventArgs __) => Core.SaveManager.Open();
+    private void OnClickMenu_File_Save(object _, EventArgs __) => Core.SaveManager.Save();
+    private void OnClickMenu_File_SaveAs(object _, EventArgs __) => Core.SaveManager.SaveAs();
 
     private void OnClickMenu_Edit_Undo(object _, EventArgs __) => Core.UndoManager.Undo();
     private void OnClickMenu_Edit_Redo(object _, EventArgs __) => Core.UndoManager.Redo();

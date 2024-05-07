@@ -1,4 +1,5 @@
 ﻿using Blasphemous.Modding.SkinEditor.Undo;
+using System.Drawing.Imaging;
 
 namespace Blasphemous.Modding.SkinEditor.Preview;
 
@@ -18,6 +19,14 @@ public class PreviewManager : IManager
     {
         _pictureBox = pictureBox;
         _pictureBox.SizeChanged += OnPictureResized;
+    }
+
+    private void LoadFirstPreview()
+    {
+        // Should not hardcode file path here
+        // Also need to set text in selector
+        string file = Path.Combine(Environment.CurrentDirectory, "anim", "idle.png");
+        ChangePreview(new Bitmap(file));
     }
 
     private void OnPictureResized(object? sender, EventArgs e)
@@ -41,8 +50,11 @@ public class PreviewManager : IManager
         int currentScale = CurrentScale;
         Bitmap newPreview = ScalePreview(preview, currentScale);
 
+        _pictureBox.Enabled = false;
         _pictureBox.Image?.Dispose();
         _pictureBox.Image = newPreview;
+        _pictureBox.Enabled = true;
+
         _lastScale = currentScale;
     }
 
@@ -136,6 +148,26 @@ public class PreviewManager : IManager
         DisplayPreview(_coloredPreview);
     }
 
+    private void SavePreview(string path)
+    {
+        using Bitmap export = new(Path.Combine(Environment.CurrentDirectory, "data", "preview.png"));
+
+        for (int i = 0; i < export.Width; i++)
+        {
+            for (int j = 0; j < export.Height; j++)
+            {
+                Color pixel = export.GetPixel(i, j);
+                if (pixel.R != pixel.G || pixel.R != pixel.B)
+                    continue;
+
+                export.SetPixel(i, j, Core.TextureManager.GetPixel(pixel.R));
+            }
+        }
+
+        Logger.Info($"Saving skin preview to {path}");
+        export.Save(path, ImageFormat.Png);
+    }
+
     public IEnumerable<byte> GetPixelsInPreview()
     {
         if (_indexedPreview == null)
@@ -161,6 +193,9 @@ public class PreviewManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.SaveManager.OnNewSkin += OnNewSkin;
+        Core.SaveManager.OnOpenSkin += OnOpenSkin;
+        Core.SaveManager.OnSaveSkin += OnSaveSkin;
         Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
@@ -172,7 +207,22 @@ public class PreviewManager : IManager
         UpdatePreview(pixel, newColor);
     }
 
-    private void OnSettingChanged(string property, bool status)
+    private void OnNewSkin()
+    {
+        LoadFirstPreview();
+    }
+
+    private void OnOpenSkin(string path)
+    {
+        LoadFirstPreview();
+    }
+
+    private void OnSaveSkin(string path)
+    {
+        SavePreview(Path.Combine(path, "preview.png"));
+    }
+
+    private void OnSettingChanged(string property, bool status, bool onLoad)
     {
         if (property != "view_background")
             return;

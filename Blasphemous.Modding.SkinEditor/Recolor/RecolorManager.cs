@@ -31,10 +31,10 @@ public class RecolorManager : IManager
     {
         Logger.Info("Refreshing visibility of all buttons");
 
-        _parent.Visible = false;
+        _parent.Enabled = false;
         DeleteButtons();
         CreateButtons();
-        _parent.Visible = true;
+        _parent.Enabled = true;
 
         RefreshButtonsColor();
     }
@@ -174,13 +174,15 @@ public class RecolorManager : IManager
         RefreshButtonsVisibility();
     }
 
-    private void OnSettingChanged(string property, bool status)
+    private void OnSettingChanged(string property, bool status, bool onLoad)
     {
         if (property != "view_all")
             return;
 
         _showingAll = status;
-        RefreshButtonsVisibility();
+
+        if (!onLoad)
+            RefreshButtonsVisibility();
     }
 
     private void OnTextureChanged(Bitmap texture)

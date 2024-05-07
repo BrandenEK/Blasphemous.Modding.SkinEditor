@@ -8,6 +8,7 @@ public class UndoManager : IManager
 
     public void Reset()
     {
+        Logger.Info("Clearing all undo and redo commands");
         undo.Clear();
         redo.Clear();
     }
@@ -51,6 +52,18 @@ public class UndoManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.SaveManager.OnNewSkin += OnNewSkin;
+        Core.SaveManager.OnOpenSkin += OnOpenSkin;
+    }
+
+    private void OnNewSkin()
+    {
+        Reset();
+    }
+
+    private void OnOpenSkin(string path)
+    {
+        Reset();
     }
 
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)

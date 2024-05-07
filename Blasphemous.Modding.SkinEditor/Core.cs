@@ -1,5 +1,6 @@
 using Blasphemous.Modding.SkinEditor.Preview;
 using Blasphemous.Modding.SkinEditor.Recolor;
+using Blasphemous.Modding.SkinEditor.Save;
 using Blasphemous.Modding.SkinEditor.Setting;
 using Blasphemous.Modding.SkinEditor.Texture;
 using Blasphemous.Modding.SkinEditor.Undo;
@@ -17,14 +18,17 @@ internal static class Core
 
         PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"));
         RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
+        SaveManager = new SaveManager(form.FindUI<Label>("_info_header"));
         SettingManager = new SettingManager();
         TextureManager = new TextureManager();
         UndoManager = new UndoManager();
 
-        PreviewManager.Initialize();
-        RecolorManager.Initialize();
+        // Initialize them in a certain order
+        SaveManager.Initialize();
         SettingManager.Initialize();
         TextureManager.Initialize();
+        PreviewManager.Initialize();
+        RecolorManager.Initialize();
         UndoManager.Initialize();
 
         Application.Run(form);
@@ -33,6 +37,7 @@ internal static class Core
 #pragma warning disable CS8618
     public static PreviewManager PreviewManager { get; private set; }
     public static RecolorManager RecolorManager { get; private set; }
+    public static SaveManager SaveManager { get; private set; }
     public static SettingManager SettingManager { get; private set; }
     public static TextureManager TextureManager { get; private set; }
     public static UndoManager UndoManager { get; private set; }
