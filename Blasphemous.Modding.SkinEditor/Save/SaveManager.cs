@@ -1,4 +1,5 @@
 ﻿using Blasphemous.Modding.SkinEditor.Models;
+using Blasphemous.Modding.SkinEditor.Prompts;
 
 namespace Blasphemous.Modding.SkinEditor.Save;
 
@@ -25,9 +26,13 @@ public class SaveManager : IManager
 
     public void New()
     {
+        // Check for unsaved progress
+
         Logger.Warn("Creating new skin");
 
+        _currentSkin = null;
         _isSaved = false;
+
         UpdateIdLabel();
         
         OnNewSkin?.Invoke();
@@ -35,13 +40,16 @@ public class SaveManager : IManager
 
     public void Open()
     {
+        // Check for unsaved progress
+
         Logger.Warn("Opening existing skin");
 
         // Prompt for file path
         string path = Path.Combine(Environment.CurrentDirectory, "data", "test.png");
-        _currentSkin = new SkinInfo("PENITENT_BACKER", "Backer skin", "TGK", "1.0.0");
 
+        _currentSkin = new SkinInfo("PENITENT_BACKER", "Backer skin", "TGK", "1.0.0");
         _isSaved = true;
+
         UpdateIdLabel();
         
         OnOpenSkin?.Invoke(path);
@@ -49,6 +57,9 @@ public class SaveManager : IManager
 
     public void Save()
     {
+        if (_isSaved)
+            return;
+
         if (_currentSkin is null)
         {
             SaveAs();
@@ -56,16 +67,26 @@ public class SaveManager : IManager
         }
 
         Logger.Warn("Saving current skin");
+        // Save to file
 
         _isSaved = true;
+
         UpdateIdLabel();
     }
 
     public void SaveAs()
     {
-        Logger.Warn("Saving new skin");
+        using InfoPrompt prompt = new(_currentSkin, false);
+        if (prompt.ShowDialog() != DialogResult.OK)
+            return;
 
+        SkinInfo info = prompt.SelectedInfo;
+        Logger.Warn($"Saving skin as {info.Id}");
+        // Save to file
+        
+        _currentSkin = info;
         _isSaved = true;
+
         UpdateIdLabel();
     }
 
