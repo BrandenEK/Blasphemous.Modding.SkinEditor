@@ -122,7 +122,7 @@ public partial class MainForm : Form
     {
         Logger.Warn("Clicking debug button");
 
-        using InfoPrompt prompt = new();
+        using InfoPrompt prompt = new(null, false);
         prompt.ShowDialog();
     }
 }

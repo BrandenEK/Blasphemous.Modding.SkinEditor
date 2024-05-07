@@ -10,6 +10,7 @@ public partial class ColorPrompt : Form
     public ColorPrompt(Color initial)
     {
         InitializeComponent();
+
         Logger.Info($"Opening color prompt with {initial}");
         SelectedColor = initial;
 
