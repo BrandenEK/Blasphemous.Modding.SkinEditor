@@ -105,7 +105,7 @@ partial class InfoPrompt
         _id_text.Location = new Point(10, 25);
         _id_text.MaxLength = 32;
         _id_text.Name = "_id_text";
-        _id_text.PlaceholderText = "PENITENT_DM_EXAMPLE";
+        _id_text.PlaceholderText = "PENITENT_AI_EXAMPLE";
         _id_text.Size = new Size(217, 23);
         _id_text.TabIndex = 1;
         _id_text.TextChanged += OnInfoTextChanged;
@@ -177,7 +177,7 @@ partial class InfoPrompt
         _author_text.Location = new Point(10, 25);
         _author_text.MaxLength = 32;
         _author_text.Name = "_author_text";
-        _author_text.PlaceholderText = "Damocles";
+        _author_text.PlaceholderText = "Example author";
         _author_text.Size = new Size(217, 23);
         _author_text.TabIndex = 1;
         _author_text.TextChanged += OnInfoTextChanged;
