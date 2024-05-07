@@ -64,7 +64,7 @@ public partial class MainForm : Form
         foreach (string file in Directory.EnumerateFiles(Path.Combine(Environment.CurrentDirectory, "anim")))
         {
             Logger.Error($"Loaded anim: {file}");
-            _preview_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
+            _info_selector.Items.Add(file[(file.LastIndexOf('\\') + 1)..^4]);
         }
 
         //_preview_selector.SelectedItem = "idle";
@@ -99,7 +99,7 @@ public partial class MainForm : Form
 
     private void OnSelectAnim(object sender, EventArgs e)
     {
-        string anim = _preview_selector.SelectedItem.ToString() ?? string.Empty;
+        string anim = _info_selector.SelectedItem.ToString() ?? string.Empty;
         string file = Path.Combine(Environment.CurrentDirectory, "anim", $"{anim}.png");
 
         Core.PreviewManager.ChangePreview(new Bitmap(file));
