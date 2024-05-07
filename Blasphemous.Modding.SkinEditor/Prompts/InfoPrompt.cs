@@ -38,6 +38,7 @@ public partial class InfoPrompt : Form
         if (string.IsNullOrEmpty(_id_text.Text)) reason |= InvalidInfoReason.IdEmpty;
         if (!_id_text.Text.StartsWith("PENITENT_")) reason |= InvalidInfoReason.IdPenitent;
         if (_id_text.Text.HasInvalidCharacter()) reason |= InvalidInfoReason.IdCharacters;
+        if (Directory.Exists(Path.Combine(Environment.CurrentDirectory, "skins", _id_text.Text))) reason |= InvalidInfoReason.IdExisting;
 
         if (string.IsNullOrEmpty(_name_text.Text)) reason |= InvalidInfoReason.NameEmpty;
 
@@ -68,6 +69,7 @@ public partial class InfoPrompt : Form
             var _ when reason.HasFlag(InvalidInfoReason.IdEmpty) => "Id must not be blank",
             var _ when reason.HasFlag(InvalidInfoReason.IdPenitent) => "Id must begin with 'PENITENT_'",
             var _ when reason.HasFlag(InvalidInfoReason.IdCharacters) => "Id must not contain invalid characters",
+            var _ when reason.HasFlag(InvalidInfoReason.IdExisting) => "Id must not already exist",
             _ => string.Empty
         });
 
@@ -102,8 +104,9 @@ public partial class InfoPrompt : Form
         AuthorEmpty = 0x10,
         VersionEmpty = 0x20,
         VersionParse = 0x40,
+        IdExisting = 0x80,
 
-        IdInvalid = IdEmpty | IdPenitent | IdCharacters,
+        IdInvalid = IdEmpty | IdPenitent | IdCharacters | IdExisting,
         NameInvalid = NameEmpty,
         AuthorInvalid = AuthorEmpty,
         VersionInvalid = VersionEmpty | VersionParse,
