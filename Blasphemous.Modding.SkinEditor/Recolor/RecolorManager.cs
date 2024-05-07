@@ -193,7 +193,7 @@ public class RecolorManager : IManager
         RefreshButtonsColor();
     }
 
-    private void OnUndo(IUndoCommand command)
+    private void OnUndo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;
@@ -201,7 +201,7 @@ public class RecolorManager : IManager
         UpdateButtonColor(pc.Pixel, pc.OldColor);
     }
 
-    private void OnRedo(IUndoCommand command)
+    private void OnRedo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;

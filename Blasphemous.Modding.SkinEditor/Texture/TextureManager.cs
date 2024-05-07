@@ -73,7 +73,7 @@ public class TextureManager : IManager
         SaveTexture(Path.Combine(path, "texture.png"));
     }
 
-    private void OnUndo(IUndoCommand command)
+    private void OnUndo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;
@@ -81,7 +81,7 @@ public class TextureManager : IManager
         SetPixel(pc.Pixel, pc.OldColor);
     }
 
-    private void OnRedo(IUndoCommand command)
+    private void OnRedo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;

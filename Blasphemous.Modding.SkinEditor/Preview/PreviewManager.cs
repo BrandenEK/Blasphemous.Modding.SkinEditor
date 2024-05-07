@@ -235,7 +235,7 @@ public class PreviewManager : IManager
         UpdatePreview(texture);
     }
 
-    private void OnUndo(IUndoCommand command)
+    private void OnUndo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;
@@ -243,7 +243,7 @@ public class PreviewManager : IManager
         UpdatePreview(pc.Pixel, pc.OldColor);
     }
 
-    private void OnRedo(IUndoCommand command)
+    private void OnRedo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;

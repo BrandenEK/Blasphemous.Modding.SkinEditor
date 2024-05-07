@@ -164,12 +164,13 @@ public class SaveManager : IManager
         ChangeUnsavedAmount(1);
     }
 
-    private void OnUndo(IUndoCommand command)
+    private void OnUndo(BaseUndoCommand command)
     {
+        Logger.Info($"Received undo from {command.TimeStamp}");
         ChangeUnsavedAmount(-1);
     }
 
-    private void OnRedo(IUndoCommand command)
+    private void OnRedo(BaseUndoCommand command)
     {
         ChangeUnsavedAmount(1);
     }
