@@ -59,7 +59,7 @@ partial class InfoPrompt
         _buttons.Location = new Point(0, 232);
         _buttons.Name = "_buttons";
         _buttons.Size = new Size(237, 34);
-        _buttons.TabIndex = 9;
+        _buttons.TabIndex = 4;
         // 
         // _buttons_cancel
         // 
@@ -69,7 +69,7 @@ partial class InfoPrompt
         _buttons_cancel.Location = new Point(150, 6);
         _buttons_cancel.Name = "_buttons_cancel";
         _buttons_cancel.Size = new Size(75, 25);
-        _buttons_cancel.TabIndex = 5;
+        _buttons_cancel.TabIndex = 1;
         _buttons_cancel.Text = "Cancel";
         _buttons_cancel.UseVisualStyleBackColor = true;
         // 
@@ -81,7 +81,7 @@ partial class InfoPrompt
         _buttons_confirm.Location = new Point(69, 6);
         _buttons_confirm.Name = "_buttons_confirm";
         _buttons_confirm.Size = new Size(75, 25);
-        _buttons_confirm.TabIndex = 4;
+        _buttons_confirm.TabIndex = 0;
         _buttons_confirm.Text = "Confirm";
         _buttons_confirm.UseVisualStyleBackColor = true;
         // 
@@ -96,7 +96,7 @@ partial class InfoPrompt
         _id.Name = "_id";
         _id.Padding = new Padding(10, 0, 10, 10);
         _id.Size = new Size(237, 58);
-        _id.TabIndex = 10;
+        _id.TabIndex = 0;
         // 
         // _id_text
         // 
@@ -132,7 +132,7 @@ partial class InfoPrompt
         _name.Name = "_name";
         _name.Padding = new Padding(10, 0, 10, 10);
         _name.Size = new Size(237, 58);
-        _name.TabIndex = 11;
+        _name.TabIndex = 1;
         // 
         // _name_text
         // 
@@ -167,7 +167,7 @@ partial class InfoPrompt
         _author.Name = "_author";
         _author.Padding = new Padding(10, 0, 10, 10);
         _author.Size = new Size(237, 58);
-        _author.TabIndex = 11;
+        _author.TabIndex = 2;
         // 
         // _author_text
         // 
@@ -202,7 +202,7 @@ partial class InfoPrompt
         _version.Name = "_version";
         _version.Padding = new Padding(10, 0, 10, 10);
         _version.Size = new Size(237, 58);
-        _version.TabIndex = 11;
+        _version.TabIndex = 3;
         // 
         // _version_text
         // 
