@@ -240,7 +240,7 @@ partial class MainForm
         _info_header.Name = "_info_header";
         _info_header.Size = new Size(360, 36);
         _info_header.TabIndex = 1;
-        _info_header.Text = "PENITENT_DM_TEST";
+        _info_header.Text = "SKIN_ID";
         _info_header.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // MainForm

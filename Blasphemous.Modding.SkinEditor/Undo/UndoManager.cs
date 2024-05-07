@@ -51,6 +51,18 @@ public class UndoManager : IManager
     public void Initialize()
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
+        Core.SaveManager.OnNewSkin += OnNewSkin;
+        Core.SaveManager.OnOpenSkin += OnOpenSkin;
+    }
+
+    private void OnNewSkin()
+    {
+        Reset();
+    }
+
+    private void OnOpenSkin(string path)
+    {
+        Reset();
     }
 
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
