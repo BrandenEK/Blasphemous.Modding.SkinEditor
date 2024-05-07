@@ -47,6 +47,9 @@ public partial class InfoPrompt : Form
         if (string.IsNullOrEmpty(_version_text.Text)) reason |= InvalidInfoReason.VersionEmpty;
         if (!Version.TryParse(_version_text.Text, out _)) reason |= InvalidInfoReason.VersionParse;
 
+        if (!_id_text.Enabled)
+            reason &= ~InvalidInfoReason.IdInvalid;
+
         _id_text.BackColor = (reason & InvalidInfoReason.IdInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
         _name_text.BackColor = (reason & InvalidInfoReason.NameInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
         _author_text.BackColor = (reason & InvalidInfoReason.AuthorInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
