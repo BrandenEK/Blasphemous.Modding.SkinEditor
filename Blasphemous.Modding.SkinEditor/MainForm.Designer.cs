@@ -50,6 +50,7 @@ partial class MainForm
         _menu_view_side = new ToolStripMenuItem();
         _info = new Panel();
         _info_header = new Label();
+        _menu_file_modify = new ToolStripMenuItem();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
         _menu.SuspendLayout();
@@ -123,7 +124,7 @@ partial class MainForm
         // 
         // _menu_file
         // 
-        _menu_file.DropDownItems.AddRange(new ToolStripItem[] { _menu_file_new, _menu_file_open, _menu_file_sep, _menu_file_save, _menu_file_saveas });
+        _menu_file.DropDownItems.AddRange(new ToolStripItem[] { _menu_file_new, _menu_file_open, _menu_file_modify, _menu_file_sep, _menu_file_save, _menu_file_saveas });
         _menu_file.Name = "_menu_file";
         _menu_file.Size = new Size(37, 20);
         _menu_file.Text = "File";
@@ -244,6 +245,14 @@ partial class MainForm
         _info_header.Text = "SKIN_ID";
         _info_header.TextAlign = ContentAlignment.MiddleLeft;
         // 
+        // _menu_file_modify
+        // 
+        _menu_file_modify.Name = "_menu_file_modify";
+        _menu_file_modify.ShortcutKeys = Keys.Control | Keys.M;
+        _menu_file_modify.Size = new Size(184, 22);
+        _menu_file_modify.Text = "Modify";
+        _menu_file_modify.Click += OnClickMenu_File_Modify;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -292,4 +301,5 @@ partial class MainForm
     private ToolStripMenuItem _menu_file_saveas;
     private Panel _info;
     private Label _info_header;
+    private ToolStripMenuItem _menu_file_modify;
 }
