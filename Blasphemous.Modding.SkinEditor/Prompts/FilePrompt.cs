@@ -8,6 +8,7 @@ public partial class FilePrompt : Form
     public FilePrompt()
     {
         InitializeComponent();
+        _buttons_confirm.Enabled = false;
 
         for (int i = 0; i < 15; i++)
         {
@@ -68,6 +69,8 @@ public partial class FilePrompt : Form
             return;
 
         SelectRow(sender is Panel p ? p : ((Label)sender).Parent);
+        _buttons_confirm.Enabled = true;
+        _buttons_confirm.Select();
     }
 
     private Color GetAlternateColor(int idx, bool selected)
