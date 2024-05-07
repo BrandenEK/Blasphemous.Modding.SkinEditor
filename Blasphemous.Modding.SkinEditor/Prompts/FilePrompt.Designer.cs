@@ -35,9 +35,11 @@ partial class FilePrompt
         _main_list_outer = new Panel();
         _main_list_inner = new Panel();
         _main_preview = new PictureBox();
+        _main_list_label = new Label();
         _buttons.SuspendLayout();
         _main.SuspendLayout();
         _main_list_outer.SuspendLayout();
+        _main_list_inner.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_main_preview).BeginInit();
         SuspendLayout();
         // 
@@ -104,6 +106,7 @@ partial class FilePrompt
         // 
         _main_list_inner.AutoScroll = true;
         _main_list_inner.BackColor = SystemColors.ControlDark;
+        _main_list_inner.Controls.Add(_main_list_label);
         _main_list_inner.Dock = DockStyle.Fill;
         _main_list_inner.Location = new Point(2, 2);
         _main_list_inner.Name = "_main_list_inner";
@@ -120,6 +123,17 @@ partial class FilePrompt
         _main_preview.SizeMode = PictureBoxSizeMode.StretchImage;
         _main_preview.TabIndex = 0;
         _main_preview.TabStop = false;
+        // 
+        // _main_list_label
+        // 
+        _main_list_label.Dock = DockStyle.Fill;
+        _main_list_label.Font = new Font("Segoe UI", 21.75F, FontStyle.Regular, GraphicsUnit.Point);
+        _main_list_label.Location = new Point(0, 0);
+        _main_list_label.Name = "_main_list_label";
+        _main_list_label.Size = new Size(298, 416);
+        _main_list_label.TabIndex = 0;
+        _main_list_label.Text = "The skins folder is empty...";
+        _main_list_label.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // FilePrompt
         // 
@@ -143,6 +157,7 @@ partial class FilePrompt
         _buttons.PerformLayout();
         _main.ResumeLayout(false);
         _main_list_outer.ResumeLayout(false);
+        _main_list_inner.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)_main_preview).EndInit();
         ResumeLayout(false);
         PerformLayout();
@@ -157,4 +172,5 @@ partial class FilePrompt
     private PictureBox _main_preview;
     private Panel _main_list_outer;
     private Panel _main_list_inner;
+    private Label _main_list_label;
 }

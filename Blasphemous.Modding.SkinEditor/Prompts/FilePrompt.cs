@@ -10,12 +10,16 @@ public partial class FilePrompt : Form
         InitializeComponent();
         _buttons_confirm.Enabled = false;
 
-        for (int i = 0; i < 15; i++)
+        int amount = 4;
+
+        for (int i = 0; i < amount; i++)
         {
             CreateFileRow("PENITENT_" + i, i);
         }
 
-        _main_list_inner.BackColor = GetAlternateColor(5, false);
+        _main_list_inner.BackColor = GetAlternateColor(amount, false);
+        if (amount > 0)
+            _main_list_label.Visible = false;
     }
 
     private Panel CreateFileRow(string name, int idx)
