@@ -161,8 +161,7 @@ public class SaveManager : IManager
 
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
-        if (oldColor != newColor)
-            ChangeUnsavedAmount(1);
+        ChangeUnsavedAmount(1);
     }
 
     private void OnUndo(IUndoCommand command)

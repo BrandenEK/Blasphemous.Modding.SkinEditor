@@ -141,6 +141,9 @@ public class RecolorManager : IManager
         Color oldColor = btn.BackColor;
         Color newColor = prompt.SelectedColor;
 
+        if (oldColor == newColor)
+            return;
+
         Logger.Warn($"Changing pixel {pixel} to {newColor}");
         OnPixelChanged?.Invoke(pixel, oldColor, newColor);
         UpdateButtonColor(btn, newColor);
