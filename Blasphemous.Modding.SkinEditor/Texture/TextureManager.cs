@@ -1,4 +1,5 @@
 ﻿using Blasphemous.Modding.SkinEditor.Undo;
+using System.Drawing.Imaging;
 
 namespace Blasphemous.Modding.SkinEditor.Texture;
 
@@ -12,7 +13,7 @@ public class TextureManager : IManager
             throw new Exception("No texture has been loaded yet");
 
         Logger.Info($"Saving current texture to {path}");
-        _texture.Save(path);
+        _texture.Save(path, ImageFormat.Png);
     }
 
     public void LoadTexture(string path)
@@ -47,6 +48,7 @@ public class TextureManager : IManager
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
         Core.SaveManager.OnNewSkin += OnNewSkin;
         Core.SaveManager.OnOpenSkin += OnOpenSkin;
+        Core.SaveManager.OnSaveSkin += OnSaveSkin;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
     }
@@ -64,6 +66,11 @@ public class TextureManager : IManager
     private void OnOpenSkin(string path)
     {
         LoadTexture(path);
+    }
+
+    private void OnSaveSkin(string path)
+    {
+        SaveTexture(Path.Combine(path, "texture.png"));
     }
 
     private void OnUndo(IUndoCommand command)

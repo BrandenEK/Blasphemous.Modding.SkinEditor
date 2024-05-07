@@ -1,4 +1,5 @@
 ﻿using Blasphemous.Modding.SkinEditor.Undo;
+using System.Drawing.Imaging;
 
 namespace Blasphemous.Modding.SkinEditor.Preview;
 
@@ -147,6 +148,26 @@ public class PreviewManager : IManager
         DisplayPreview(_coloredPreview);
     }
 
+    private void SavePreview(string path)
+    {
+        using Bitmap export = new(Path.Combine(Environment.CurrentDirectory, "data", "preview.png"));
+
+        for (int i = 0; i < export.Width; i++)
+        {
+            for (int j = 0; j < export.Height; j++)
+            {
+                Color pixel = export.GetPixel(i, j);
+                if (pixel.R != pixel.G || pixel.R != pixel.B)
+                    continue;
+
+                export.SetPixel(i, j, Core.TextureManager.GetPixel(pixel.R));
+            }
+        }
+
+        Logger.Info($"Saving skin preview to {path}");
+        export.Save(path, ImageFormat.Png);
+    }
+
     public IEnumerable<byte> GetPixelsInPreview()
     {
         if (_indexedPreview == null)
@@ -174,6 +195,7 @@ public class PreviewManager : IManager
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
         Core.SaveManager.OnNewSkin += OnNewSkin;
         Core.SaveManager.OnOpenSkin += OnOpenSkin;
+        Core.SaveManager.OnSaveSkin += OnSaveSkin;
         Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
@@ -193,6 +215,11 @@ public class PreviewManager : IManager
     private void OnOpenSkin(string path)
     {
         LoadFirstPreview();
+    }
+
+    private void OnSaveSkin(string path)
+    {
+        SavePreview(path);
     }
 
     private void OnSettingChanged(string property, bool status)
