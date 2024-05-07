@@ -187,6 +187,7 @@ partial class MainForm
         _menu_file_new.ShortcutKeys = Keys.Control | Keys.N;
         _menu_file_new.Size = new Size(184, 22);
         _menu_file_new.Text = "New";
+        _menu_file_new.Click += OnClickMenu_File_New;
         // 
         // _menu_file_open
         // 
@@ -194,6 +195,7 @@ partial class MainForm
         _menu_file_open.ShortcutKeys = Keys.Control | Keys.O;
         _menu_file_open.Size = new Size(184, 22);
         _menu_file_open.Text = "Open";
+        _menu_file_open.Click += OnClickMenu_File_Open;
         // 
         // _menu_file_sep
         // 
@@ -206,6 +208,7 @@ partial class MainForm
         _menu_file_save.ShortcutKeys = Keys.Control | Keys.S;
         _menu_file_save.Size = new Size(184, 22);
         _menu_file_save.Text = "Save";
+        _menu_file_save.Click += OnClickMenu_File_Save;
         // 
         // _menu_file_saveas
         // 
@@ -213,6 +216,7 @@ partial class MainForm
         _menu_file_saveas.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
         _menu_file_saveas.Size = new Size(184, 22);
         _menu_file_saveas.Text = "Save as";
+        _menu_file_saveas.Click += OnClickMenu_File_SaveAs;
         // 
         // MainForm
         // 

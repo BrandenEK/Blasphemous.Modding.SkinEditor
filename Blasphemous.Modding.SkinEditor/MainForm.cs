@@ -103,6 +103,11 @@ public partial class MainForm : Form
         Core.PreviewManager.ChangePreview(new Bitmap(file));
     }
 
+    private void OnClickMenu_File_New(object _, EventArgs __) => Core.SaveManager.New();
+    private void OnClickMenu_File_Open(object _, EventArgs __) => Core.SaveManager.Open();
+    private void OnClickMenu_File_Save(object _, EventArgs __) => Core.SaveManager.Save();
+    private void OnClickMenu_File_SaveAs(object _, EventArgs __) => Core.SaveManager.SaveAs();
+
     private void OnClickMenu_Edit_Undo(object _, EventArgs __) => Core.UndoManager.Undo();
     private void OnClickMenu_Edit_Redo(object _, EventArgs __) => Core.UndoManager.Redo();
 
