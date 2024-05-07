@@ -108,6 +108,7 @@ partial class InfoPrompt
         _id_text.PlaceholderText = "PENITENT_DM_EXAMPLE";
         _id_text.Size = new Size(217, 23);
         _id_text.TabIndex = 1;
+        _id_text.TextChanged += OnInfoTextChanged;
         // 
         // _id_label
         // 
@@ -143,6 +144,7 @@ partial class InfoPrompt
         _name_text.PlaceholderText = "Example skin";
         _name_text.Size = new Size(217, 23);
         _name_text.TabIndex = 1;
+        _name_text.TextChanged += OnInfoTextChanged;
         // 
         // _name_label
         // 
@@ -178,6 +180,7 @@ partial class InfoPrompt
         _author_text.PlaceholderText = "Damocles";
         _author_text.Size = new Size(217, 23);
         _author_text.TabIndex = 1;
+        _author_text.TextChanged += OnInfoTextChanged;
         // 
         // _author_label
         // 
@@ -213,6 +216,7 @@ partial class InfoPrompt
         _version_text.PlaceholderText = "1.0.0";
         _version_text.Size = new Size(217, 23);
         _version_text.TabIndex = 1;
+        _version_text.TextChanged += OnInfoTextChanged;
         // 
         // _version_label
         // 
