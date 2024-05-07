@@ -37,6 +37,7 @@ public class TextureManager : IManager
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
         Core.SaveManager.OnNewSkin += OnNewSkin;
+        Core.SaveManager.OnOpenSkin += OnOpenSkin;
         Core.UndoManager.OnUndo += OnUndo;
         Core.UndoManager.OnRedo += OnRedo;
     }
@@ -49,6 +50,11 @@ public class TextureManager : IManager
     private void OnNewSkin()
     {
         LoadTexture(DEFAULT_TEXTURE_PATH);
+    }
+
+    private void OnOpenSkin(string path)
+    {
+        LoadTexture(path);
     }
 
     private void OnUndo(IUndoCommand command)

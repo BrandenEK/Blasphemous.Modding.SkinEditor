@@ -20,6 +20,14 @@ public class PreviewManager : IManager
         _pictureBox.SizeChanged += OnPictureResized;
     }
 
+    private void LoadFirstPreview()
+    {
+        // Should not hardcode file path here
+        // Also need to set text in selector
+        string file = Path.Combine(Environment.CurrentDirectory, "anim", "idle.png");
+        ChangePreview(new Bitmap(file));
+    }
+
     private void OnPictureResized(object? sender, EventArgs e)
     {
         if (_coloredPreview == null || _pictureBox.Image == null || _lastScale == CurrentScale)
@@ -165,6 +173,7 @@ public class PreviewManager : IManager
     {
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
         Core.SaveManager.OnNewSkin += OnNewSkin;
+        Core.SaveManager.OnOpenSkin += OnOpenSkin;
         Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.TextureManager.OnTextureChanged += OnTextureChanged;
         Core.UndoManager.OnUndo += OnUndo;
@@ -178,10 +187,12 @@ public class PreviewManager : IManager
 
     private void OnNewSkin()
     {
-        // Should not hardcode file path here
-        // Also need to set text in selector
-        string file = Path.Combine(Environment.CurrentDirectory, "anim", "idle.png");
-        ChangePreview(new Bitmap(file));
+        LoadFirstPreview();
+    }
+
+    private void OnOpenSkin(string path)
+    {
+        LoadFirstPreview();
     }
 
     private void OnSettingChanged(string property, bool status)
