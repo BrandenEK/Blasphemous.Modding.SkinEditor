@@ -18,6 +18,20 @@ public partial class MainForm : Form
         return (T)Controls.Find(name, true)[0];
     }
 
+    public ToolStripItem FindMenu(string name)
+    {
+        foreach (ToolStripMenuItem item in _menu.Items)
+        {
+            foreach (ToolStripItem menu in item.DropDownItems)
+            {
+                if (menu.Name == name)
+                    return menu;
+            }
+        }
+
+        throw new Exception($"Menu item {name} does not exist");
+    }
+
     private void OnFormOpen(object sender, EventArgs e)
     {
         Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");

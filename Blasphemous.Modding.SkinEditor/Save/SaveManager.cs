@@ -9,6 +9,7 @@ namespace Blasphemous.Modding.SkinEditor.Save;
 public class SaveManager : IManager
 {
     private readonly Label _idLabel;
+    private readonly ToolStripItem _modifyMenu;
 
     private SkinInfo? _currentSkin;
 
@@ -17,9 +18,10 @@ public class SaveManager : IManager
 
     private bool IsSaved => _unsavedChanges == 0 && _currentSkin != null;
 
-    public SaveManager(Label idLabel)
+    public SaveManager(Label idLabel, ToolStripItem modifyMenu)
     {
         _idLabel = idLabel;
+        _modifyMenu = modifyMenu;
     }
 
     private void UpdateIdLabel()
@@ -30,6 +32,7 @@ public class SaveManager : IManager
         _idLabel.Font = font;
         _idLabel.Text = text;
         _idLabel.Width = _idLabel.PreferredWidth;
+        _modifyMenu.Enabled = _currentSkin != null;
     }
 
     private void ChangeUnsavedAmount(int amount)
