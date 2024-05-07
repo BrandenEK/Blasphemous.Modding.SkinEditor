@@ -222,7 +222,7 @@ public class PreviewManager : IManager
         SavePreview(path);
     }
 
-    private void OnSettingChanged(string property, bool status)
+    private void OnSettingChanged(string property, bool status, bool onLoad)
     {
         if (property != "view_background")
             return;

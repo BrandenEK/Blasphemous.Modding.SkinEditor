@@ -174,13 +174,15 @@ public class RecolorManager : IManager
         RefreshButtonsVisibility();
     }
 
-    private void OnSettingChanged(string property, bool status)
+    private void OnSettingChanged(string property, bool status, bool onLoad)
     {
         if (property != "view_all")
             return;
 
         _showingAll = status;
-        RefreshButtonsVisibility();
+
+        if (!onLoad)
+            RefreshButtonsVisibility();
     }
 
     private void OnTextureChanged(Bitmap texture)

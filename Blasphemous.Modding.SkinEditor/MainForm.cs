@@ -58,7 +58,7 @@ public partial class MainForm : Form
         Settings.Default.Save();
     }
 
-    private void OnSettingChanged(string property, bool status)
+    private void OnSettingChanged(string property, bool status, bool onLoad)
     {
         if (property != "view_side")
             return;
