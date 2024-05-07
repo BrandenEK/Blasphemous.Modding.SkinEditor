@@ -33,16 +33,44 @@ public partial class InfoPrompt : Form
 
     private void ValidateInfo()
     {
-        bool idValid = !string.IsNullOrEmpty(_id_text.Text) && !_id_text.Text.HasInvalidCharacter() && _id_text.Text.StartsWith("PENITENT_");
-        bool nameValid = !string.IsNullOrEmpty(_name_text.Text);
-        bool authorValid = !string.IsNullOrEmpty(_author_text.Text);
-        bool versionValid = !string.IsNullOrEmpty(_version_text.Text) && Version.TryParse(_version_text.Text, out _);
+        InvalidInfoReason reason = InvalidInfoReason.None;
 
-        _id_text.BackColor = idValid ? SystemColors.Window : SystemColors.Info;
-        _name_text.BackColor = nameValid ? SystemColors.Window : SystemColors.Info;
-        _author_text.BackColor = authorValid ? SystemColors.Window : SystemColors.Info;
-        _version_text.BackColor = versionValid ? SystemColors.Window : SystemColors.Info;
+        if (string.IsNullOrEmpty(_id_text.Text)) reason |= InvalidInfoReason.IdEmpty;
+        if (!_id_text.Text.StartsWith("PENITENT_")) reason |= InvalidInfoReason.IdPenitent;
+        if (_id_text.Text.HasInvalidCharacter()) reason |= InvalidInfoReason.IdCharacters;
 
-        _buttons_confirm.Enabled = (idValid || !_id_text.Enabled) && nameValid && authorValid && versionValid;
+        if (string.IsNullOrEmpty(_name_text.Text)) reason |= InvalidInfoReason.NameEmpty;
+
+        if (string.IsNullOrEmpty(_author_text.Text)) reason |= InvalidInfoReason.AuthorEmpty;
+
+        if (string.IsNullOrEmpty(_version_text.Text)) reason |= InvalidInfoReason.VersionEmpty;
+        if (!Version.TryParse(_version_text.Text, out _)) reason |= InvalidInfoReason.VersionParse;
+
+        _id_text.BackColor = (reason & InvalidInfoReason.IdInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
+        _name_text.BackColor = (reason & InvalidInfoReason.NameInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
+        _author_text.BackColor = (reason & InvalidInfoReason.AuthorInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
+        _version_text.BackColor = (reason & InvalidInfoReason.VersionInvalid) != 0 ? SystemColors.Info : SystemColors.Window;
+
+        _buttons_confirm.Enabled = reason == InvalidInfoReason.None;
+    }
+
+    [Flags]
+    enum InvalidInfoReason
+    {
+        None = 0x00,
+        IdEmpty = 0x01,
+        IdPenitent = 0x02,
+        IdCharacters = 0x04,
+        NameEmpty = 0x08,
+        AuthorEmpty = 0x10,
+        VersionEmpty = 0x20,
+        VersionParse = 0x40,
+
+        IdInvalid = IdEmpty | IdPenitent | IdCharacters,
+        NameInvalid = NameEmpty,
+        AuthorInvalid = AuthorEmpty,
+        VersionInvalid = VersionEmpty | VersionParse,
+
+        AnyInvalid = IdInvalid | NameInvalid | AuthorInvalid | VersionInvalid,
     }
 }
