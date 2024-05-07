@@ -14,6 +14,8 @@ public partial class FilePrompt : Form
         {
             CreateFileRow("PENITENT_" + i, i);
         }
+
+        _main_list_inner.BackColor = GetAlternateColor(5, false);
     }
 
     private Panel CreateFileRow(string name, int idx)
@@ -21,7 +23,7 @@ public partial class FilePrompt : Form
         Panel panel = new()
         {
             Name = name,
-            Parent = _main_list,
+            Parent = _main_list_inner,
             BackColor = GetAlternateColor(idx, false),
             Size = new Size(100, 40),
             Dock = DockStyle.Top,
@@ -76,7 +78,7 @@ public partial class FilePrompt : Form
 
         DeselectCurrentRow();
 
-        int idx = _main_list.Controls.GetChildIndex(row);
+        int idx = _main_list_inner.Controls.GetChildIndex(row);
         row.BackColor = GetAlternateColor(idx, true);
         _selectedRow = row;
         
@@ -88,7 +90,7 @@ public partial class FilePrompt : Form
         if (_selectedRow is null)
             return;
 
-        int idx = _main_list.Controls.GetChildIndex(_selectedRow);
+        int idx = _main_list_inner.Controls.GetChildIndex(_selectedRow);
         _selectedRow.BackColor = GetAlternateColor(idx, false);
         _selectedRow = null;
     }

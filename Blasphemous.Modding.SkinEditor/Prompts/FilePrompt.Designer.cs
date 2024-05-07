@@ -32,10 +32,12 @@ partial class FilePrompt
         _buttons_cancel = new Button();
         _buttons_confirm = new Button();
         _main = new Panel();
-        _main_list = new Panel();
+        _main_list_outer = new Panel();
+        _main_list_inner = new Panel();
         _main_preview = new PictureBox();
         _buttons.SuspendLayout();
         _main.SuspendLayout();
+        _main_list_outer.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_main_preview).BeginInit();
         SuspendLayout();
         // 
@@ -78,7 +80,7 @@ partial class FilePrompt
         // 
         _main.AutoSize = true;
         _main.BackColor = SystemColors.ControlLight;
-        _main.Controls.Add(_main_list);
+        _main.Controls.Add(_main_list_outer);
         _main.Controls.Add(_main_preview);
         _main.Dock = DockStyle.Top;
         _main.Location = new Point(0, 0);
@@ -87,17 +89,26 @@ partial class FilePrompt
         _main.Size = new Size(898, 447);
         _main.TabIndex = 0;
         // 
-        // _main_list
+        // _main_list_outer
         // 
-        _main_list.AutoScroll = true;
-        _main_list.AutoScrollMargin = new Size(3, 3);
-        _main_list.BackColor = SystemColors.ActiveCaptionText;
-        _main_list.BorderStyle = BorderStyle.FixedSingle;
-        _main_list.Location = new Point(582, 12);
-        _main_list.Name = "_main_list";
-        _main_list.Padding = new Padding(2);
-        _main_list.Size = new Size(304, 422);
-        _main_list.TabIndex = 1;
+        _main_list_outer.BackColor = SystemColors.ActiveCaptionText;
+        _main_list_outer.BorderStyle = BorderStyle.FixedSingle;
+        _main_list_outer.Controls.Add(_main_list_inner);
+        _main_list_outer.Location = new Point(582, 12);
+        _main_list_outer.Name = "_main_list_outer";
+        _main_list_outer.Padding = new Padding(2);
+        _main_list_outer.Size = new Size(304, 422);
+        _main_list_outer.TabIndex = 1;
+        // 
+        // _main_list_inner
+        // 
+        _main_list_inner.AutoScroll = true;
+        _main_list_inner.BackColor = SystemColors.ControlDark;
+        _main_list_inner.Dock = DockStyle.Fill;
+        _main_list_inner.Location = new Point(2, 2);
+        _main_list_inner.Name = "_main_list_inner";
+        _main_list_inner.Size = new Size(298, 416);
+        _main_list_inner.TabIndex = 0;
         // 
         // _main_preview
         // 
@@ -131,6 +142,7 @@ partial class FilePrompt
         _buttons.ResumeLayout(false);
         _buttons.PerformLayout();
         _main.ResumeLayout(false);
+        _main_list_outer.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)_main_preview).EndInit();
         ResumeLayout(false);
         PerformLayout();
@@ -143,5 +155,6 @@ partial class FilePrompt
     private Button _buttons_confirm;
     private Panel _main;
     private PictureBox _main_preview;
-    private Panel _main_list;
+    private Panel _main_list_outer;
+    private Panel _main_list_inner;
 }
