@@ -18,7 +18,7 @@ internal static class Core
 
         PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"));
         RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
-        SaveManager = new SaveManager();
+        SaveManager = new SaveManager(form.FindUI<Label>("_info_header"));
         SettingManager = new SettingManager();
         TextureManager = new TextureManager();
         UndoManager = new UndoManager();
