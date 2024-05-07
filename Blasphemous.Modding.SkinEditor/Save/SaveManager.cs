@@ -27,6 +27,7 @@ public class SaveManager : IManager
 
         _idLabel.Font = font;
         _idLabel.Text = text;
+        _idLabel.Width = _idLabel.PreferredWidth;
     }
 
     private void ChangeUnsavedAmount(int amount)

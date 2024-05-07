@@ -50,7 +50,7 @@ public partial class FilePrompt : Form
             Dock = DockStyle.Fill,
             Font = new Font(panel.Font.FontFamily, 12),
             TextAlign = ContentAlignment.MiddleLeft,
-            Text = name,
+            Text = FormatName(name),
         };
         label.Click += OnClickRow;
 
@@ -100,10 +100,23 @@ public partial class FilePrompt : Form
         _buttons_confirm.Select();
     }
 
-    private Color GetAlternateColor(int idx, bool selected)
+    private static Color GetAlternateColor(int idx, bool selected)
     {
         return selected
             ? idx % 2 == 0 ? SystemColors.InactiveCaption : SystemColors.ActiveCaption
             : idx % 2 == 0 ? SystemColors.ControlDark : SystemColors.ControlDarkDark;
     }
+
+    private static string FormatName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return string.Empty;
+
+        if (name.Length <= DISPLAY_LENGTH)
+            return name;
+
+        return $"{name[..(DISPLAY_LENGTH - 1)]}...";
+    }
+
+    private const int DISPLAY_LENGTH = 24;
 }
