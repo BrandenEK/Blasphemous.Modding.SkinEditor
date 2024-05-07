@@ -90,10 +90,12 @@ partial class FilePrompt
         // _main_list
         // 
         _main_list.AutoScroll = true;
-        _main_list.BackColor = SystemColors.ControlDarkDark;
-        _main_list.BorderStyle = BorderStyle.Fixed3D;
+        _main_list.AutoScrollMargin = new Size(3, 3);
+        _main_list.BackColor = SystemColors.ActiveCaptionText;
+        _main_list.BorderStyle = BorderStyle.FixedSingle;
         _main_list.Location = new Point(582, 12);
         _main_list.Name = "_main_list";
+        _main_list.Padding = new Padding(2);
         _main_list.Size = new Size(304, 422);
         _main_list.TabIndex = 1;
         // 
