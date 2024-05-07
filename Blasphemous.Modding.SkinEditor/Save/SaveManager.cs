@@ -1,8 +1,11 @@
-﻿
+﻿using Blasphemous.Modding.SkinEditor.Models;
+
 namespace Blasphemous.Modding.SkinEditor.Save;
 
 public class SaveManager : IManager
 {
+    private SkinInfo? _currentSkin;
+
     public void New()
     {
         Logger.Warn("Creating new skin");
