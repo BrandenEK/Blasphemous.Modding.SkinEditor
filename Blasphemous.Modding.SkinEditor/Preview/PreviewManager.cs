@@ -219,7 +219,7 @@ public class PreviewManager : IManager
 
     private void OnSaveSkin(string path)
     {
-        SavePreview(path);
+        SavePreview(Path.Combine(path, "preview.png"));
     }
 
     private void OnSettingChanged(string property, bool status, bool onLoad)
