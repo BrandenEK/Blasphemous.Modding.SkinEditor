@@ -69,10 +69,10 @@ public partial class FilePrompt : Form
     private void UpdatePreviewImage(Control row)
     {
         Logger.Warn($"Updating import preview for {row.Name}");
-        Bitmap preview = new(Path.Combine(Environment.CurrentDirectory, "skins", row.Name, "preview.png"));
+        using Bitmap file = new(Path.Combine(Environment.CurrentDirectory, "skins", row.Name, "preview.png"));
 
         _main_preview.Image?.Dispose();
-        _main_preview.Image = preview;
+        _main_preview.Image = new Bitmap(file);
     }
 
     private void SelectRow(Control row)

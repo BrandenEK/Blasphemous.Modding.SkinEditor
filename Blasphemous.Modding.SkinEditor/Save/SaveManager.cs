@@ -11,7 +11,9 @@ public class SaveManager : IManager
     private readonly Label _idLabel;
 
     private SkinInfo? _currentSkin;
-    private int _unsavedChanges;
+
+    private int _unsavedChanges = 0;
+    private DateTime _lastSaveTime = DateTime.Now;
 
     private bool IsSaved => _unsavedChanges == 0 && _currentSkin != null;
 
@@ -34,12 +36,16 @@ public class SaveManager : IManager
     {
         _unsavedChanges = Math.Max(_unsavedChanges + amount, 0);
         UpdateIdLabel();
+
+        Logger.Info($"There are now {_unsavedChanges} unsaved changes");
     }
 
     private void ResetUnsavedAmount()
     {
         _unsavedChanges = 0;
         UpdateIdLabel();
+
+        Logger.Info($"There are now 0 unsaved changes");
     }
 
     public bool CheckForUnsavedProgress()
@@ -142,6 +148,7 @@ public class SaveManager : IManager
 
         // Save everything else
         OnSaveSkin?.Invoke(path);
+        _lastSaveTime = DateTime.Now;
     }
 
     private SkinInfo? LoadSkinInfo(string path)
@@ -166,13 +173,12 @@ public class SaveManager : IManager
 
     private void OnUndo(BaseUndoCommand command)
     {
-        Logger.Info($"Received undo from {command.TimeStamp}");
-        ChangeUnsavedAmount(-1);
+        ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? -1 : 1);
     }
 
     private void OnRedo(BaseUndoCommand command)
     {
-        ChangeUnsavedAmount(1);
+        ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? 1 : -1);
     }
 
     public delegate void NewSkinDelegate();

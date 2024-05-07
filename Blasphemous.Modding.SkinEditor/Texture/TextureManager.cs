@@ -19,7 +19,8 @@ public class TextureManager : IManager
     public void LoadTexture(string path)
     {
         _texture?.Dispose();
-        _texture = new Bitmap(path);
+        using Bitmap file = new(path);
+        _texture = new(file);
 
         Logger.Info($"Loading new texture from {path}");
         OnTextureChanged?.Invoke(_texture);
