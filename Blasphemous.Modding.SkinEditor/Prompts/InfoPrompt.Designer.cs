@@ -28,6 +28,7 @@ partial class InfoPrompt
     /// </summary>
     private void InitializeComponent()
     {
+        components = new System.ComponentModel.Container();
         _buttons = new Panel();
         _buttons_cancel = new Button();
         _buttons_confirm = new Button();
@@ -43,6 +44,7 @@ partial class InfoPrompt
         _version = new Panel();
         _version_text = new TextBox();
         _version_label = new Label();
+        _tooltip = new ToolTip(components);
         _buttons.SuspendLayout();
         _id.SuspendLayout();
         _name.SuspendLayout();
@@ -105,7 +107,7 @@ partial class InfoPrompt
         _id_text.Location = new Point(10, 25);
         _id_text.MaxLength = 32;
         _id_text.Name = "_id_text";
-        _id_text.PlaceholderText = "PENITENT_DM_EXAMPLE";
+        _id_text.PlaceholderText = "PENITENT_AI_EXAMPLE";
         _id_text.Size = new Size(217, 23);
         _id_text.TabIndex = 1;
         _id_text.TextChanged += OnInfoTextChanged;
@@ -177,7 +179,7 @@ partial class InfoPrompt
         _author_text.Location = new Point(10, 25);
         _author_text.MaxLength = 32;
         _author_text.Name = "_author_text";
-        _author_text.PlaceholderText = "Damocles";
+        _author_text.PlaceholderText = "Example author";
         _author_text.Size = new Size(217, 23);
         _author_text.TabIndex = 1;
         _author_text.TextChanged += OnInfoTextChanged;
@@ -230,6 +232,12 @@ partial class InfoPrompt
         _version_label.Text = "Skin Version:";
         _version_label.TextAlign = ContentAlignment.TopCenter;
         // 
+        // _tooltip
+        // 
+        _tooltip.AutoPopDelay = 5000;
+        _tooltip.InitialDelay = 100;
+        _tooltip.ReshowDelay = 100;
+        // 
         // InfoPrompt
         // 
         AcceptButton = _buttons_confirm;
@@ -281,4 +289,5 @@ partial class InfoPrompt
     private Panel _version;
     private TextBox _version_text;
     private Label _version_label;
+    private ToolTip _tooltip;
 }

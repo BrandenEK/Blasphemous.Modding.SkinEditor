@@ -9,15 +9,19 @@ namespace Blasphemous.Modding.SkinEditor.Save;
 public class SaveManager : IManager
 {
     private readonly Label _idLabel;
+    private readonly ToolStripItem _modifyMenu;
 
     private SkinInfo? _currentSkin;
-    private int _unsavedChanges;
+
+    private int _unsavedChanges = 0;
+    private DateTime _lastSaveTime = DateTime.Now;
 
     private bool IsSaved => _unsavedChanges == 0 && _currentSkin != null;
 
-    public SaveManager(Label idLabel)
+    public SaveManager(Label idLabel, ToolStripItem modifyMenu)
     {
         _idLabel = idLabel;
+        _modifyMenu = modifyMenu;
     }
 
     private void UpdateIdLabel()
@@ -28,18 +32,23 @@ public class SaveManager : IManager
         _idLabel.Font = font;
         _idLabel.Text = text;
         _idLabel.Width = _idLabel.PreferredWidth;
+        _modifyMenu.Enabled = _currentSkin != null;
     }
 
     private void ChangeUnsavedAmount(int amount)
     {
-        _unsavedChanges = Math.Max(_unsavedChanges + amount, 0);
+        _unsavedChanges += amount;
         UpdateIdLabel();
+
+        Logger.Info($"There are now {_unsavedChanges} unsaved changes");
     }
 
     private void ResetUnsavedAmount()
     {
         _unsavedChanges = 0;
         UpdateIdLabel();
+
+        Logger.Info($"There are now 0 unsaved changes");
     }
 
     public bool CheckForUnsavedProgress()
@@ -87,9 +96,25 @@ public class SaveManager : IManager
         _currentSkin = info;
         ResetUnsavedAmount();
 
-        UpdateIdLabel();
-
         OnOpenSkin?.Invoke(path);
+    }
+
+    public void Modify()
+    {
+        if (_currentSkin is null)
+            return;
+
+        using InfoPrompt prompt = new(_currentSkin, true);
+        if (prompt.ShowDialog() != DialogResult.OK)
+            return;
+
+        SkinInfo info = prompt.SelectedInfo;
+        Logger.Warn("Modifying current skin");
+
+        OnModifySkin?.Invoke(_currentSkin, info);
+
+        _currentSkin = info;
+        ChangeUnsavedAmount(1);
     }
 
     public void Save()
@@ -107,8 +132,6 @@ public class SaveManager : IManager
         SaveSkinInfo(_currentSkin);
 
         ResetUnsavedAmount();
-
-        UpdateIdLabel();
     }
 
     public void SaveAs()
@@ -123,8 +146,6 @@ public class SaveManager : IManager
 
         _currentSkin = info;
         ResetUnsavedAmount();
-
-        UpdateIdLabel();
     }
 
     private void SaveSkinInfo(SkinInfo info)
@@ -142,6 +163,7 @@ public class SaveManager : IManager
 
         // Save everything else
         OnSaveSkin?.Invoke(path);
+        _lastSaveTime = DateTime.Now;
     }
 
     private SkinInfo? LoadSkinInfo(string path)
@@ -161,24 +183,35 @@ public class SaveManager : IManager
 
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
-        if (oldColor != newColor)
-            ChangeUnsavedAmount(1);
-    }
-
-    private void OnUndo(IUndoCommand command)
-    {
-        ChangeUnsavedAmount(-1);
-    }
-
-    private void OnRedo(IUndoCommand command)
-    {
         ChangeUnsavedAmount(1);
+    }
+
+    private void OnUndo(BaseUndoCommand command)
+    {
+        if (command is ModifySkinUndoCommand ms)
+        {
+            _currentSkin = ms.OldInfo;
+        }
+
+        ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? -1 : 1);
+    }
+
+    private void OnRedo(BaseUndoCommand command)
+    {
+        if (command is ModifySkinUndoCommand ms)
+        {
+            _currentSkin = ms.NewInfo;
+        }
+
+        ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? 1 : -1);
     }
 
     public delegate void NewSkinDelegate();
     public event NewSkinDelegate? OnNewSkin;
     public delegate void OpenSkinDelegate(string path);
     public event OpenSkinDelegate? OnOpenSkin;
+    public delegate void ModifySkinDelegate(SkinInfo oldInfo, SkinInfo newInfo);
+    public event ModifySkinDelegate? OnModifySkin;
     public delegate void SaveSkinDelegate(string path);
     public event SaveSkinDelegate? OnSaveSkin;
 }

@@ -141,6 +141,9 @@ public class RecolorManager : IManager
         Color oldColor = btn.BackColor;
         Color newColor = prompt.SelectedColor;
 
+        if (oldColor == newColor)
+            return;
+
         Logger.Warn($"Changing pixel {pixel} to {newColor}");
         OnPixelChanged?.Invoke(pixel, oldColor, newColor);
         UpdateButtonColor(btn, newColor);
@@ -190,7 +193,7 @@ public class RecolorManager : IManager
         RefreshButtonsColor();
     }
 
-    private void OnUndo(IUndoCommand command)
+    private void OnUndo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;
@@ -198,7 +201,7 @@ public class RecolorManager : IManager
         UpdateButtonColor(pc.Pixel, pc.OldColor);
     }
 
-    private void OnRedo(IUndoCommand command)
+    private void OnRedo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;

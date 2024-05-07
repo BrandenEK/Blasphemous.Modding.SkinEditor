@@ -18,6 +18,20 @@ public partial class MainForm : Form
         return (T)Controls.Find(name, true)[0];
     }
 
+    public ToolStripItem FindMenu(string name)
+    {
+        foreach (ToolStripMenuItem item in _menu.Items)
+        {
+            foreach (ToolStripItem menu in item.DropDownItems)
+            {
+                if (menu.Name == name)
+                    return menu;
+            }
+        }
+
+        throw new Exception($"Menu item {name} does not exist");
+    }
+
     private void OnFormOpen(object sender, EventArgs e)
     {
         Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
@@ -117,6 +131,7 @@ public partial class MainForm : Form
 
     private void OnClickMenu_File_New(object _, EventArgs __) => Core.SaveManager.New();
     private void OnClickMenu_File_Open(object _, EventArgs __) => Core.SaveManager.Open();
+    private void OnClickMenu_File_Modify(object _, EventArgs __) => Core.SaveManager.Modify();
     private void OnClickMenu_File_Save(object _, EventArgs __) => Core.SaveManager.Save();
     private void OnClickMenu_File_SaveAs(object _, EventArgs __) => Core.SaveManager.SaveAs();
 

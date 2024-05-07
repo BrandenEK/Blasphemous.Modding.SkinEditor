@@ -1,10 +1,11 @@
-﻿
+﻿using Blasphemous.Modding.SkinEditor.Models;
+
 namespace Blasphemous.Modding.SkinEditor.Undo;
 
 public class UndoManager : IManager
 {
-    private readonly List<IUndoCommand> undo = new();
-    private readonly List<IUndoCommand> redo = new();
+    private readonly List<BaseUndoCommand> undo = new();
+    private readonly List<BaseUndoCommand> redo = new();
 
     public void Reset()
     {
@@ -13,7 +14,7 @@ public class UndoManager : IManager
         redo.Clear();
     }
 
-    public void Do(IUndoCommand command)
+    public void Do(BaseUndoCommand command)
     {
         undo.Add(command);
         if (undo.Count > MAX_STACK_SIZE)
@@ -26,7 +27,7 @@ public class UndoManager : IManager
         if (undo.Count == 0)
             return;
 
-        IUndoCommand command = undo[undo.Count - 1];
+        BaseUndoCommand command = undo[undo.Count - 1];
         undo.RemoveAt(undo.Count - 1);
         redo.Add(command);
 
@@ -39,7 +40,7 @@ public class UndoManager : IManager
         if (redo.Count == 0)
             return;
 
-        IUndoCommand command = redo[redo.Count - 1];
+        BaseUndoCommand command = redo[redo.Count - 1];
         redo.RemoveAt(redo.Count - 1);
         undo.Add(command);
 
@@ -54,6 +55,7 @@ public class UndoManager : IManager
         Core.RecolorManager.OnPixelChanged += OnPixelChanged;
         Core.SaveManager.OnNewSkin += OnNewSkin;
         Core.SaveManager.OnOpenSkin += OnOpenSkin;
+        Core.SaveManager.OnModifySkin += OnModifySkin;
     }
 
     private void OnNewSkin()
@@ -66,12 +68,17 @@ public class UndoManager : IManager
         Reset();
     }
 
+    private void OnModifySkin(SkinInfo oldInfo, SkinInfo newInfo)
+    {
+        Do(new ModifySkinUndoCommand(oldInfo, newInfo));
+    }
+
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
         Do(new PixelColorUndoCommand(pixel, oldColor, newColor));
     }
 
-    public delegate void UndoRedoDelegate(IUndoCommand command);
+    public delegate void UndoRedoDelegate(BaseUndoCommand command);
     public event UndoRedoDelegate? OnUndo;
     public event UndoRedoDelegate? OnRedo;
 

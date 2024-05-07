@@ -19,7 +19,8 @@ public class TextureManager : IManager
     public void LoadTexture(string path)
     {
         _texture?.Dispose();
-        _texture = new Bitmap(path);
+        using Bitmap file = new(path);
+        _texture = new(file);
 
         Logger.Info($"Loading new texture from {path}");
         OnTextureChanged?.Invoke(_texture);
@@ -73,7 +74,7 @@ public class TextureManager : IManager
         SaveTexture(Path.Combine(path, "texture.png"));
     }
 
-    private void OnUndo(IUndoCommand command)
+    private void OnUndo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;
@@ -81,7 +82,7 @@ public class TextureManager : IManager
         SetPixel(pc.Pixel, pc.OldColor);
     }
 
-    private void OnRedo(IUndoCommand command)
+    private void OnRedo(BaseUndoCommand command)
     {
         if (command is not PixelColorUndoCommand pc)
             return;
