@@ -16,7 +16,7 @@ public static class Embedder
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
 
-        using Stream stream = assembly.GetManifestResourceStream($"Blasphemous.Modding.SkinEditor.{fileName}")!;
+        using Stream stream = assembly.GetManifestResourceStream($"Blasphemous.Modding.SkinEditor.Resources.{fileName}")!;
         using StreamReader reader = new(stream);
 
         string json = reader.ReadToEnd();
@@ -27,7 +27,7 @@ public static class Embedder
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
 
-        using Stream stream = assembly.GetManifestResourceStream($"Blasphemous.Modding.SkinEditor.{fileName}")!;
+        using Stream stream = assembly.GetManifestResourceStream($"Blasphemous.Modding.SkinEditor.Resources.{fileName}")!;
 
         return new Bitmap(stream);
     }
