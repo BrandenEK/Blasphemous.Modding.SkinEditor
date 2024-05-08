@@ -26,7 +26,7 @@ public partial class FilePrompt : Form
                 Logger.Error($"{folder} is missing skin files");
         }
 
-        if (idx > 0)
+        if (idx > 1)
             _main_list_label.Visible = false;
     }
 
