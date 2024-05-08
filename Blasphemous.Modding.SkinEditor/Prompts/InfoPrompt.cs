@@ -38,7 +38,7 @@ public partial class InfoPrompt : Form
         if (string.IsNullOrEmpty(_id_text.Text)) reason |= InvalidInfoReason.IdEmpty;
         if (!_id_text.Text.StartsWith("PENITENT_")) reason |= InvalidInfoReason.IdPenitent;
         if (_id_text.Text.HasInvalidCharacter()) reason |= InvalidInfoReason.IdCharacters;
-        if (Directory.Exists(Path.Combine(Environment.CurrentDirectory, "skins", _id_text.Text))) reason |= InvalidInfoReason.IdExisting;
+        if (Directory.Exists(Path.Combine(Core.SkinsFolder, _id_text.Text))) reason |= InvalidInfoReason.IdExisting;
 
         if (string.IsNullOrEmpty(_name_text.Text)) reason |= InvalidInfoReason.NameEmpty;
 
