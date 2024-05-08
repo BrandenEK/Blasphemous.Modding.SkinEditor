@@ -13,10 +13,9 @@ public class SaveManager : IManager
 
     private SkinInfo? _currentSkin;
 
-    private int _unsavedChanges = 0;
-    private DateTime _lastSaveTime = DateTime.Now;
+    private bool _hasUnsavedChanges = false;
 
-    private bool IsSaved => _unsavedChanges == 0 && _currentSkin != null;
+    private bool IsSaved => !_hasUnsavedChanges && _currentSkin != null;
 
     public SaveManager(Label idLabel, ToolStripItem modifyMenu)
     {
@@ -35,25 +34,17 @@ public class SaveManager : IManager
         _modifyMenu.Enabled = _currentSkin != null;
     }
 
-    private void ChangeUnsavedAmount(int amount)
+    private void SetSaveStatus(bool saved)
     {
-        _unsavedChanges += amount;
+        _hasUnsavedChanges = !saved;
         UpdateIdLabel();
 
-        Logger.Info($"There are now {_unsavedChanges} unsaved changes");
-    }
-
-    private void ResetUnsavedAmount()
-    {
-        _unsavedChanges = 0;
-        UpdateIdLabel();
-
-        Logger.Info($"There are now 0 unsaved changes");
+        Logger.Info($"Has unsaved changes: {_hasUnsavedChanges}");
     }
 
     public bool CheckForUnsavedProgress()
     {
-        if (_unsavedChanges == 0)
+        if (!_hasUnsavedChanges)
             return true;
 
         return MessageBox.Show("You will lose unsaved progress, are you sure you want to continue?",
@@ -69,7 +60,7 @@ public class SaveManager : IManager
         Logger.Warn("Creating new skin");
 
         _currentSkin = null;
-        ResetUnsavedAmount();
+        SetSaveStatus(true);
 
         OnNewSkin?.Invoke();
     }
@@ -94,7 +85,7 @@ public class SaveManager : IManager
         }
 
         _currentSkin = info;
-        ResetUnsavedAmount();
+        SetSaveStatus(true);
 
         OnOpenSkin?.Invoke(path);
     }
@@ -114,7 +105,7 @@ public class SaveManager : IManager
         OnModifySkin?.Invoke(_currentSkin, info);
 
         _currentSkin = info;
-        ChangeUnsavedAmount(1);
+        SetSaveStatus(false);
     }
 
     public void Save()
@@ -131,7 +122,7 @@ public class SaveManager : IManager
         Logger.Warn("Saving current skin");
         SaveSkinInfo(_currentSkin);
 
-        ResetUnsavedAmount();
+        SetSaveStatus(true);
     }
 
     public void SaveAs()
@@ -145,7 +136,7 @@ public class SaveManager : IManager
         SaveSkinInfo(info);
 
         _currentSkin = info;
-        ResetUnsavedAmount();
+        SetSaveStatus(true);
     }
 
     private void SaveSkinInfo(SkinInfo info)
@@ -163,7 +154,6 @@ public class SaveManager : IManager
 
         // Save everything else
         OnSaveSkin?.Invoke(path);
-        _lastSaveTime = DateTime.Now;
     }
 
     private SkinInfo? LoadSkinInfo(string path)
@@ -183,7 +173,7 @@ public class SaveManager : IManager
 
     private void OnPixelChanged(byte pixel, Color oldColor, Color newColor)
     {
-        ChangeUnsavedAmount(1);
+        SetSaveStatus(false);
     }
 
     private void OnUndo(BaseUndoCommand command)
@@ -193,7 +183,7 @@ public class SaveManager : IManager
             _currentSkin = ms.OldInfo;
         }
 
-        ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? -1 : 1);
+        SetSaveStatus(false);
     }
 
     private void OnRedo(BaseUndoCommand command)
@@ -203,7 +193,7 @@ public class SaveManager : IManager
             _currentSkin = ms.NewInfo;
         }
 
-        ChangeUnsavedAmount(command.TimeStamp > _lastSaveTime ? 1 : -1);
+        SetSaveStatus(false);
     }
 
     public delegate void NewSkinDelegate();

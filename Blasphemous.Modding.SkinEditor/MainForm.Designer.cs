@@ -38,6 +38,7 @@ partial class MainForm
         _menu_file = new ToolStripMenuItem();
         _menu_file_new = new ToolStripMenuItem();
         _menu_file_open = new ToolStripMenuItem();
+        _menu_file_modify = new ToolStripMenuItem();
         _menu_file_sep = new ToolStripSeparator();
         _menu_file_save = new ToolStripMenuItem();
         _menu_file_saveas = new ToolStripMenuItem();
@@ -50,7 +51,9 @@ partial class MainForm
         _menu_view_side = new ToolStripMenuItem();
         _info = new Panel();
         _info_header = new Label();
-        _menu_file_modify = new ToolStripMenuItem();
+        _menu_help = new ToolStripMenuItem();
+        _menu_help_readme = new ToolStripMenuItem();
+        _menu_help_repo = new ToolStripMenuItem();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
         _menu.SuspendLayout();
@@ -115,7 +118,7 @@ partial class MainForm
         // 
         // _menu
         // 
-        _menu.Items.AddRange(new ToolStripItem[] { _menu_file, _menu_edit, _menu_view });
+        _menu.Items.AddRange(new ToolStripItem[] { _menu_file, _menu_edit, _menu_view, _menu_help });
         _menu.Location = new Point(0, 0);
         _menu.Name = "_menu";
         _menu.Size = new Size(1264, 24);
@@ -144,6 +147,14 @@ partial class MainForm
         _menu_file_open.Size = new Size(184, 22);
         _menu_file_open.Text = "Open";
         _menu_file_open.Click += OnClickMenu_File_Open;
+        // 
+        // _menu_file_modify
+        // 
+        _menu_file_modify.Name = "_menu_file_modify";
+        _menu_file_modify.ShortcutKeys = Keys.Control | Keys.M;
+        _menu_file_modify.Size = new Size(184, 22);
+        _menu_file_modify.Text = "Modify";
+        _menu_file_modify.Click += OnClickMenu_File_Modify;
         // 
         // _menu_file_sep
         // 
@@ -245,13 +256,26 @@ partial class MainForm
         _info_header.Text = "SKIN_ID";
         _info_header.TextAlign = ContentAlignment.MiddleLeft;
         // 
-        // _menu_file_modify
+        // _menu_help
         // 
-        _menu_file_modify.Name = "_menu_file_modify";
-        _menu_file_modify.ShortcutKeys = Keys.Control | Keys.M;
-        _menu_file_modify.Size = new Size(184, 22);
-        _menu_file_modify.Text = "Modify";
-        _menu_file_modify.Click += OnClickMenu_File_Modify;
+        _menu_help.DropDownItems.AddRange(new ToolStripItem[] { _menu_help_readme, _menu_help_repo });
+        _menu_help.Name = "_menu_help";
+        _menu_help.Size = new Size(44, 20);
+        _menu_help.Text = "Help";
+        // 
+        // _menu_help_readme
+        // 
+        _menu_help_readme.Name = "_menu_help_readme";
+        _menu_help_readme.Size = new Size(195, 22);
+        _menu_help_readme.Text = "Open editor readme";
+        _menu_help_readme.Click += OnClickMenu_Help_Readme;
+        // 
+        // _menu_help_repo
+        // 
+        _menu_help_repo.Name = "_menu_help_repo";
+        _menu_help_repo.Size = new Size(195, 22);
+        _menu_help_repo.Text = "Open community repo";
+        _menu_help_repo.Click += OnClickMenu_Help_Repo;
         // 
         // MainForm
         // 
@@ -302,4 +326,7 @@ partial class MainForm
     private Panel _info;
     private Label _info_header;
     private ToolStripMenuItem _menu_file_modify;
+    private ToolStripMenuItem _menu_help;
+    private ToolStripMenuItem _menu_help_readme;
+    private ToolStripMenuItem _menu_help_repo;
 }
