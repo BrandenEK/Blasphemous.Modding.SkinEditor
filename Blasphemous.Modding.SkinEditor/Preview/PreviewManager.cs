@@ -79,6 +79,7 @@ public class PreviewManager : IManager
 
     private Bitmap ScalePreview(Bitmap preview, int factor)
     {
+        factor = Math.Max(factor, 1);
         Bitmap scaled = new(preview.Width * factor, preview.Height * factor);
 
         for (int x = 0; x < scaled.Width; x++)

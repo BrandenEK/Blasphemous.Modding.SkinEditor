@@ -49,11 +49,11 @@ partial class MainForm
         _menu_view_all = new ToolStripMenuItem();
         _menu_view_background = new ToolStripMenuItem();
         _menu_view_side = new ToolStripMenuItem();
-        _info = new Panel();
-        _info_header = new Label();
         _menu_help = new ToolStripMenuItem();
         _menu_help_readme = new ToolStripMenuItem();
         _menu_help_repo = new ToolStripMenuItem();
+        _info = new Panel();
+        _info_header = new Label();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
         _menu.SuspendLayout();
@@ -234,6 +234,27 @@ partial class MainForm
         _menu_view_side.Text = "Preview on left side";
         _menu_view_side.Click += OnClickMenu_View_Side;
         // 
+        // _menu_help
+        // 
+        _menu_help.DropDownItems.AddRange(new ToolStripItem[] { _menu_help_readme, _menu_help_repo });
+        _menu_help.Name = "_menu_help";
+        _menu_help.Size = new Size(44, 20);
+        _menu_help.Text = "Help";
+        // 
+        // _menu_help_readme
+        // 
+        _menu_help_readme.Name = "_menu_help_readme";
+        _menu_help_readme.Size = new Size(195, 22);
+        _menu_help_readme.Text = "Open editor readme";
+        _menu_help_readme.Click += OnClickMenu_Help_Readme;
+        // 
+        // _menu_help_repo
+        // 
+        _menu_help_repo.Name = "_menu_help_repo";
+        _menu_help_repo.Size = new Size(195, 22);
+        _menu_help_repo.Text = "Open community repo";
+        _menu_help_repo.Click += OnClickMenu_Help_Repo;
+        // 
         // _info
         // 
         _info.BackColor = Color.Silver;
@@ -255,27 +276,6 @@ partial class MainForm
         _info_header.TabIndex = 1;
         _info_header.Text = "SKIN_ID";
         _info_header.TextAlign = ContentAlignment.MiddleLeft;
-        // 
-        // _menu_help
-        // 
-        _menu_help.DropDownItems.AddRange(new ToolStripItem[] { _menu_help_readme, _menu_help_repo });
-        _menu_help.Name = "_menu_help";
-        _menu_help.Size = new Size(44, 20);
-        _menu_help.Text = "Help";
-        // 
-        // _menu_help_readme
-        // 
-        _menu_help_readme.Name = "_menu_help_readme";
-        _menu_help_readme.Size = new Size(195, 22);
-        _menu_help_readme.Text = "Open editor readme";
-        _menu_help_readme.Click += OnClickMenu_Help_Readme;
-        // 
-        // _menu_help_repo
-        // 
-        _menu_help_repo.Name = "_menu_help_repo";
-        _menu_help_repo.Size = new Size(195, 22);
-        _menu_help_repo.Text = "Open community repo";
-        _menu_help_repo.Click += OnClickMenu_Help_Repo;
         // 
         // MainForm
         // 
