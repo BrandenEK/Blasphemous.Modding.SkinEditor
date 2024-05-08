@@ -2,7 +2,6 @@
 using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Undo;
-using Newtonsoft.Json;
 
 namespace Blasphemous.Modding.SkinEditor.Recolor;
 
@@ -17,14 +16,7 @@ public class RecolorManager : IManager
     public RecolorManager(Panel parent)
     {
         _parent = parent;
-        _groups = LoadPixelGroups();
-    }
-
-    private IEnumerable<PixelGroup> LoadPixelGroups()
-    {
-        string path = Path.Combine(Core.DataFolder, "pixels.json");
-        string json = File.ReadAllText(path);
-        return JsonConvert.DeserializeObject<PixelGroup[]>(json) ?? Array.Empty<PixelGroup>();
+        _groups = Embedder.LoadResourceJson<PixelGroup[]>("pixels.json");
     }
 
     public void RefreshButtonsVisibility()
