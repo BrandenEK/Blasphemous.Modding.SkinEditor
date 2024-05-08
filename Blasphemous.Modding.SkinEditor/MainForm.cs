@@ -1,5 +1,8 @@
+using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Properties;
+using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Blasphemous.Modding.SkinEditor;
 
@@ -51,6 +54,8 @@ public partial class MainForm : Form
             _menu_view_all, _menu_view_background, _menu_view_side
         });
 
+        TestLoadingResources();
+
         // Start process
         Core.SaveManager.New();
     }
@@ -92,6 +97,41 @@ public partial class MainForm : Form
         catch
         {
             MessageBox.Show("Link does not exist!", "Invalid Link");
+        }
+    }
+
+    private void TestLoadingResources()
+    {
+        Assembly assembly = Assembly.GetExecutingAssembly();
+
+        foreach (var x in assembly.GetManifestResourceNames())
+        {
+            Logger.Warn(x);
+        }
+
+        Logger.Error($"Pixels: {LoadResourceJson<PixelGroup[]>("pixels.json").Length}");
+
+        //using (Stream rsrcStream = asm.GetManifestResourceStream(asm.GetName().Name + ".Properties." + strResourceName))
+        //{
+        //    using (StreamReader sRdr = new StreamReader(rsrcStream))
+        //    {
+        //        //For instance, gets it as text
+        //        string strTxt = sRdr.ReadToEnd();
+        //    }
+        //}
+
+        T LoadResourceJson<T>(string fileName)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            string resourceName = $"Blasphemous.Modding.SkinEditor.{fileName}";
+            Logger.Info($"Reading stream from {resourceName}");
+
+            using Stream stream = assembly.GetManifestResourceStream(resourceName)!;
+            using StreamReader reader = new(stream);
+
+            string json = reader.ReadToEnd();
+            return JsonConvert.DeserializeObject<T>(json)!;
         }
     }
 
