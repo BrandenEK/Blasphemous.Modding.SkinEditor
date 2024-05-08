@@ -100,7 +100,11 @@ public partial class MainForm : Form
 
     private void TestEmbedder()
     {
+        foreach (var resource in Embedder.GetAllResources())
+            Logger.Error(resource);
+
         Logger.Error($"Pixels: {Embedder.LoadResourceJson<PixelGroup[]>("pixels.json").Length}");
+        //_preview.BackgroundImage = Embedder.LoadResourceImage("preview.png");
     }
 
     //private void Test()

@@ -22,4 +22,13 @@ public static class Embedder
         string json = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<T>(json)!;
     }
+
+    public static Bitmap LoadResourceImage(string fileName)
+    {
+        Assembly assembly = Assembly.GetExecutingAssembly();
+
+        using Stream stream = assembly.GetManifestResourceStream($"Blasphemous.Modding.SkinEditor.{fileName}")!;
+
+        return new Bitmap(stream);
+    }
 }
