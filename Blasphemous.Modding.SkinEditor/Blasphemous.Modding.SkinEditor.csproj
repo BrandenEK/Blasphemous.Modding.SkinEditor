@@ -19,15 +19,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="pixels.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="app.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="pixels.json" />
+    <EmbeddedResource Include="..\Resources\pixels.json" />
   </ItemGroup>
 
   <ItemGroup>
