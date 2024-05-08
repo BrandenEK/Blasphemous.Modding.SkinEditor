@@ -179,7 +179,7 @@ public class PreviewManager : IManager
 
     private void SavePreview(string path)
     {
-        using Bitmap export = new(Path.Combine(Core.DataFolder, "preview.png"));
+        using Bitmap export = Embedder.LoadResourceImage("preview.png");
 
         for (int i = 0; i < export.Width; i++)
         {
