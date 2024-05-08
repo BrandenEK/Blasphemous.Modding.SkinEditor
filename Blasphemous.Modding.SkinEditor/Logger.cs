@@ -4,7 +4,7 @@ namespace Blasphemous.Modding.SkinEditor;
 
 public static class Logger
 {
-    private static readonly string _logPath = Path.Combine(Core.DataFolder, "Latest.log");
+    private static readonly string _logPath = Path.Combine(Core.EditorFolder, "Latest.log");
 
     public static void Initialize()
     {

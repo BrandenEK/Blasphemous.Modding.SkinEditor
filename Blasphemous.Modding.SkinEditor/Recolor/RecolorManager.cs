@@ -22,7 +22,7 @@ public class RecolorManager : IManager
 
     private IEnumerable<PixelGroup> LoadPixelGroups()
     {
-        string path = Path.Combine(Environment.CurrentDirectory, "data", "pixels.json");
+        string path = Path.Combine(Core.DataFolder, "pixels.json");
         string json = File.ReadAllText(path);
         return JsonConvert.DeserializeObject<PixelGroup[]>(json) ?? Array.Empty<PixelGroup>();
     }

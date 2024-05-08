@@ -14,7 +14,7 @@ internal static class Core
     {
         Logger.Initialize();
         ApplicationConfiguration.Initialize();
-        Directory.CreateDirectory(DataFolder);
+        Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
 
         var form = new MainForm();
@@ -46,8 +46,10 @@ internal static class Core
     public static UndoManager UndoManager { get; private set; }
 #pragma warning restore CS8618
 
-    public static string DataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BlasSkinEditor");
-    public static string SkinsFolder { get; } = Path.Combine(DataFolder, "skins");
+    public static string EditorFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BlasSkinEditor");
+    public static string SkinsFolder { get; } = Path.Combine(EditorFolder, "skins");
+    public static string DataFolder { get; } = Path.Combine(Environment.CurrentDirectory, "data");
+    public static string AnimFolder { get; } = Path.Combine(Environment.CurrentDirectory, "anim");
 
     public static Version CurrentVersion { get; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version ?? new(0, 1, 0);
 }
