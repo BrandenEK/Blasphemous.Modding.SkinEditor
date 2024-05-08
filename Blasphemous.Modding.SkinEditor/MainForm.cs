@@ -1,4 +1,5 @@
 using Blasphemous.Modding.SkinEditor.Properties;
+using System.Diagnostics;
 
 namespace Blasphemous.Modding.SkinEditor;
 
@@ -80,6 +81,21 @@ public partial class MainForm : Form
         _buttons.Dock = status ? DockStyle.Right : DockStyle.Left;
     }
 
+    private void OpenLink(string link)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(link!)
+            {
+                UseShellExecute = true
+            });
+        }
+        catch
+        {
+            MessageBox.Show("Link does not exist!", "Invalid Link");
+        }
+    }
+
     //private void Test()
     //{
     //    Bitmap parry = Preview("penitent_parry_failed.png", new Point(0, 185), new Size(68, 71));
@@ -120,11 +136,14 @@ public partial class MainForm : Form
     private void OnClickMenu_View_Background(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
     private void OnClickMenu_View_Side(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
 
-    private void OnClickMenu_Help_Readme(object _, EventArgs __) => Core.UndoManager.Undo();
-    private void OnClickMenu_Help_Repo(object _, EventArgs __) => Core.UndoManager.Undo();
+    private void OnClickMenu_Help_Readme(object _, EventArgs __) => OpenLink(README_LINK);
+    private void OnClickMenu_Help_Repo(object _, EventArgs __) => OpenLink(REPO_LINK);
 
     private void OnClickDebug(object sender, EventArgs e)
     {
         Logger.Warn("Clicking debug button");
     }
+
+    private const string README_LINK = "https://github.com/BrandenEK/Blasphemous.Modding.SkinEditor/blob/main/README.md";
+    private const string REPO_LINK = "https://github.com/BrandenEK/Blasphemous-Custom-Skins";
 }
