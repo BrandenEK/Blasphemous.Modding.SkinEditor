@@ -74,7 +74,7 @@ public class SaveManager : IManager
         if (prompt.ShowDialog() != DialogResult.OK)
             return;
 
-        string path = Path.Combine(Environment.CurrentDirectory, "skins", prompt.SelectedFile);
+        string path = Path.Combine(Core.SkinsFolder, prompt.SelectedFile);
         Logger.Warn($"Opening existing skin from {path}");
         SkinInfo? info = LoadSkinInfo(path);
 
@@ -142,7 +142,7 @@ public class SaveManager : IManager
     private void SaveSkinInfo(SkinInfo info)
     {
         // Get and create skin directory
-        string path = Path.Combine(Environment.CurrentDirectory, "skins", info.Id);
+        string path = Path.Combine(Core.SkinsFolder, info.Id);
         Directory.CreateDirectory(path);
 
         // Save info file

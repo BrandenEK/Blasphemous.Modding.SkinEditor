@@ -7,6 +7,7 @@ public partial class MainForm : Form
 {
     public MainForm()
     {
+        Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
         InitializeComponent();
 
 #if !DEBUG
@@ -35,8 +36,6 @@ public partial class MainForm : Form
 
     private void OnFormOpen(object sender, EventArgs e)
     {
-        Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
-
         // Load window settings
         WindowState = Settings.Default.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
         Location = Settings.Default.Location;

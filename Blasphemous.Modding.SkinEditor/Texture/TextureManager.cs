@@ -93,5 +93,5 @@ public class TextureManager : IManager
     public delegate void TextureChangeDelegate(Bitmap texture);
     public event TextureChangeDelegate? OnTextureChanged;
 
-    private readonly string DEFAULT_TEXTURE_PATH = Path.Combine(Environment.CurrentDirectory, "data", "default.png");
+    private readonly string DEFAULT_TEXTURE_PATH = Path.Combine(Core.DataFolder, "default.png");
 }

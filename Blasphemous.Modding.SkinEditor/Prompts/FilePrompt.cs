@@ -13,8 +13,7 @@ public partial class FilePrompt : Form
         _buttons_confirm.Enabled = false;
 
         int idx = 1;
-        string path = Path.Combine(Environment.CurrentDirectory, "skins");
-        foreach (string folder in Directory.GetDirectories(path).Reverse())
+        foreach (string folder in Directory.GetDirectories(Core.SkinsFolder).Reverse())
         {
             bool allFilesExist =
                 File.Exists(Path.Combine(folder, "texture.png")) &&
@@ -27,7 +26,7 @@ public partial class FilePrompt : Form
                 Logger.Error($"{folder} is missing skin files");
         }
 
-        if (idx > 0)
+        if (idx > 1)
             _main_list_label.Visible = false;
     }
 
@@ -69,7 +68,7 @@ public partial class FilePrompt : Form
     private void UpdatePreviewImage(Control row)
     {
         Logger.Warn($"Updating import preview for {row.Name}");
-        using Bitmap file = new(Path.Combine(Environment.CurrentDirectory, "skins", row.Name, "preview.png"));
+        using Bitmap file = new(Path.Combine(Core.SkinsFolder, row.Name, "preview.png"));
 
         _main_preview.Image?.Dispose();
         _main_preview.Image = new Bitmap(file);
