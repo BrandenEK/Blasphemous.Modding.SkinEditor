@@ -4,7 +4,7 @@ namespace Blasphemous.Modding.SkinEditor;
 
 public static class Logger
 {
-    public static void Show()
+    public static void Initialize()
     {
         AttachConsole(-1);
         Info(string.Empty);

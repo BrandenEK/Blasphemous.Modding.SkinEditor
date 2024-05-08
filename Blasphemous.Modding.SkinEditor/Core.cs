@@ -12,8 +12,10 @@ internal static class Core
     [STAThread]
     static void Main()
     {
-        Logger.Show();
+        Logger.Initialize();
         ApplicationConfiguration.Initialize();
+        Directory.CreateDirectory(DataFolder);
+
         var form = new MainForm();
 
         PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
@@ -43,6 +45,7 @@ internal static class Core
     public static UndoManager UndoManager { get; private set; }
 #pragma warning restore CS8618
 
-    public static Version CurrentVersion =>
-        System.Reflection.Assembly.GetExecutingAssembly().GetName().Version ?? new(0, 1, 0);
+    public static string DataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BlasSkinEditor");
+
+    public static Version CurrentVersion { get; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version ?? new(0, 1, 0);
 }
