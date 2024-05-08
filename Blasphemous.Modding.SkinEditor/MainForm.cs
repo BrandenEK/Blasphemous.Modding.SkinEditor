@@ -120,6 +120,9 @@ public partial class MainForm : Form
     private void OnClickMenu_View_Background(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
     private void OnClickMenu_View_Side(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
 
+    private void OnClickMenu_Help_Readme(object _, EventArgs __) => Core.UndoManager.Undo();
+    private void OnClickMenu_Help_Repo(object _, EventArgs __) => Core.UndoManager.Undo();
+
     private void OnClickDebug(object sender, EventArgs e)
     {
         Logger.Warn("Clicking debug button");
