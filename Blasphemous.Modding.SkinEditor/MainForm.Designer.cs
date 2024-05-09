@@ -54,6 +54,8 @@ partial class MainForm
         _menu_help_repo = new ToolStripMenuItem();
         _info = new Panel();
         _info_header = new Label();
+        _menu_help_sep = new ToolStripSeparator();
+        _menu_help_folder = new ToolStripMenuItem();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
         _menu.SuspendLayout();
@@ -236,7 +238,7 @@ partial class MainForm
         // 
         // _menu_help
         // 
-        _menu_help.DropDownItems.AddRange(new ToolStripItem[] { _menu_help_readme, _menu_help_repo });
+        _menu_help.DropDownItems.AddRange(new ToolStripItem[] { _menu_help_readme, _menu_help_repo, _menu_help_sep, _menu_help_folder });
         _menu_help.Name = "_menu_help";
         _menu_help.Size = new Size(44, 20);
         _menu_help.Text = "Help";
@@ -276,6 +278,17 @@ partial class MainForm
         _info_header.TabIndex = 1;
         _info_header.Text = "SKIN_ID";
         _info_header.TextAlign = ContentAlignment.MiddleLeft;
+        // 
+        // _menu_help_sep
+        // 
+        _menu_help_sep.Name = "_menu_help_sep";
+        _menu_help_sep.Size = new Size(192, 6);
+        // 
+        // _menu_help_folder
+        // 
+        _menu_help_folder.Name = "_menu_help_folder";
+        _menu_help_folder.Size = new Size(195, 22);
+        _menu_help_folder.Text = "Open skins folder";
         // 
         // MainForm
         // 
@@ -329,4 +342,6 @@ partial class MainForm
     private ToolStripMenuItem _menu_help;
     private ToolStripMenuItem _menu_help_readme;
     private ToolStripMenuItem _menu_help_repo;
+    private ToolStripSeparator _menu_help_sep;
+    private ToolStripMenuItem _menu_help_folder;
 }
