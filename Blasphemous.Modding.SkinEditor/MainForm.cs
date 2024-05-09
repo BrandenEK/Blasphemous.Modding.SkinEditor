@@ -36,30 +36,29 @@ public partial class MainForm : Form
         throw new Exception($"Menu item {name} does not exist");
     }
 
-    private void OnCrash(object _, ThreadExceptionEventArgs e)
-    {
-        Logger.Error($"A crash has occured: {e.Exception.Message}{Environment.NewLine}{e.Exception.StackTrace}");
-        MessageBox.Show(e.Exception.ToString(), "A crash has occured", MessageBoxButtons.OK);
-        Application.Exit();
-    }
-
     private void OnFormOpen(object sender, EventArgs e)
     {
-        // Load window settings
+        // Load ui settings
+        Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
         WindowState = Settings.Default.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
         Location = Settings.Default.Location;
         Size = Settings.Default.Size;
 
-        // Register events
-        Core.SettingManager.OnSettingChanged += OnSettingChanged;
+        // Check for crash
+        if (Core.CrashException != null)
+        {
+            DisplayCrash(Core.CrashException);
+            return;
+        }
 
-        // Initialize form ui
-        Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
+        // Handle loading settings
+        Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
         {
             _menu_view_all, _menu_view_background, _menu_view_side
         });
 
+        // Temp
         TestEmbedder();
 
         // Start process
@@ -68,6 +67,12 @@ public partial class MainForm : Form
 
     private void OnFormClose(object sender, FormClosingEventArgs e)
     {
+        if (Core.CrashException != null)
+        {
+            Logger.Info("Closing editor");
+            return;
+        }
+
         if (!Core.SaveManager.CheckForUnsavedProgress())
         {
             e.Cancel = true;
@@ -89,6 +94,18 @@ public partial class MainForm : Form
             return;
 
         _buttons.Dock = status ? DockStyle.Right : DockStyle.Left;
+    }
+
+    private void OnCrash(object _, ThreadExceptionEventArgs e)
+    {
+        DisplayCrash(e.Exception);
+    }
+
+    private void DisplayCrash(Exception ex)
+    {
+        Logger.Error($"A crash has occured: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+        MessageBox.Show(ex.ToString(), "A crash has occured", MessageBoxButtons.OK);
+        Application.Exit();
     }
 
     private void OpenLink(string link)

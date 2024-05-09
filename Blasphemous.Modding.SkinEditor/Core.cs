@@ -12,9 +12,6 @@ internal static class Core
     [STAThread]
     static void Main()
     {
-        //AppDomain.CurrentDomain.UnhandledException += Crash;
-        //Application.ThreadException += Crash;
-
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
         
@@ -23,34 +20,32 @@ internal static class Core
 
         var form = new MainForm();
 
-        PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
-        RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
-        SaveManager = new SaveManager(form.FindUI<Label>("_info_header"), form.FindMenu("_menu_file_modify"));
-        SettingManager = new SettingManager();
-        TextureManager = new TextureManager();
-        UndoManager = new UndoManager();
+        try
+        {
+            PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
+            RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
+            SaveManager = new SaveManager(form.FindUI<Label>("_info_header"), form.FindMenu("_menu_file_modify"));
+            SettingManager = new SettingManager();
+            TextureManager = new TextureManager();
+            UndoManager = new UndoManager();
 
-        // Initialize them in a certain order
-        SaveManager.Initialize();
-        SettingManager.Initialize();
-        TextureManager.Initialize();
-        PreviewManager.Initialize();
-        RecolorManager.Initialize();
-        UndoManager.Initialize();
+            // Initialize them in a certain order
+            SaveManager.Initialize();
+            SettingManager.Initialize();
+            TextureManager.Initialize();
+            PreviewManager.Initialize();
+            RecolorManager.Initialize();
+            UndoManager.Initialize();
+        }
+        catch (Exception ex)
+        {
+            CrashException = ex;
+        }
 
         Application.Run(form);
     }
 
-    private static void Crash(object sender, ThreadExceptionEventArgs e)
-    {
-        Logger.Error(e.Exception.ToString());
-        Application.Exit();
-    }
-
-    private static void Crash(object sender, UnhandledExceptionEventArgs e)
-    {
-        Logger.Error(e.ExceptionObject.ToString());
-    }
+    public static Exception? CrashException { get; private set; }
 
 #pragma warning disable CS8618
     public static PreviewManager PreviewManager { get; private set; }
