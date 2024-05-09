@@ -12,9 +12,12 @@ internal static class Core
     [STAThread]
     static void Main()
     {
+        //AppDomain.CurrentDomain.UnhandledException += Crash;
+        //Application.ThreadException += Crash;
+
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
-
+        
         Logger.Initialize();
         ApplicationConfiguration.Initialize();
 
@@ -36,6 +39,17 @@ internal static class Core
         UndoManager.Initialize();
 
         Application.Run(form);
+    }
+
+    private static void Crash(object sender, ThreadExceptionEventArgs e)
+    {
+        Logger.Error(e.Exception.ToString());
+        Application.Exit();
+    }
+
+    private static void Crash(object sender, UnhandledExceptionEventArgs e)
+    {
+        Logger.Error(e.ExceptionObject.ToString());
     }
 
 #pragma warning disable CS8618

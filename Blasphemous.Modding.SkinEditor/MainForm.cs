@@ -9,6 +9,7 @@ public partial class MainForm : Form
     public MainForm()
     {
         Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
+        Application.ThreadException += OnCrash;
         InitializeComponent();
 
 #if !DEBUG
@@ -33,6 +34,13 @@ public partial class MainForm : Form
         }
 
         throw new Exception($"Menu item {name} does not exist");
+    }
+
+    private void OnCrash(object _, ThreadExceptionEventArgs e)
+    {
+        Logger.Error($"A crash has occured: {e.Exception.Message}{Environment.NewLine}{e.Exception.StackTrace}");
+        MessageBox.Show(e.Exception.ToString(), "A crash has occured", MessageBoxButtons.OK);
+        Application.Exit();
     }
 
     private void OnFormOpen(object sender, EventArgs e)
