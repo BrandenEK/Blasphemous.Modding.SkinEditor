@@ -12,10 +12,11 @@ internal static class Core
     [STAThread]
     static void Main()
     {
-        Logger.Initialize();
-        ApplicationConfiguration.Initialize();
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
+
+        Logger.Initialize();
+        ApplicationConfiguration.Initialize();
 
         var form = new MainForm();
 
