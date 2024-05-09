@@ -108,18 +108,20 @@ public partial class MainForm : Form
         Application.Exit();
     }
 
-    private void OpenLink(string link)
+    private void OpenProcess(string process, string verb = "")
     {
         try
         {
-            Process.Start(new ProcessStartInfo(link!)
+            Process.Start(new ProcessStartInfo()
             {
-                UseShellExecute = true
+                FileName = process,
+                UseShellExecute = true,
+                Verb = verb
             });
         }
         catch
         {
-            MessageBox.Show("Link does not exist!", "Invalid Link");
+            MessageBox.Show($"Failed to start: {process}", "Invalid process");
         }
     }
 
@@ -172,8 +174,9 @@ public partial class MainForm : Form
     private void OnClickMenu_View_Background(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
     private void OnClickMenu_View_Side(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
 
-    private void OnClickMenu_Help_Readme(object _, EventArgs __) => OpenLink(README_LINK);
-    private void OnClickMenu_Help_Repo(object _, EventArgs __) => OpenLink(REPO_LINK);
+    private void OnClickMenu_Help_Readme(object _, EventArgs __) => OpenProcess(README_LINK);
+    private void OnClickMenu_Help_Repo(object _, EventArgs __) => OpenProcess(REPO_LINK);
+    private void OnClickMenu_Help_Folder(object _, EventArgs __) => OpenProcess(Core.SkinsFolder, "open");
 
     private void OnClickDebug(object sender, EventArgs e)
     {

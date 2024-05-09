@@ -289,6 +289,7 @@ partial class MainForm
         _menu_help_folder.Name = "_menu_help_folder";
         _menu_help_folder.Size = new Size(195, 22);
         _menu_help_folder.Text = "Open skins folder";
+        _menu_help_folder.Click += OnClickMenu_Help_Folder;
         // 
         // MainForm
         // 
