@@ -20,12 +20,7 @@
 
   <ItemGroup>
     <Content Include="app.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\pixels.json" />
-    <EmbeddedResource Include="Resources\preview.png" />
-    <EmbeddedResource Include="Resources\texture.png" />
+    <EmbeddedResource Include="Resources\**\*" />
   </ItemGroup>
 
   <ItemGroup>
