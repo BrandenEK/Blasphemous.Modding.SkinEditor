@@ -1,4 +1,3 @@
-using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Properties;
 using System.Diagnostics;
 
@@ -57,9 +56,6 @@ public partial class MainForm : Form
         {
             _menu_view_all, _menu_view_background, _menu_view_side
         });
-
-        // Temp
-        TestEmbedder();
 
         // Start process
         Core.SaveManager.New();
@@ -123,19 +119,6 @@ public partial class MainForm : Form
         {
             MessageBox.Show($"Failed to start: {process}", "Invalid process");
         }
-    }
-
-    private void TestEmbedder()
-    {
-        foreach (var resource in Embedder.GetAllResources())
-            Logger.Error(resource);
-
-        Logger.Info("Preview resources");
-        foreach (var resource in Embedder.GetResourcesInFolder("previews"))
-            Logger.Error(resource);
-
-        Logger.Error($"Pixels: {Embedder.LoadResourceJson<PixelGroup[]>("pixels.json").Length}");
-        //_preview.BackgroundImage = Embedder.LoadResourceImage("preview.png");
     }
 
     //private void Test()
