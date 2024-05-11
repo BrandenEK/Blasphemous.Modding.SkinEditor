@@ -12,30 +12,40 @@ internal static class Core
     [STAThread]
     static void Main()
     {
-        Logger.Initialize();
-        ApplicationConfiguration.Initialize();
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
+        
+        Logger.Initialize();
+        ApplicationConfiguration.Initialize();
 
         var form = new MainForm();
 
-        PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
-        RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
-        SaveManager = new SaveManager(form.FindUI<Label>("_info_header"), form.FindMenu("_menu_file_modify"));
-        SettingManager = new SettingManager();
-        TextureManager = new TextureManager();
-        UndoManager = new UndoManager();
+        try
+        {
+            PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
+            RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
+            SaveManager = new SaveManager(form.FindUI<Label>("_info_header"), form.FindMenu("_menu_file_modify"));
+            SettingManager = new SettingManager();
+            TextureManager = new TextureManager();
+            UndoManager = new UndoManager();
 
-        // Initialize them in a certain order
-        SaveManager.Initialize();
-        SettingManager.Initialize();
-        TextureManager.Initialize();
-        PreviewManager.Initialize();
-        RecolorManager.Initialize();
-        UndoManager.Initialize();
+            // Initialize them in a certain order
+            SaveManager.Initialize();
+            SettingManager.Initialize();
+            TextureManager.Initialize();
+            PreviewManager.Initialize();
+            RecolorManager.Initialize();
+            UndoManager.Initialize();
+        }
+        catch (Exception ex)
+        {
+            CrashException = ex;
+        }
 
         Application.Run(form);
     }
+
+    public static Exception? CrashException { get; private set; }
 
 #pragma warning disable CS8618
     public static PreviewManager PreviewManager { get; private set; }
@@ -48,8 +58,6 @@ internal static class Core
 
     public static string EditorFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BlasSkinEditor");
     public static string SkinsFolder { get; } = Path.Combine(EditorFolder, "skins");
-    public static string DataFolder { get; } = Path.Combine(Environment.CurrentDirectory, "data");
-    public static string AnimFolder { get; } = Path.Combine(Environment.CurrentDirectory, "anim");
 
     public static Version CurrentVersion { get; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version ?? new(0, 1, 0);
 }

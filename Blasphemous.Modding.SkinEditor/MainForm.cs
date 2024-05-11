@@ -8,6 +8,7 @@ public partial class MainForm : Form
     public MainForm()
     {
         Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
+        Application.ThreadException += OnCrash;
         InitializeComponent();
 
 #if !DEBUG
@@ -36,16 +37,21 @@ public partial class MainForm : Form
 
     private void OnFormOpen(object sender, EventArgs e)
     {
-        // Load window settings
+        // Load ui settings
+        Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
         WindowState = Settings.Default.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
         Location = Settings.Default.Location;
         Size = Settings.Default.Size;
 
-        // Register events
-        Core.SettingManager.OnSettingChanged += OnSettingChanged;
+        // Check for crash
+        if (Core.CrashException != null)
+        {
+            DisplayCrash(Core.CrashException);
+            return;
+        }
 
-        // Initialize form ui
-        Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
+        // Handle loading settings
+        Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
         {
             _menu_view_all, _menu_view_background, _menu_view_side
@@ -57,6 +63,12 @@ public partial class MainForm : Form
 
     private void OnFormClose(object sender, FormClosingEventArgs e)
     {
+        if (Core.CrashException != null)
+        {
+            Logger.Info("Closing editor");
+            return;
+        }
+
         if (!Core.SaveManager.CheckForUnsavedProgress())
         {
             e.Cancel = true;
@@ -80,18 +92,32 @@ public partial class MainForm : Form
         _buttons.Dock = status ? DockStyle.Right : DockStyle.Left;
     }
 
-    private void OpenLink(string link)
+    private void OnCrash(object _, ThreadExceptionEventArgs e)
+    {
+        DisplayCrash(e.Exception);
+    }
+
+    private void DisplayCrash(Exception ex)
+    {
+        Logger.Error($"A crash has occured: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+        MessageBox.Show(ex.ToString(), "A crash has occured", MessageBoxButtons.OK);
+        Application.Exit();
+    }
+
+    private void OpenProcess(string process, string verb = "")
     {
         try
         {
-            Process.Start(new ProcessStartInfo(link!)
+            Process.Start(new ProcessStartInfo()
             {
-                UseShellExecute = true
+                FileName = process,
+                UseShellExecute = true,
+                Verb = verb
             });
         }
         catch
         {
-            MessageBox.Show("Link does not exist!", "Invalid Link");
+            MessageBox.Show($"Failed to start: {process}", "Invalid process");
         }
     }
 
@@ -135,8 +161,9 @@ public partial class MainForm : Form
     private void OnClickMenu_View_Background(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
     private void OnClickMenu_View_Side(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
 
-    private void OnClickMenu_Help_Readme(object _, EventArgs __) => OpenLink(README_LINK);
-    private void OnClickMenu_Help_Repo(object _, EventArgs __) => OpenLink(REPO_LINK);
+    private void OnClickMenu_Help_Readme(object _, EventArgs __) => OpenProcess(README_LINK);
+    private void OnClickMenu_Help_Repo(object _, EventArgs __) => OpenProcess(REPO_LINK);
+    private void OnClickMenu_Help_Folder(object _, EventArgs __) => OpenProcess(Core.SkinsFolder, "open");
 
     private void OnClickDebug(object sender, EventArgs e)
     {

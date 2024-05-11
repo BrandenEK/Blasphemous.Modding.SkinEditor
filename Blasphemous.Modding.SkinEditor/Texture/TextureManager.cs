@@ -18,11 +18,23 @@ public class TextureManager : IManager
 
     public void LoadTexture(string path)
     {
-        _texture?.Dispose();
-        using Bitmap file = new(path);
-        _texture = new(file);
+        using Bitmap texture = new(path);
 
-        Logger.Info($"Loading new texture from {path}");
+        _texture?.Dispose();
+        _texture = new(texture);
+
+        Logger.Info($"Loading texture from {path}");
+        OnTextureChanged?.Invoke(_texture);
+    }
+
+    public void LoadDefaultTexture()
+    {
+        using Bitmap texture = Embedder.LoadResourceImage("texture.png");
+
+        _texture?.Dispose();
+        _texture = new(texture);
+
+        Logger.Info($"Loading default texture");
         OnTextureChanged?.Invoke(_texture);
     }
 
@@ -61,7 +73,7 @@ public class TextureManager : IManager
 
     private void OnNewSkin()
     {
-        LoadTexture(DEFAULT_TEXTURE_PATH);
+        LoadDefaultTexture();
     }
 
     private void OnOpenSkin(string path)
@@ -92,6 +104,4 @@ public class TextureManager : IManager
 
     public delegate void TextureChangeDelegate(Bitmap texture);
     public event TextureChangeDelegate? OnTextureChanged;
-
-    private readonly string DEFAULT_TEXTURE_PATH = Path.Combine(Core.DataFolder, "default.png");
 }

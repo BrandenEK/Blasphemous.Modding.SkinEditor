@@ -33,9 +33,9 @@ public class PreviewManager : IManager
 
     private void LoadAllAnimations(ComboBox selector)
     {
-        foreach (string file in Directory.EnumerateFiles(Core.AnimFolder))
+        foreach (string file in Embedder.GetResourcesInFolder("previews"))
         {
-            string name = file[(file.LastIndexOf('\\') + 1)..^4];
+            string name = file[..^4];
             Logger.Info($"Loaded anim: {name}");
             selector.Items.Add(name);
         }
@@ -114,8 +114,7 @@ public class PreviewManager : IManager
 
     public void ChangePreview(string name, bool updateSelector)
     {
-        string file = Path.Combine(Core.AnimFolder, $"{name}.png");
-        ChangePreview(new Bitmap(file));
+        ChangePreview(Embedder.LoadResourceImage($"previews.{name}.png"));
 
         if (updateSelector)
             _selector.SelectedItem = name;
@@ -179,7 +178,7 @@ public class PreviewManager : IManager
 
     private void SavePreview(string path)
     {
-        using Bitmap export = new(Path.Combine(Core.DataFolder, "preview.png"));
+        using Bitmap export = Embedder.LoadResourceImage("preview.png");
 
         for (int i = 0; i < export.Width; i++)
         {
