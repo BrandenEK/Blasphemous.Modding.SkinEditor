@@ -1,3 +1,4 @@
+using Basalt.Framework.Logging;
 using Blasphemous.Modding.SkinEditor.Properties;
 using System.Diagnostics;
 

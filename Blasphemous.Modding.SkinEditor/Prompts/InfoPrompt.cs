@@ -1,4 +1,5 @@
-﻿using Blasphemous.Modding.SkinEditor.Extensions;
+﻿using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Extensions;
 using Blasphemous.Modding.SkinEditor.Models;
 
 namespace Blasphemous.Modding.SkinEditor.Prompts;

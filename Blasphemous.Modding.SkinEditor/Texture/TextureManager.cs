@@ -1,4 +1,5 @@
-﻿using Blasphemous.Modding.SkinEditor.Undo;
+﻿using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Undo;
 using System.Drawing.Imaging;
 
 namespace Blasphemous.Modding.SkinEditor.Texture;

@@ -1,4 +1,5 @@
-﻿using Blasphemous.Modding.SkinEditor.Models;
+﻿using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Models;
 
 namespace Blasphemous.Modding.SkinEditor.Undo;
 

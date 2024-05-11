@@ -1,3 +1,5 @@
+using Basalt.Framework.Logging;
+using Basalt.Framework.Logging.Standard;
 using Blasphemous.Modding.SkinEditor.Preview;
 using Blasphemous.Modding.SkinEditor.Recolor;
 using Blasphemous.Modding.SkinEditor.Save;
@@ -15,8 +17,8 @@ internal static class Core
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
         
-        Logger.Initialize();
         ApplicationConfiguration.Initialize();
+        Logger.Initialize(new ILogger[] { new ConsoleLogger(true), new FileLogger(EditorFolder) });
 
         var form = new MainForm();
 

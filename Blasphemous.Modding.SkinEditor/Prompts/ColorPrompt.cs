@@ -1,4 +1,5 @@
-﻿
+﻿using Basalt.Framework.Logging;
+
 namespace Blasphemous.Modding.SkinEditor.Prompts;
 
 public partial class ColorPrompt : Form

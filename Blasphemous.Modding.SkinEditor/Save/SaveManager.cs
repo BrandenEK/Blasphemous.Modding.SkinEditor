@@ -1,4 +1,5 @@
-﻿using Blasphemous.Modding.SkinEditor.Models;
+﻿using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Undo;
 using Newtonsoft.Json;

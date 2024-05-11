@@ -1,4 +1,5 @@
-﻿using Blasphemous.Modding.SkinEditor.Properties;
+﻿using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Properties;
 
 namespace Blasphemous.Modding.SkinEditor.Setting;
 
