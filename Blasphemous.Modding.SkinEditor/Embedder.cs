@@ -5,18 +5,23 @@ namespace Blasphemous.Modding.SkinEditor;
 
 public static class Embedder
 {
-    public static string[] GetAllResources()
+    public static IEnumerable<string> GetAllResources()
     {
-        Assembly assembly = Assembly.GetExecutingAssembly();
+        return Assembly.GetExecutingAssembly().GetManifestResourceNames()
+            .Where(x => x.StartsWith(BASE_PATH))
+            .Select(x => x[(BASE_PATH.Length + 1)..]);
+    }
 
-        return assembly.GetManifestResourceNames();
+    public static IEnumerable<string> GetResourcesInFolder(string folderName)
+    {
+        return GetAllResources()
+            .Where(x => x.StartsWith(folderName))
+            .Select(x => x[(folderName.Length + 1)..]);
     }
 
     public static T LoadResourceJson<T>(string fileName)
     {
-        Assembly assembly = Assembly.GetExecutingAssembly();
-
-        using Stream stream = assembly.GetManifestResourceStream($"Blasphemous.Modding.SkinEditor.Resources.{fileName}")!;
+        using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{BASE_PATH}.{fileName}")!;
         using StreamReader reader = new(stream);
 
         string json = reader.ReadToEnd();
@@ -25,10 +30,10 @@ public static class Embedder
 
     public static Bitmap LoadResourceImage(string fileName)
     {
-        Assembly assembly = Assembly.GetExecutingAssembly();
-
-        using Stream stream = assembly.GetManifestResourceStream($"Blasphemous.Modding.SkinEditor.Resources.{fileName}")!;
+        using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{BASE_PATH}.{fileName}")!;
 
         return new Bitmap(stream);
     }
+
+    private const string BASE_PATH = "Blasphemous.Modding.SkinEditor.Resources";
 }

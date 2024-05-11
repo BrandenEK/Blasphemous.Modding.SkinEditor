@@ -130,6 +130,10 @@ public partial class MainForm : Form
         foreach (var resource in Embedder.GetAllResources())
             Logger.Error(resource);
 
+        Logger.Info("Preview resources");
+        foreach (var resource in Embedder.GetResourcesInFolder("previews"))
+            Logger.Error(resource);
+
         Logger.Error($"Pixels: {Embedder.LoadResourceJson<PixelGroup[]>("pixels.json").Length}");
         //_preview.BackgroundImage = Embedder.LoadResourceImage("preview.png");
     }
