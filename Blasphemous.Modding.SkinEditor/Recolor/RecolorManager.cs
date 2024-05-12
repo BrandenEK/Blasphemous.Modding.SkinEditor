@@ -1,5 +1,6 @@
 ﻿using Basalt.Framework.Logging;
 using Blasphemous.Modding.SkinEditor.Extensions;
+using Blasphemous.Modding.SkinEditor.Loading;
 using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Prompts;
 using Blasphemous.Modding.SkinEditor.Undo;
@@ -14,10 +15,10 @@ public class RecolorManager : IManager
 
     private bool _showingAll;
 
-    public RecolorManager(Panel parent)
+    public RecolorManager(IResourceLoader resourceLoader, Panel parent)
     {
         _parent = parent;
-        _groups = Embedder.LoadResourceJson<PixelGroup[]>("pixels.json");
+        _groups = resourceLoader.LoadJson<PixelGroup[]>("pixels.json");
     }
 
     public void RefreshButtonsVisibility()

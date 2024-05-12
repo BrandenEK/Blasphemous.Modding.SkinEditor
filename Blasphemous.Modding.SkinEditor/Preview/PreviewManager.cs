@@ -1,4 +1,5 @@
 ﻿using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Loading;
 using Blasphemous.Modding.SkinEditor.Undo;
 using System.Drawing.Imaging;
 
@@ -6,6 +7,7 @@ namespace Blasphemous.Modding.SkinEditor.Preview;
 
 public class PreviewManager : IManager
 {
+    private readonly IResourceLoader _resourceLoader;
     private readonly PictureBox _pictureBox;
     private readonly ComboBox _selector;
 
@@ -17,8 +19,9 @@ public class PreviewManager : IManager
         ? -1
         : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
 
-    public PreviewManager(PictureBox pictureBox, ComboBox selector)
+    public PreviewManager(IResourceLoader resourceLoader, PictureBox pictureBox, ComboBox selector)
     {
+        _resourceLoader = resourceLoader;
         LoadAllAnimations(selector);
 
         _pictureBox = pictureBox;
@@ -34,7 +37,7 @@ public class PreviewManager : IManager
 
     private void LoadAllAnimations(ComboBox selector)
     {
-        foreach (string file in Embedder.GetResourcesInFolder("previews"))
+        foreach (string file in _resourceLoader.GetResources("previews"))
         {
             string name = file[..^4];
             Logger.Info($"Loaded anim: {name}");
@@ -115,7 +118,8 @@ public class PreviewManager : IManager
 
     public void ChangePreview(string name, bool updateSelector)
     {
-        ChangePreview(Embedder.LoadResourceImage($"previews.{name}.png"));
+        using Bitmap preview = _resourceLoader.LoadImage(Path.Combine("previews", $"{name}.png"));
+        ChangePreview(new Bitmap(preview));
 
         if (updateSelector)
             _selector.SelectedItem = name;
@@ -179,7 +183,7 @@ public class PreviewManager : IManager
 
     private void SavePreview(string path)
     {
-        using Bitmap export = Embedder.LoadResourceImage("preview.png");
+        using Bitmap export = _resourceLoader.LoadImage("preview.png");
 
         for (int i = 0; i < export.Width; i++)
         {

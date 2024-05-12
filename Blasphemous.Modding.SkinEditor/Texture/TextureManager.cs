@@ -1,4 +1,5 @@
 ﻿using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Loading;
 using Blasphemous.Modding.SkinEditor.Undo;
 using System.Drawing.Imaging;
 
@@ -6,7 +7,14 @@ namespace Blasphemous.Modding.SkinEditor.Texture;
 
 public class TextureManager : IManager
 {
+    private readonly IResourceLoader _resourceLoader;
+
     private Bitmap? _texture;
+
+    public TextureManager(IResourceLoader resourceLoader)
+    {
+        _resourceLoader = resourceLoader;
+    }
 
     public void SaveTexture(string path)
     {
@@ -30,7 +38,7 @@ public class TextureManager : IManager
 
     public void LoadDefaultTexture()
     {
-        using Bitmap texture = Embedder.LoadResourceImage("texture.png");
+        using Bitmap texture = _resourceLoader.LoadImage("texture.png");
 
         _texture?.Dispose();
         _texture = new(texture);
