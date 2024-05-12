@@ -18,20 +18,12 @@ internal static class Core
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
 
-        EditorCommand cmd = new();
-        try
-        {
-            cmd.Process(args);
-        }
-        catch (CommandParserException ex)
-        {
-            CrashException = ex;
-        }
+        EditorCommand cmd = GenerateCommand(args);
 
         ApplicationConfiguration.Initialize();
         Logger.Initialize(new ILogger[] { new ConsoleLogger(true), new FileLogger(EditorFolder) }, new Basalt.Framework.Logging.Properties()
         {
-            DisplayDebug = cmd.VerboseLogging
+            DisplayDebug = cmd.VerboseLogging || IsDebugMode()
         });
 
         var form = new MainForm();
@@ -59,6 +51,29 @@ internal static class Core
         }
 
         Application.Run(form);
+    }
+
+    private static bool IsDebugMode()
+    {
+#if DEBUG
+        return true;
+#else
+        return false;
+#endif
+    }
+
+    private static EditorCommand GenerateCommand(string[] args)
+    {
+        EditorCommand cmd = new();
+        try
+        {
+            cmd.Process(args);
+        }
+        catch (CommandParserException ex)
+        {
+            CrashException = ex;
+        }
+        return cmd;
     }
 
     public static Exception? CrashException { get; private set; }
