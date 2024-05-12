@@ -1,4 +1,6 @@
 using Basalt.Framework.Logging;
+using Blasphemous.Modding.SkinEditor.Loading;
+using Blasphemous.Modding.SkinEditor.Models;
 using Blasphemous.Modding.SkinEditor.Properties;
 using System.Diagnostics;
 
@@ -50,6 +52,15 @@ public partial class MainForm : Form
             DisplayCrash(Core.CrashException);
             return;
         }
+
+        //var loader = new FileLoader(Environment.CurrentDirectory + "\\data");
+        //var loader = new EmbeddedLoader();
+        //foreach (string file in loader.GetResources(string.Empty))
+        //    Logger.Error(file);
+        //foreach (string file in loader.GetResources("previews"))
+        //    Logger.Warn(file);
+        //foreach (var group in loader.LoadJson<PixelGroup[]>("pixels.json"))
+        //    Logger.Debug(group.Name);
 
         // Handle loading settings
         Core.SettingManager.OnSettingChanged += OnSettingChanged;
