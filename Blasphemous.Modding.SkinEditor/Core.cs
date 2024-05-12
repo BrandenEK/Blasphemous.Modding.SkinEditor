@@ -1,3 +1,4 @@
+using Basalt.CommandParser;
 using Basalt.Framework.Logging;
 using Basalt.Framework.Logging.Standard;
 using Blasphemous.Modding.SkinEditor.Preview;
@@ -12,13 +13,26 @@ namespace Blasphemous.Modding.SkinEditor;
 internal static class Core
 {
     [STAThread]
-    static void Main()
+    static void Main(string[] args)
     {
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
-        
+
+        EditorCommand cmd = new();
+        try
+        {
+            cmd.Process(args);
+        }
+        catch (CommandParserException ex)
+        {
+            CrashException = ex;
+        }
+
         ApplicationConfiguration.Initialize();
-        Logger.Initialize(new ILogger[] { new ConsoleLogger(true), new FileLogger(EditorFolder) });
+        Logger.Initialize(new ILogger[] { new ConsoleLogger(true), new FileLogger(EditorFolder) }, new Basalt.Framework.Logging.Properties()
+        {
+            DisplayDebug = cmd.VerboseLogging
+        });
 
         var form = new MainForm();
 
