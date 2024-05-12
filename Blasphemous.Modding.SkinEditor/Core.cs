@@ -1,6 +1,7 @@
 using Basalt.CommandParser;
 using Basalt.Framework.Logging;
 using Basalt.Framework.Logging.Standard;
+using Blasphemous.Modding.SkinEditor.Loading;
 using Blasphemous.Modding.SkinEditor.Preview;
 using Blasphemous.Modding.SkinEditor.Recolor;
 using Blasphemous.Modding.SkinEditor.Save;
@@ -30,11 +31,16 @@ internal static class Core
 
         try
         {
-            PreviewManager = new PreviewManager(form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
-            RecolorManager = new RecolorManager(form.FindUI<Panel>("_buttons"));
+            IResourceLoader resourceLoader = string.IsNullOrEmpty(cmd.DataFolder)
+                ? new EmbeddedLoader()
+                : new FileLoader(cmd.DataFolder);
+            Logger.Debug($"Using {resourceLoader.GetType().Name} as the resource loader");
+
+            PreviewManager = new PreviewManager(resourceLoader, form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
+            RecolorManager = new RecolorManager(resourceLoader, form.FindUI<Panel>("_buttons"));
             SaveManager = new SaveManager(form.FindUI<Label>("_info_header"), form.FindMenu("_menu_file_modify"));
             SettingManager = new SettingManager();
-            TextureManager = new TextureManager();
+            TextureManager = new TextureManager(resourceLoader);
             UndoManager = new UndoManager();
 
             // Initialize them in a certain order
