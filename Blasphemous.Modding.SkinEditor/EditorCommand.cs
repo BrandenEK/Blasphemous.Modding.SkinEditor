@@ -4,9 +4,9 @@ namespace Blasphemous.Modding.SkinEditor;
 
 public class EditorCommand : CommandData
 {
-    [BooleanArgument('v', "verbose")]
-    public bool VerboseLogging { get; set; } = false;
+    [BooleanArgument('d', "debug")]
+    public bool DebugMode { get; set; } = false;
 
-    [StringArgument('d', "datafolder")]
-    public string DataFolder { get; set; } = string.Empty;
+    [StringArgument('r', "resources")]
+    public string ResourceFolder { get; set; } = string.Empty;
 }

@@ -18,24 +18,20 @@ internal static class Core
     {
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
-
         EditorCommand cmd = GenerateCommand(args);
-        LoggingProperties.DisplayDebug = cmd.VerboseLogging || IsDebugMode();
 
         ApplicationConfiguration.Initialize();
-        Logger.AddLoggers(new ILogger[]
-        {
-            new ConsoleLogger(Title),
-            new FileLogger(EditorFolder)
-        });
+        Logger.AddLogger(new FileLogger(EditorFolder));
+        if (cmd.DebugMode)
+            Logger.AddLogger(new ConsoleLogger(Title));
 
         var form = new MainForm();
 
         try
         {
-            IResourceLoader resourceLoader = string.IsNullOrEmpty(cmd.DataFolder)
+            IResourceLoader resourceLoader = string.IsNullOrEmpty(cmd.ResourceFolder)
                 ? new EmbeddedLoader()
-                : new FileLoader(cmd.DataFolder);
+                : new FileLoader(cmd.ResourceFolder);
             Logger.Debug($"Using {resourceLoader.GetType().Name} as the resource loader");
 
             PreviewManager = new PreviewManager(resourceLoader, form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
@@ -61,15 +57,6 @@ internal static class Core
         Application.Run(form);
     }
 
-    private static bool IsDebugMode()
-    {
-#if DEBUG
-        return true;
-#else
-        return false;
-#endif
-    }
-
     private static EditorCommand GenerateCommand(string[] args)
     {
         EditorCommand cmd = new();
@@ -81,6 +68,11 @@ internal static class Core
         {
             CrashException = ex;
         }
+
+#if DEBUG
+        cmd.DebugMode = true;
+#endif
+
         return cmd;
     }
 
