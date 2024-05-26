@@ -39,7 +39,7 @@ public partial class MainForm : Form
     private void OnFormOpen(object sender, EventArgs e)
     {
         // Load ui settings
-        Text = "Blasphemous Skin Editor v" + Core.CurrentVersion.ToString(3);
+        Text = Core.Title;
         WindowState = Settings.Default.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
         Location = Settings.Default.Location;
         Size = Settings.Default.Size;
@@ -100,7 +100,7 @@ public partial class MainForm : Form
 
     private void DisplayCrash(Exception ex)
     {
-        Logger.Error($"A crash has occured: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+        Logger.Fatal($"A crash has occured: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
         MessageBox.Show(ex.ToString(), "A crash has occured", MessageBoxButtons.OK);
         Application.Exit();
     }

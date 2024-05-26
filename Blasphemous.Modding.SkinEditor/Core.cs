@@ -18,22 +18,20 @@ internal static class Core
     {
         Directory.CreateDirectory(EditorFolder);
         Directory.CreateDirectory(SkinsFolder);
-
         EditorCommand cmd = GenerateCommand(args);
 
         ApplicationConfiguration.Initialize();
-        Logger.Initialize(new ILogger[] { new ConsoleLogger(true), new FileLogger(EditorFolder) }, new Basalt.Framework.Logging.Properties()
-        {
-            DisplayDebug = cmd.VerboseLogging || IsDebugMode()
-        });
+        Logger.AddLogger(new FileLogger(EditorFolder));
+        if (cmd.DebugMode)
+            Logger.AddLogger(new ConsoleLogger(Title));
 
         var form = new MainForm();
 
         try
         {
-            IResourceLoader resourceLoader = string.IsNullOrEmpty(cmd.DataFolder)
+            IResourceLoader resourceLoader = string.IsNullOrEmpty(cmd.ResourceFolder)
                 ? new EmbeddedLoader()
-                : new FileLoader(cmd.DataFolder);
+                : new FileLoader(cmd.ResourceFolder);
             Logger.Debug($"Using {resourceLoader.GetType().Name} as the resource loader");
 
             PreviewManager = new PreviewManager(resourceLoader, form.FindUI<PictureBox>("_preview_image"), form.FindUI<ComboBox>("_info_selector"));
@@ -59,15 +57,6 @@ internal static class Core
         Application.Run(form);
     }
 
-    private static bool IsDebugMode()
-    {
-#if DEBUG
-        return true;
-#else
-        return false;
-#endif
-    }
-
     private static EditorCommand GenerateCommand(string[] args)
     {
         EditorCommand cmd = new();
@@ -79,6 +68,11 @@ internal static class Core
         {
             CrashException = ex;
         }
+
+#if DEBUG
+        cmd.DebugMode = true;
+#endif
+
         return cmd;
     }
 
@@ -97,4 +91,5 @@ internal static class Core
     public static string SkinsFolder { get; } = Path.Combine(EditorFolder, "skins");
 
     public static Version CurrentVersion { get; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version ?? new(0, 1, 0);
+    public static string Title { get; } = $"Blasphemous Skin Editor v{CurrentVersion.ToString(3)}";
 }
