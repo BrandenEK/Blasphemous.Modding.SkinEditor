@@ -20,11 +20,13 @@ internal static class Core
         Directory.CreateDirectory(SkinsFolder);
 
         EditorCommand cmd = GenerateCommand(args);
+        LoggingProperties.DisplayDebug = cmd.VerboseLogging || IsDebugMode();
 
         ApplicationConfiguration.Initialize();
-        Logger.Initialize(new ILogger[] { new ConsoleLogger(true), new FileLogger(EditorFolder) }, new Basalt.Framework.Logging.Properties()
+        Logger.AddLoggers(new ILogger[]
         {
-            DisplayDebug = cmd.VerboseLogging || IsDebugMode()
+            new ConsoleLogger(Title),
+            new FileLogger(EditorFolder)
         });
 
         var form = new MainForm();
@@ -97,4 +99,5 @@ internal static class Core
     public static string SkinsFolder { get; } = Path.Combine(EditorFolder, "skins");
 
     public static Version CurrentVersion { get; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version ?? new(0, 1, 0);
+    public static string Title { get; } = $"Blasphemous Skin Editor v{CurrentVersion.ToString(3)}";
 }
