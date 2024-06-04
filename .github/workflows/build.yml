@@ -1,0 +1,50 @@
+
+name: Build
+
+on:
+  push:
+    tags: [ "**" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Build Project
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+
+    - name: Export Settings
+      run: |
+        NAME_DISPLAY=$(grep -oP '<Title>Blasphemous \K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "NAME_DISPLAY=$NAME_DISPLAY" >> $GITHUB_ENV
+        NAME_INTERNAL=$(grep -oP '<AssemblyName>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "NAME_INTERNAL=$NAME_INTERNAL" >> $GITHUB_ENV
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ env.NAME_DISPLAY }} v${{ github.ref_name }}
+
+    - name: Upload Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: publish/${{ env.NAME_INTERNAL }}.zip
+        asset_name: ${{ env.NAME_INTERNAL }}.zip
+        asset_content_type: application/zip
