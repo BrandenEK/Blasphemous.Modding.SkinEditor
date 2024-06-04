@@ -25,7 +25,7 @@ jobs:
 
     - name: Export Settings
       run: |
-        NAME_DISPLAY=$(grep -oP '<Title>Blasphemous \K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        NAME_DISPLAY=$(grep -oP '<Title>Blasphemous\s\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
         echo "NAME_DISPLAY=$NAME_DISPLAY" >> $GITHUB_ENV
         NAME_INTERNAL=$(grep -oP '<AssemblyName>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
         echo "NAME_INTERNAL=$NAME_INTERNAL" >> $GITHUB_ENV
