@@ -5,6 +5,10 @@ on:
   push:
     tags: [ "**" ]
 
+env:
+  TOOL_TITLE: Skin Editor
+  TOOL_NAME: BlasSkinEditor
+
 jobs:
   build:
     runs-on: windows-latest
@@ -22,13 +26,6 @@ jobs:
       run: |
         dotnet restore
         dotnet build --configuration Release --no-restore
-
-    - name: Export Settings
-      run: |
-        TOOL_TITLE=$(grep -oP '<Title>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj | sed 's/^Blasphemous //')
-        echo "TOOL_TITLE=$TOOL_TITLE" >> $GITHUB_ENV
-        TOOL_NAME=$(grep -oP '<AssemblyName>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
-        echo "TOOL_NAME=$TOOL_NAME" >> $GITHUB_ENV
 
     - name: Create Release
       id: create_release
