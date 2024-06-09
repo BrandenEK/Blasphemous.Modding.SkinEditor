@@ -15,6 +15,8 @@ public class PreviewManager : IManager
     private Bitmap? _coloredPreview;
 
     private int _lastScale = 1;
+
+    private int _zoomAmount = 1;
     private bool _mirrored = false;
 
     private int CurrentScale => _coloredPreview == null
@@ -27,6 +29,7 @@ public class PreviewManager : IManager
         LoadAllAnimations(selector);
 
         _pictureBox = pictureBox;
+        _pictureBox.MouseWheel += OnMouseScroll;
         _pictureBox.SizeChanged += OnPictureResized;
         _selector = selector;
         _selector.SelectedIndexChanged += OnSelectionChanged;
@@ -51,11 +54,17 @@ public class PreviewManager : IManager
 
     private void OnPictureResized(object? _, EventArgs __)
     {
-        if (_coloredPreview == null || _pictureBox.Image == null || _lastScale == CurrentScale)
-            return;
+        //if (_coloredPreview == null || _pictureBox.Image == null || _lastScale == CurrentScale)
+        //    return;
 
-        Logger.Warn("Resizing preview image");
-        DisplayPreview(_coloredPreview);
+        //Logger.Warn("Resizing preview image");
+        //DisplayPreview(_coloredPreview);
+    }
+
+    private void OnMouseScroll(object? _, MouseEventArgs e)
+    {
+        _zoomAmount += e.Delta / SystemInformation.MouseWheelScrollDelta;
+        Logger.Info($"Changing zoom factor to {_zoomAmount}");
     }
 
     private void OnSelectionChanged(object? _, EventArgs __)
