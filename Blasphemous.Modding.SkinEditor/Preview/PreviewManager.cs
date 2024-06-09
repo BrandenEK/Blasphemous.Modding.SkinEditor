@@ -63,8 +63,13 @@ public class PreviewManager : IManager
 
     private void OnMouseScroll(object? _, MouseEventArgs e)
     {
-        _zoomAmount += e.Delta / SystemInformation.MouseWheelScrollDelta;
-        Logger.Info($"Changing zoom factor to {_zoomAmount}");
+        if (_coloredPreview == null)
+            return;
+
+        int minZoom = 1;
+        int maxZoom = Math.Min(_pictureBox.Size.Width / _coloredPreview.Width, _pictureBox.Size.Height / _coloredPreview.Height);
+        int newZoom = Math.Clamp(_zoomAmount + e.Delta / SystemInformation.MouseWheelScrollDelta, minZoom, maxZoom);
+        ZoomPreview(newZoom);
     }
 
     private void OnSelectionChanged(object? _, EventArgs __)
@@ -81,15 +86,15 @@ public class PreviewManager : IManager
 
     private void DisplayPreview(Bitmap preview)
     {
-        int currentScale = CurrentScale;
-        Bitmap newPreview = ScalePreview(preview, currentScale);
+        //int currentScale = CurrentScale;
+        Bitmap newPreview = ScalePreview(preview, _zoomAmount);
 
         _pictureBox.Enabled = false;
         _pictureBox.Image?.Dispose();
         _pictureBox.Image = newPreview;
         _pictureBox.Enabled = true;
 
-        _lastScale = currentScale;
+        //_lastScale = currentScale;
     }
 
     private Bitmap ScalePreview(Bitmap preview, int factor)
@@ -126,6 +131,16 @@ public class PreviewManager : IManager
         }
 
         return colored;
+    }
+
+    public void ZoomPreview(int zoom)
+    {
+        if (_coloredPreview == null || zoom == _zoomAmount)
+            return;
+
+        Logger.Info($"Changing zoom factor to {zoom}");
+        _zoomAmount = zoom;
+        DisplayPreview(_coloredPreview);
     }
 
     public void ChangePreview(string name, bool updateSelector)
