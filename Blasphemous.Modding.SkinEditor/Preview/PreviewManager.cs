@@ -14,12 +14,10 @@ public class PreviewManager : IManager
     private Bitmap? _indexedPreview;
     private Bitmap? _coloredPreview;
 
-    private int _lastScale = 1;
+    private int _zoomAmount = 1;
     private bool _mirrored = false;
 
-    private int CurrentScale => _coloredPreview == null
-        ? -1
-        : Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
+    private int MaxScale => Math.Min(_pictureBox.Size.Width / _coloredPreview!.Width, _pictureBox.Size.Height / _coloredPreview.Height);
 
     public PreviewManager(IResourceLoader resourceLoader, PictureBox pictureBox, ComboBox selector)
     {
@@ -27,7 +25,7 @@ public class PreviewManager : IManager
         LoadAllAnimations(selector);
 
         _pictureBox = pictureBox;
-        _pictureBox.SizeChanged += OnPictureResized;
+        _pictureBox.MouseWheel += OnMouseScroll;
         _selector = selector;
         _selector.SelectedIndexChanged += OnSelectionChanged;
     }
@@ -49,13 +47,13 @@ public class PreviewManager : IManager
         selector.SelectedItem = FIRST_ANIM;
     }
 
-    private void OnPictureResized(object? _, EventArgs __)
+    private void OnMouseScroll(object? _, MouseEventArgs e)
     {
-        if (_coloredPreview == null || _pictureBox.Image == null || _lastScale == CurrentScale)
+        if (_coloredPreview == null)
             return;
 
-        Logger.Warn("Resizing preview image");
-        DisplayPreview(_coloredPreview);
+        int newZoom = Math.Clamp(_zoomAmount + e.Delta / SystemInformation.MouseWheelScrollDelta, 1, MaxScale);
+        ZoomPreview(newZoom);
     }
 
     private void OnSelectionChanged(object? _, EventArgs __)
@@ -72,15 +70,12 @@ public class PreviewManager : IManager
 
     private void DisplayPreview(Bitmap preview)
     {
-        int currentScale = CurrentScale;
-        Bitmap newPreview = ScalePreview(preview, currentScale);
+        Bitmap newPreview = ScalePreview(preview, _zoomAmount);
 
         _pictureBox.Enabled = false;
         _pictureBox.Image?.Dispose();
         _pictureBox.Image = newPreview;
         _pictureBox.Enabled = true;
-
-        _lastScale = currentScale;
     }
 
     private Bitmap ScalePreview(Bitmap preview, int factor)
@@ -119,6 +114,16 @@ public class PreviewManager : IManager
         return colored;
     }
 
+    public void ZoomPreview(int zoom)
+    {
+        if (_coloredPreview == null || zoom == _zoomAmount)
+            return;
+
+        Logger.Info($"Changing zoom factor to {zoom}");
+        _zoomAmount = zoom;
+        DisplayPreview(_coloredPreview);
+    }
+
     public void ChangePreview(string name, bool updateSelector)
     {
         using Bitmap preview = _resourceLoader.LoadImage(Path.Combine("previews", $"{name}.png"));
@@ -140,6 +145,7 @@ public class PreviewManager : IManager
 
         // Update display
         Logger.Info("Changing preview image");
+        _zoomAmount = (MaxScale * 3 + 2) / 4;
         DisplayPreview(_coloredPreview);
         OnPreviewChanged?.Invoke();
     }
