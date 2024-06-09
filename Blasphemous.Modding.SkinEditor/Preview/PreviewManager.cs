@@ -13,7 +13,9 @@ public class PreviewManager : IManager
 
     private Bitmap? _indexedPreview;
     private Bitmap? _coloredPreview;
+
     private int _lastScale = 1;
+    private bool _mirrored = false;
 
     private int CurrentScale => _coloredPreview == null
         ? -1
@@ -90,7 +92,8 @@ public class PreviewManager : IManager
         {
             for (int y = 0; y < scaled.Height; y++)
             {
-                scaled.SetPixel(x, y, preview.GetPixel(x / factor, y / factor));
+                int realX = _mirrored ? scaled.Width - x - 1 : x;
+                scaled.SetPixel(realX, y, preview.GetPixel(x / factor, y / factor));
             }
         }
 
@@ -257,10 +260,19 @@ public class PreviewManager : IManager
 
     private void OnSettingChanged(string property, bool status, bool onLoad)
     {
-        if (property != "view_background")
+        if (property == "view_background")
+        {
+            SetBackgroundColor(status);
             return;
+        }
 
-        SetBackgroundColor(status);
+        if (property == "view_mirror")
+        {
+            _mirrored = status;
+            if (!onLoad && _coloredPreview != null)
+                DisplayPreview(_coloredPreview);
+            return;
+        }
     }
 
     private void OnTextureChanged(Bitmap texture)
