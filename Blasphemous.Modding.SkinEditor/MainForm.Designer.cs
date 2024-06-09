@@ -52,10 +52,11 @@ partial class MainForm
         _menu_help = new ToolStripMenuItem();
         _menu_help_readme = new ToolStripMenuItem();
         _menu_help_repo = new ToolStripMenuItem();
-        _info = new Panel();
-        _info_header = new Label();
         _menu_help_sep = new ToolStripSeparator();
         _menu_help_folder = new ToolStripMenuItem();
+        _info = new Panel();
+        _info_header = new Label();
+        _menu_view_mirror = new ToolStripMenuItem();
         _preview.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).BeginInit();
         _menu.SuspendLayout();
@@ -204,7 +205,7 @@ partial class MainForm
         // 
         // _menu_view
         // 
-        _menu_view.DropDownItems.AddRange(new ToolStripItem[] { _menu_view_all, _menu_view_background, _menu_view_side });
+        _menu_view.DropDownItems.AddRange(new ToolStripItem[] { _menu_view_all, _menu_view_background, _menu_view_side, _menu_view_mirror });
         _menu_view.Name = "_menu_view";
         _menu_view.Size = new Size(44, 20);
         _menu_view.Text = "View";
@@ -257,6 +258,18 @@ partial class MainForm
         _menu_help_repo.Text = "Open community repo";
         _menu_help_repo.Click += OnClickMenu_Help_Repo;
         // 
+        // _menu_help_sep
+        // 
+        _menu_help_sep.Name = "_menu_help_sep";
+        _menu_help_sep.Size = new Size(192, 6);
+        // 
+        // _menu_help_folder
+        // 
+        _menu_help_folder.Name = "_menu_help_folder";
+        _menu_help_folder.Size = new Size(195, 22);
+        _menu_help_folder.Text = "Open skins folder";
+        _menu_help_folder.Click += OnClickMenu_Help_Folder;
+        // 
         // _info
         // 
         _info.BackColor = Color.Silver;
@@ -279,17 +292,14 @@ partial class MainForm
         _info_header.Text = "SKIN_ID";
         _info_header.TextAlign = ContentAlignment.MiddleLeft;
         // 
-        // _menu_help_sep
+        // _menu_view_mirror
         // 
-        _menu_help_sep.Name = "_menu_help_sep";
-        _menu_help_sep.Size = new Size(192, 6);
-        // 
-        // _menu_help_folder
-        // 
-        _menu_help_folder.Name = "_menu_help_folder";
-        _menu_help_folder.Size = new Size(195, 22);
-        _menu_help_folder.Text = "Open skins folder";
-        _menu_help_folder.Click += OnClickMenu_Help_Folder;
+        _menu_view_mirror.CheckOnClick = true;
+        _menu_view_mirror.Name = "_menu_view_mirror";
+        _menu_view_mirror.ShortcutKeys = Keys.Control | Keys.M;
+        _menu_view_mirror.Size = new Size(232, 22);
+        _menu_view_mirror.Text = "Mirror preview";
+        _menu_view_mirror.Click += OnClickMenu_View_Mirror;
         // 
         // MainForm
         // 
@@ -345,4 +355,5 @@ partial class MainForm
     private ToolStripMenuItem _menu_help_repo;
     private ToolStripSeparator _menu_help_sep;
     private ToolStripMenuItem _menu_help_folder;
+    private ToolStripMenuItem _menu_view_mirror;
 }

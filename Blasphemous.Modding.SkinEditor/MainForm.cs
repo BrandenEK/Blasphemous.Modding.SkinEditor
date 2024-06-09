@@ -55,7 +55,7 @@ public partial class MainForm : Form
         Core.SettingManager.OnSettingChanged += OnSettingChanged;
         Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
         {
-            _menu_view_all, _menu_view_background, _menu_view_side
+            _menu_view_all, _menu_view_background, _menu_view_side, _menu_view_mirror
         });
 
         // Start process
@@ -134,6 +134,7 @@ public partial class MainForm : Form
     private void OnClickMenu_View_All(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
     private void OnClickMenu_View_Background(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
     private void OnClickMenu_View_Side(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
+    private void OnClickMenu_View_Mirror(object sender, EventArgs __) => Core.SettingManager.SetProperty((ToolStripMenuItem)sender);
 
     private void OnClickMenu_Help_Readme(object _, EventArgs __) => OpenProcess(README_LINK);
     private void OnClickMenu_Help_Repo(object _, EventArgs __) => OpenProcess(REPO_LINK);

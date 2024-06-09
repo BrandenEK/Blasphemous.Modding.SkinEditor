@@ -94,5 +94,17 @@ namespace Blasphemous.Modding.SkinEditor.Properties {
                 this["view_side"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool view_mirror {
+            get {
+                return ((bool)(this["view_mirror"]));
+            }
+            set {
+                this["view_mirror"] = value;
+            }
+        }
     }
 }
