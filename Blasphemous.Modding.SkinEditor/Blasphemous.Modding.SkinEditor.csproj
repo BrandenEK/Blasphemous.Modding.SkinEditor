@@ -11,7 +11,7 @@
     <Authors>Damocles</Authors>
     <Company>Damocles</Company>
     <Description>Easily create and export custom skins for the game Blasphemous</Description>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
