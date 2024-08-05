@@ -11,7 +11,7 @@
     <Authors>Damocles</Authors>
     <Company>Damocles</Company>
     <Description>Easily create and export custom skins for the game Blasphemous</Description>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Basalt.BetterForms" Version="1.1.1" />
     <PackageReference Include="Basalt.CommandParser" Version="1.0.1" />
     <PackageReference Include="Basalt.Framework.Logging" Version="1.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
