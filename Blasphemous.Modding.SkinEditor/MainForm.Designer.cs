@@ -314,9 +314,6 @@ partial class MainForm
         MainMenuStrip = _menu;
         MinimumSize = new Size(1280, 720);
         Name = "MainForm";
-        Text = "Blasphemous Skin Editor";
-        FormClosing += OnFormClose;
-        Load += OnFormOpen;
         _preview.ResumeLayout(false);
         _preview.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)_preview_image).EndInit();

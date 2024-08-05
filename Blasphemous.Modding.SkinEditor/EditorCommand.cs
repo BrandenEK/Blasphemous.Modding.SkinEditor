@@ -1,12 +1,10 @@
-﻿using Basalt.CommandParser;
+﻿using Basalt.BetterForms;
+using Basalt.CommandParser;
 
 namespace Blasphemous.Modding.SkinEditor;
 
-public class EditorCommand : CommandData
+public class EditorCommand : BasaltCommand
 {
-    [BooleanArgument('d', "debug")]
-    public bool DebugMode { get; set; } = false;
-
     [StringArgument('r', "resources")]
     public string ResourceFolder { get; set; } = string.Empty;
 }

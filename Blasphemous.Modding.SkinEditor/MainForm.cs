@@ -1,20 +1,49 @@
+using Basalt.BetterForms;
 using Basalt.Framework.Logging;
 using Blasphemous.Modding.SkinEditor.Properties;
 using System.Diagnostics;
 
 namespace Blasphemous.Modding.SkinEditor;
 
-public partial class MainForm : Form
+public partial class MainForm : BasaltForm
 {
-    public MainForm()
+    protected override void OnFormOpenPre()
     {
-        Logger.Info($"Opening editor v{Core.CurrentVersion.ToString(3)}");
-        Application.ThreadException += OnCrash;
-        InitializeComponent();
+        WindowState = Settings.Default.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
+        Location = Settings.Default.Location;
+        Size = Settings.Default.Size;
 
 #if !DEBUG
         _preview_debug.Visible = false;
 #endif
+    }
+
+    protected override void OnFormOpenPost()
+    {
+        // Handle loading settings
+        Core.SettingManager.OnSettingChanged += OnSettingChanged;
+        Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
+        {
+            _menu_view_all, _menu_view_background, _menu_view_side, _menu_view_mirror
+        });
+
+        // Start process
+        Core.SaveManager.New();
+    }
+
+    protected override void OnFormClose(FormClosingEventArgs e)
+    {
+        if (!Core.SaveManager.CheckForUnsavedProgress())
+        {
+            e.Cancel = true;
+            return;
+        }
+
+        // Save window settings
+        Settings.Default.Location = WindowState == FormWindowState.Normal ? Location : RestoreBounds.Location;
+        Settings.Default.Size = WindowState == FormWindowState.Normal ? Size : RestoreBounds.Size;
+        Settings.Default.Maximized = WindowState == FormWindowState.Maximized;
+        Settings.Default.Save();
     }
 
     public T FindUI<T>(string name) where T : Control
@@ -36,73 +65,12 @@ public partial class MainForm : Form
         throw new Exception($"Menu item {name} does not exist");
     }
 
-    private void OnFormOpen(object sender, EventArgs e)
-    {
-        // Load ui settings
-        Text = Core.Title;
-        WindowState = Settings.Default.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
-        Location = Settings.Default.Location;
-        Size = Settings.Default.Size;
-
-        // Check for crash
-        if (Core.CrashException != null)
-        {
-            DisplayCrash(Core.CrashException);
-            return;
-        }
-
-        // Handle loading settings
-        Core.SettingManager.OnSettingChanged += OnSettingChanged;
-        Core.SettingManager.LoadAllProperties(new ToolStripMenuItem[]
-        {
-            _menu_view_all, _menu_view_background, _menu_view_side, _menu_view_mirror
-        });
-
-        // Start process
-        Core.SaveManager.New();
-    }
-
-    private void OnFormClose(object sender, FormClosingEventArgs e)
-    {
-        if (Core.CrashException != null)
-        {
-            Logger.Info("Closing editor");
-            return;
-        }
-
-        if (!Core.SaveManager.CheckForUnsavedProgress())
-        {
-            e.Cancel = true;
-            return;
-        }
-
-        Logger.Info("Closing editor");
-
-        // Save window settings
-        Settings.Default.Location = WindowState == FormWindowState.Normal ? Location : RestoreBounds.Location;
-        Settings.Default.Size = WindowState == FormWindowState.Normal ? Size : RestoreBounds.Size;
-        Settings.Default.Maximized = WindowState == FormWindowState.Maximized;
-        Settings.Default.Save();
-    }
-
     private void OnSettingChanged(string property, bool status, bool onLoad)
     {
         if (property != "view_side")
             return;
 
         _buttons.Dock = status ? DockStyle.Right : DockStyle.Left;
-    }
-
-    private void OnCrash(object _, ThreadExceptionEventArgs e)
-    {
-        DisplayCrash(e.Exception);
-    }
-
-    private void DisplayCrash(Exception ex)
-    {
-        Logger.Fatal($"A crash has occured: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
-        MessageBox.Show(ex.ToString(), "A crash has occured", MessageBoxButtons.OK);
-        Application.Exit();
     }
 
     private void OpenProcess(string process, string verb = "")
